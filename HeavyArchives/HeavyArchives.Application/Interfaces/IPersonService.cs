@@ -1,28 +1,21 @@
-﻿using HeavyArchives.Application.DTOs.Band;
-using HeavyArchives.Application.DTOs.Person;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HeavyArchives.Application.DTOs.Person;
 
 namespace HeavyArchives.Application.Interfaces
 {
     public interface IPersonService
     {
-        PersonDTO? GetPersonById(int id);
-        ICollection<PersonDTO> GetAllPersons();
+        Task<PersonDTO?> GetPersonByIdAsync(int id);
+        Task<ICollection<PersonDTO>> GetAllPersonsAsync();
 
-        PersonDTO CreatePerson(ManipulatePersonDTO person);
-        ICollection<PersonDTO> GetPeopleByCountry(string country);
-        ICollection<PersonDTO> GetLivingPeople();
-        ICollection<PersonDTO> GetDeceasedPeople();
-        ICollection<PersonDTO> GetPeopleByBand(string bandName);
-        PersonDTO UpdatePerson(int id, ManipulatePersonDTO updatedPerson);
-        void DeletePerson(int id);
-        PersonWithBandsDTO AddBand(int bandId, int personId);
-        PersonWithBandsDTO RemoveBand(int bandId, int personId);
+        Task<PersonDTO> CreatePersonAsync(ManipulatePersonDTO person);
+        Task<ICollection<PersonDTO>> GetPeopleByCountryAsync(string country);
+        Task<ICollection<PersonDTO>> GetLivingPeopleAsync();
+        Task<ICollection<PersonDTO>> GetDeceasedPeopleAsync();
+        Task<ICollection<PersonDTO>> GetPeopleByBandAsync(string bandName);
+        Task<PersonDTO> UpdatePersonAsync(int id, ManipulatePersonDTO updatedPerson);
+        Task DeletePersonAsync(int id);
+        Task<PersonWithBandsDTO > AddBandAsync(int bandId, int personId);
+        Task<PersonWithBandsDTO >RemoveBandAsync(int bandId, int personId);
 
 
     }

@@ -11,7 +11,7 @@ namespace HeavyArchives.Application.Extensions
         public static IServiceCollection SetDALServices(this IServiceCollection services, string connectionString)
         {
 
-            services.AddDbContext<HeavyArchivesContext>(options => options.UseSqlServer("Server=DESKTOP-R8V30UJ;User Id=sa;Password=SQL;TrustServerCertificate=true;Database=HeavyArchivesDB"));
+            services.AddDbContext<HeavyArchivesContext>(options => options.UseSqlServer(connectionString));
             //ovaj ne vidi appsettings pa se mora rucno string stavit?
 
             services.AddScoped<IAlbumRepository, AlbumRepository>();

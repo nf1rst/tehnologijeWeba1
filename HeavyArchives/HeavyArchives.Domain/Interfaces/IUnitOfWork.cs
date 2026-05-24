@@ -17,7 +17,7 @@
         IBandMemberStatusRepository BandMemberStatuses { get; }
         //zasto ne i roles ovdje stavit 
 
-        int SaveChanges();
+        Task<int> SaveChangesAsync();
 
     }
 }

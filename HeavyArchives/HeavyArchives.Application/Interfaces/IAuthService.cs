@@ -4,9 +4,9 @@ namespace HeavyArchives.Application.Interfaces
 {
     public interface IAuthService
     {
-        UserDTO Register(RegisterDTO registerDTO);
-        AuthResponseDTO Login(LoginDTO loginDTO);
-        AuthResponseDTO RefreshToken(RefreshTokenDTO refreshDTO);
-        void RevokeRefreshToken(string refreshToken);
+        Task<UserDTO> RegisterAsync(RegisterDTO registerDTO);
+        Task<AuthResponseDTO> LoginAsync(LoginDTO loginDTO);
+        Task<AuthResponseDTO> RefreshTokenAsync(RefreshTokenDTO refreshDTO);
+        Task RevokeRefreshTokenAsync(string refreshToken);
     }
 }

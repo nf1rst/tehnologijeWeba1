@@ -2,6 +2,7 @@
 using HeavyArchives.Domain.Entities;
 using HeavyArchives.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,29 +18,32 @@ namespace HeavyArchives.DAL.Repositories
         {
             this.context = context;
         }
-        public ICollection<City> GetCitiesWithDetailsByCountry(string countryName)
+
+        public async Task<ICollection<City>> GetCitiesWithDetailsByCountryAsync(string countryName)
         {
-            return context.Cities
+            return await context.Cities
                 .Include(c => c.Country)
                 .Include(c => c.Concerts)
                 .Where(c => c.Country.Name == countryName)
-                .ToList();
+                .ToListAsync();
         }
 
-        public City? GetCityWithDetailsById(int id)
+
+
+        public async Task<City?> GetCityWithDetailsByIdAsync(int id)
         {
-            return context.Cities
+            return await context.Cities
                 .Include(c => c.Country)
                 .Include(c => c.Concerts)
-                .FirstOrDefault(c => c.Country.Id == id);
+                .FirstOrDefaultAsync(c => c.Country.Id == id);
         }
 
-        public City? GetCityWithDetailsByName(string name)
+        public async Task<City?> GetCityWithDetailsByNameAsync(string name)
         {
-            return context.Cities
+            return await context.Cities
                 .Include(c => c.Country)
                 .Include(c => c.Concerts)
-                .FirstOrDefault(c => c.Name == name);
+                .FirstOrDefaultAsync(c => c.Name == name);
         }
     }
 }

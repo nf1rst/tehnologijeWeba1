@@ -1,21 +1,16 @@
 ﻿using HeavyArchives.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HeavyArchives.Domain.Interfaces
 {
     public interface IBandRepository:IRepository<Band>
     {
-        Band? GetBandWithDetails(int id); // ukljucuje sve propertyje
-        ICollection<Band> GetBandByCountry(string countryName);
-        ICollection<Band> GetBandsByGenre(string genreName);
-        ICollection<Band> GetActiveBands();
-        ICollection<Band> GetBandsByLabel(int labelId);
-        ICollection<Band> GetBandsWithDetails();
-        Band? GetBandWithDetailsByName(string name);
-        ICollection<Band> GetAllBands();
+        Task<Band?> GetBandWithDetailsAsync(int id); // ukljucuje sve propertyje
+        Task<ICollection<Band>> GetBandByCountryAsync(string countryName);
+        Task<ICollection<Band>> GetBandsByGenreAsync(string genreName);
+        Task<ICollection<Band>> GetActiveBandsAsync();
+        Task<ICollection<Band>> GetBandsByLabelAsync(int labelId);
+        Task<ICollection<Band>> GetBandsWithDetailsAsync();
+        Task<Band?> GetBandWithDetailsByNameAsync(string name);
+        Task<ICollection<Band>> GetAllBandsAsync();
     }
 }

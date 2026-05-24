@@ -19,60 +19,58 @@ namespace HeavyArchives.DAL.Repositories
             this.context = context;
         }
 
-        public Album? GetAlbumByName(string name)
+        public async Task<Album?> GetAlbumByNameAsync(string name)
         {
-            return context.Albums
-                .Include(a=>a.Band)
-                .FirstOrDefault(a => a.Name == name);
+            return await context.Albums
+                .Include(a => a.Band)
+                .FirstOrDefaultAsync(a => a.Name == name);
         }
 
-        public ICollection<Album> GetAlbumsByBand(int bandId)
+        public async Task<ICollection<Album>> GetAlbumsByBandAsync(int bandId)
         {
-           return context.Albums.
-                Include(a => a.Band)
-                .Where(a => a.BandId == bandId)
-                .ToList();
-
+            return await context.Albums.
+                 Include(a => a.Band)
+                 .Where(a => a.BandId == bandId)
+                 .ToListAsync();
         }
 
-        public ICollection<Album> GetAlbumsByBandName(string bandName)
+
+        public async Task<ICollection<Album>> GetAlbumsByBandNameAsync(string bandName)
         {
-            return context.Albums
+            return await context.Albums
                 .Include(a => a.Band)
                 .Where(a => a.Band.Name == bandName)
-                .ToList();
-        }
-        
-
-        public ICollection<Album> GetAlbumsByType(string type)
-        {
-            return context.Albums
-                .Include(a => a.Band)
-                .Where(a => a.Type.Equals(type))
-                .ToList();
+                .ToListAsync();
         }
 
-        public ICollection<Album> GetAlbumsByYear(int year)
+        public async Task<ICollection<Album>> GetAlbumsByTypeAsync(string type)
         {
-            return context.Albums
+            return await context.Albums
+                 .Include(a => a.Band)
+                 .Where(a => a.Type.Equals(type))
+                 .ToListAsync();
+        }
+
+        public async Task<ICollection<Album>> GetAlbumsByYearAsync(int year)
+        {
+            return await context.Albums
                 .Include(a => a.Band)
                 .Where(a => a.DateOfPublishing.Year == year)
-                .ToList();
-
+                .ToListAsync();
         }
 
-        public ICollection<Album> GetAlbumsWithDetails()
+        public async Task<ICollection<Album>> GetAlbumsWithDetailsAsync()
         {
-            return context.Albums
+            return await context.Albums
                 .Include(a => a.Band)
-                .ToList();
+                .ToListAsync();
         }
 
-        public Album? GetAlbumWithDetailsById(int id)
+        public async Task<Album?> GetAlbumWithDetailsByIdAsync(int id)
         {
-            return context.Albums
+            return await context.Albums
                 .Include(a => a.Band)
-                .FirstOrDefault(a => a.Id == id);
+                .FirstOrDefaultAsync(a => a.Id == id);
         }
     }
 }

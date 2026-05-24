@@ -3,10 +3,10 @@ namespace HeavyArchives.Domain.Interfaces
 {
     public interface IGenreRepository:IRepository<Genre>
     {
-        ICollection<Genre> GetGenresByBand(string bandName);
-        Genre? GetGenre(int id);
-        Genre? GetGenreByName(string name);
-        Genre? GetGenreWithDetails(int id);
-        ICollection<Genre> GetAllGenres();
+        Task<ICollection<Genre>> GetGenresByBandAsync(string bandName);
+        Task<Genre?> GetGenreAsync(int id);
+        Task<Genre? >GetGenreByNameAsync(string name);
+        Task<Genre?> GetGenreWithDetailsAsync(int id);
+        Task<ICollection<Genre>> GetAllGenresAsync();
     }
 }

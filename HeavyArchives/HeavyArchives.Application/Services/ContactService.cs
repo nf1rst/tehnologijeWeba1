@@ -4,6 +4,7 @@ using HeavyArchives.Application.DTOs.Contact;
 using HeavyArchives.Application.Interfaces;
 using HeavyArchives.Domain.Entities;
 using HeavyArchives.Domain.Interfaces;
+using System.Threading.Tasks;
 
 namespace HeavyArchives.Application.Services
 {
@@ -17,9 +18,9 @@ namespace HeavyArchives.Application.Services
             this.mapper= mapper;
         }
 
-        public ContactDTO CreateContact(ManipulateContactDTO createDTO)
+        public async Task<ContactDTO> CreateContactAsync(ManipulateContactDTO createDTO)
         {
-            Band? band = uow.Bands.GetBandWithDetailsByName(createDTO.Band);
+            Band? band =await uow.Bands.GetBandWithDetailsByNameAsync(createDTO.Band);
             if (band is null) throw new EntityNotExistant();
 
 
@@ -30,34 +31,34 @@ namespace HeavyArchives.Application.Services
                 Email = createDTO.Email,
                 BandId=band.Id
             };
-            uow.Contacts.Insert(contact);
-            uow.SaveChanges();
+            await uow.Contacts.InsertAsync(contact);
+            await uow.SaveChangesAsync();
             return mapper.Map<ContactDTO>(contact);
         }
 
-        public void DeleteContact(string bandName)
+        public async Task DeleteContactAsync(string bandName)
         {
-            Contact? contact = uow.Contacts.GetContactForBand(bandName);
+            Contact? contact =await uow.Contacts.GetContactForBandAsync(bandName);
             if (contact is null) throw new Exceptions.EntityNotExistant("Contact wasn't found");
 
-            uow.Contacts.Delete(contact);
-            uow.SaveChanges();
+            await uow.Contacts.DeleteAsync(contact);
+            await uow.SaveChangesAsync();
         }
 
-        public ContactDTO GetContactForBand(string bandName)
+        public async Task<ContactDTO> GetContactForBandAsync(string bandName)
         {
-            var contact = uow.Contacts.GetContactForBand(bandName);
+            var contact =await uow.Contacts.GetContactForBandAsync(bandName);
             return mapper.Map<ContactDTO>(contact);
         }
 
-        public ContactDTO UpdateContact(string bandName, ManipulateContactDTO updateContactDTO)
+        public async Task<ContactDTO> UpdateContactAsync(string bandName, ManipulateContactDTO updateContactDTO)
         {
-            Contact? contact = uow.Contacts.GetContactForBand(bandName);
+            Contact? contact =await uow.Contacts.GetContactForBandAsync(bandName);
             if (contact is null) throw new EntityNotExistant("Contact wasn't found");
 
             mapper.Map(updateContactDTO, contact);
 
-            uow.SaveChanges();
+            await uow.SaveChangesAsync();
             return mapper.Map<ContactDTO>(contact);
         }
     }

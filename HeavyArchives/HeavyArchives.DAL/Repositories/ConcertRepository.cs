@@ -12,48 +12,49 @@ namespace HeavyArchives.DAL.Repositories
         {
             this.context = context;
         }
-
-        public ICollection<Concert> GetConcertsWithDetails()
+        public async Task<ICollection<Concert>> GetConcertsWithDetailsAsync()
         {
-            return context.Concerts
+            return await context.Concerts
                 .Include(c => c.Tour)
                 .Include(c => c.City)
-                .ToList();
+                .ToListAsync();
         }
-
-        public ICollection<Concert> GetConcertsWithDetailsByCity(string cityName)
+        public async Task<ICollection<Concert>> GetConcertsWithDetailsByCityAsync(string cityName)
         {
-            return context.Concerts
+            return await context.Concerts
                 .Include(c => c.Tour)
                 .Include(c => c.City)
                 .Where(c => c.City.Name == cityName)
-                .ToList();
+                .ToListAsync();
         }
 
-        public ICollection<Concert> GetConcertsWithDetailsByCountry(string countryName)
+
+
+        public async Task<ICollection<Concert>> GetConcertsWithDetailsByCountryAsync(string countryName)
         {
-            return context.Concerts
+            return await context.Concerts
                 .Include(c => c.Tour)
                 .Include(c => c.City)
                 .Where(c => c.City.Country.Name == countryName)
-                .ToList();
+                .ToListAsync();
         }
 
-        public ICollection<Concert> GetConcertsWithDetailsByTour(string tourName)
+        public async  Task<ICollection<Concert>> GetConcertsWithDetailsByTourAsync(string tourName)
         {
-            return context.Concerts
+            return await context.Concerts
                 .Include(c => c.Tour)
                 .Include(c => c.City)
                 .Where(c => c.Tour.Name == tourName)
-                .ToList();
+                .ToListAsync();
         }
 
-        public Concert? GetConcertWithDetailsById(int id)
+
+        public async Task<Concert?> GetConcertWithDetailsByIdAsync(int id)
         {
-            return context.Concerts
+            return await  context.Concerts
                  .Include(c => c.Tour)
                  .Include(c => c.City)
-                 .FirstOrDefault(c => c.Id == id);
+                 .FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }

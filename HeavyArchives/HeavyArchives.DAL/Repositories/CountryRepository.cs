@@ -16,40 +16,38 @@ namespace HeavyArchives.DAL.Repositories
         public CountryRepository(HeavyArchivesContext context):base(context){
         this.context = context;
         }
-
-        public Country? GetCountryWithDetailsByName(string name)
+        public async Task<Country?> GetCountryWithDetailsByNameAsync(string name)
         {
-            return context.Countries
+            return await context.Countries
                 .Include(c => c.Persons)
                 .Include(c => c.Bands)
-                .FirstOrDefault(c => c.Name.Equals(name));
+                .FirstOrDefaultAsync(c => c.Name.Equals(name));
         }
 
-
-        public Country? GetCountryWithDetailsById(int id)
+        public async Task<Country?> GetCountryWithDetailsByIdAsync(int id)
         {
-            return context.Countries
+            return await  context.Countries
                 .Include(c => c.Bands)
                 .Include(c => c.Persons)
-                .FirstOrDefault(c => c.Id==id);
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public ICollection<Country> GetAllCountries()
+        public async Task<ICollection<Country>> GetAllCountriesAsync()
         {
-            return context.Countries
-                .ToList();
+            return await context.Countries
+                .ToListAsync();
         }
 
-        public Country? GetCountryByName(string name)
+        public async Task<Country?> GetCountryByNameAsync(string name)
         {
-            return context.Countries
-                .FirstOrDefault(c => c.Name == name);
+            return await context.Countries
+                .FirstOrDefaultAsync(c => c.Name == name);
         }
 
-        public Country? GetCountryById(int id)
+        public async Task<Country?> GetCountryByIdAsync(int id)
         {
-            return context.Countries
-                .FirstOrDefault(c => c.Id== id);
+            return await context.Countries
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }

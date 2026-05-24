@@ -22,65 +22,65 @@ namespace HeavyArchives.Application.Services
             this.uow = uow;
             this.mapper = mapper;
         }
-        public ThemeDTO CreateTheme(ManipulateThemeDTO createDTO)
+        public async Task<ThemeDTO> CreateThemeAsync(ManipulateThemeDTO createDTO)
         {
-            Theme theme = mapper.Map<Theme>(createDTO);
-            uow.Themes.Insert(theme);
-            uow.SaveChanges();
+            Theme? theme = mapper.Map<Theme>(createDTO);
+            await uow.Themes.InsertAsync(theme);
+            await uow.SaveChangesAsync();
             return mapper.Map<ThemeDTO>(theme);
         }
 
-        public void DeleteTheme(int id)
+        public async Task DeleteThemeAsync(int id)
         {
-            var theme = uow.Themes.GetById(id);
+            var theme =await uow.Themes.GetByIdAsync(id);
             if (theme is null) throw new EntityNotExistant("Theme wasn't found");
 
-            uow.Themes.Delete(theme);
-            uow.SaveChanges();
+            await uow.Themes.DeleteAsync(theme);
+            await uow.SaveChangesAsync();
         }
 
-        public ICollection<ThemeDTO> GetAllThemes()
+        public async Task<ICollection<ThemeDTO>> GetAllThemesAsync()
         {
-            var themes = uow.Themes.GetThemesWithDetails();
+            var themes =await uow.Themes.GetThemesWithDetailsAsync();
             return mapper.Map<ICollection<ThemeDTO>>(themes);
         }
 
-        public ThemeDTO? GetThemeById(int id)
+        public async Task<ThemeDTO?> GetThemeByIdAsync(int id)
         {
-            var theme = uow.Themes.GetThemeWithDetailsById(id);
+            var theme =await uow.Themes.GetThemeWithDetailsByIdAsync(id);
             return mapper.Map<ThemeDTO>(theme);
         }
 
-        public ThemeDTO? GetThemeByName(string name)
+        public async Task<ThemeDTO?> GetThemeByNameAsync(string name)
         {
-            var theme = uow.Themes.GetThemeWithDetailsByName(name);
+            var theme =await uow.Themes.GetThemeWithDetailsByNameAsync(name);
             return mapper.Map<ThemeDTO>(theme);
         }
 
-        public ICollection<ThemeDTO> GetThemesForBand(string bandName)
+        public async Task<ICollection<ThemeDTO>> GetThemesForBandAsync(string bandName)
         {
-            Band band = uow.Bands.GetBandWithDetailsByName(bandName);
+            Band? band =await uow.Bands.GetBandWithDetailsByNameAsync(bandName);
             if (band is null) return null;
-            var themes = uow.Themes.GetThemesWithDetailsForBand(band.Id);
+            var themes =await uow.Themes.GetThemesWithDetailsForBandAsync(band.Id);
             return mapper.Map<ICollection<ThemeDTO>>(themes);
         }
 
-        public ICollection<ThemeDTO> GetThemesForLabel(string labelName)
+        public async Task<ICollection<ThemeDTO>> GetThemesForLabelAsync(string labelName)
         {
-            Label label = uow.Labels.GetLabelWithDetailsByName(labelName);
+            Label? label =await uow.Labels.GetLabelWithDetailsByNameAsync(labelName);
             if (label is null) return null;
-            var themes = uow.Themes.GetThemesWithDetailsForLabel(label.Id);
+            var themes = uow.Themes.GetThemesWithDetailsForLabelAsync(label.Id);
             return mapper.Map<ICollection<ThemeDTO>>(themes);
         }
 
-        public ThemeDTO UpdateTheme(int id, ManipulateThemeDTO updateDTO)
+        public async Task<ThemeDTO> UpdateThemeAsync(int id, ManipulateThemeDTO updateDTO)
         {
-            Theme? theme = uow.Themes.GetThemeWithDetailsById(id);
+            Theme? theme =await uow.Themes.GetThemeWithDetailsByIdAsync(id);
             if (theme is null) throw new EntityNotExistant("Theme wasn't found");
 
             mapper.Map(updateDTO, theme);
             //ne ukljucuje bendove i labelove
-            uow.SaveChanges();
+            await uow.SaveChangesAsync();
             return mapper.Map<ThemeDTO>(theme);
         }
     }

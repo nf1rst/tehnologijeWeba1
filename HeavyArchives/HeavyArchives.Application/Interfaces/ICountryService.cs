@@ -9,11 +9,11 @@ namespace HeavyArchives.Application.Interfaces
 {
     public interface ICountryService
     {
-        ICollection<CountryDTO> GetAllCountries();
-        CountryDTO? GetCountryById(int id);
-        CountryDTO? GetCountryByName(string name);
-        CountryDTO CreateCountry(ManipulateCountryDTO createDTO);
-        CountryDTO UpdateCountry(int id, ManipulateCountryDTO updatedDTO);
-        void DeleteCountry(int id);
+        Task<ICollection<CountryDTO>> GetAllCountriesAsync();
+        Task<CountryDTO?> GetCountryByIdAsync(int id);
+        Task<CountryDTO?> GetCountryByNameAsync(string name);
+        Task<CountryDTO> CreateCountryAsync(ManipulateCountryDTO createDTO);
+        Task<CountryDTO >UpdateCountryAsync(int id, ManipulateCountryDTO updatedDTO);
+        Task DeleteCountryAsync(int id);
     }
 }

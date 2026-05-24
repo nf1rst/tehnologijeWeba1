@@ -4,10 +4,10 @@ namespace HeavyArchives.Domain.Interfaces
 {
     public interface IBandMemberStatusRepository:IRepository<BandMemberStatus>
     {
-        BandMemberStatus? GetStatusWithDetailsByID(int id);
-        BandMemberStatus? GetStatusWithDetailsByName(string name);
+        Task<BandMemberStatus?> GetStatusWithDetailsByIDAsync(int id);
+        Task<BandMemberStatus?> GetStatusWithDetailsByNameAsync(string name);
 
-        ICollection<BandMemberStatus> GetAllStatusesWithDetails();
+        Task<ICollection<BandMemberStatus>> GetAllStatusesWithDetailsAsync();
 
     }
 }

@@ -9,10 +9,10 @@ namespace HeavyArchives.Domain.Interfaces
 {
     public interface IUserRepository:IRepository<User>
     {
-        User? GetUserWithDetailsByUsername(string username);
-        bool UsernameExists(string username);
-        ICollection<User> GetAllUsersWithDetails();
-        User GetUserWithDetailsByRefreshToken(string refreshToken);
-        User GetUserWithDetailsById(int id);
+        Task<User?> GetUserWithDetailsByUsernameAsync(string username);
+        Task<bool> UsernameExistsAsync(string username);
+        Task<ICollection<User>> GetAllUsersWithDetailsAsync();
+        Task<User?> GetUserWithDetailsByRefreshTokenAsync(string refreshToken);
+        Task<User?> GetUserWithDetailsByIdAsync(int id);
     }
 }

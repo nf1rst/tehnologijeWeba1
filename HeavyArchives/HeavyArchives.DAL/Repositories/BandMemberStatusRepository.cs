@@ -18,30 +18,28 @@ namespace HeavyArchives.DAL.Repositories
             this.context = context;
         }
 
-        public ICollection<BandMemberStatus> GetAllStatusesWithDetails()
+        public  async Task<ICollection<BandMemberStatus>> GetAllStatusesWithDetailsAsync()
         {
-            return context.Statuses
+            return await context.Statuses
                 .Include(s => s.BandPerson)
                     .ThenInclude(bp => bp.Person)
-                .ToList();
+                .ToListAsync();
         }
 
-        public BandMemberStatus? GetStatusWithDetailsByID(int id)
+        public async Task<BandMemberStatus?> GetStatusWithDetailsByIDAsync(int id)
         {
-            return context.Statuses
-                .Include(s => s.BandPerson)
-                    .ThenInclude(bp => bp.Person)
-                .FirstOrDefault(s => s.Id == id);
+            return await  context.Statuses
+                 .Include(s => s.BandPerson)
+                     .ThenInclude(bp => bp.Person)
+                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
-        public BandMemberStatus? GetStatusWithDetailsByName(string name)
+        public async Task<BandMemberStatus?> GetStatusWithDetailsByNameAsync(string name)
         {
-            return context.Statuses
-                .Include(s => s.BandPerson)
-                    .ThenInclude(bp => bp.Person)
-                .FirstOrDefault(s => s.Name==name);
+            return await  context.Statuses
+                 .Include(s => s.BandPerson)
+                     .ThenInclude(bp => bp.Person)
+                 .FirstOrDefaultAsync(s => s.Name == name);
         }
-
-
     }
 }

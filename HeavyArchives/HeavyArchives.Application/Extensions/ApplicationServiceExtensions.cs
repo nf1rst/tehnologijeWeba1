@@ -1,9 +1,12 @@
-﻿using HeavyArchives.Application.Interfaces;
+﻿using AutoMapper;
+using HeavyArchives.Application.Interfaces;
 using HeavyArchives.Application.Mapping;
 using HeavyArchives.Application.Options;
 using HeavyArchives.Application.Services;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace HeavyArchives.Application.Extensions
 {
@@ -31,9 +34,14 @@ namespace HeavyArchives.Application.Extensions
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<ITokenService, TokenService>();
 
-            services.AddAutoMapper(typeof(MappingProfile).Assembly); // sto ovo znaci
+            //https://docs.automapper.io/en/stable/Configuration.html
 
-            //ovdje ce ic validatori
+            // bez AutoMapper.Extensions.Microsoft.DependencyInjection paketa
+            var configExpr = new MapperConfigurationExpression();
+            configExpr.AddMaps(typeof(MappingProfile).Assembly);
+            var mapperConfig = new MapperConfiguration(configExpr, NullLoggerFactory.Instance); 
+            //ne moze se napravit objekt bez da se posalje logger al nije potrebno trenutno 
+            services.AddSingleton(mapperConfig.CreateMapper());
 
             return services;
         }

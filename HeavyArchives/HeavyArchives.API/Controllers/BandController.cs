@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Net.NetworkInformation;
+using System.Threading.Tasks;
 
 namespace HeavyArchives.API.Controllers
 {
@@ -20,9 +21,9 @@ namespace HeavyArchives.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var bands = bandService.GetAllBands();
+            var bands =await bandService.GetAllBandsAsync();
             if (bands is null) return NotFound();
             return Ok(bands);
         }
@@ -30,96 +31,95 @@ namespace HeavyArchives.API.Controllers
 
         [HttpGet("byName")] // treba vratit i members
         [Authorize(Roles ="User,Admin")]
-
-        public IActionResult GetBandByName(string name)
+        public async Task<IActionResult> GetBandByName(string name)
         {
             if (name is null) throw new InvalidInputException("Band name cannot be null");
-            var band = bandService.GetBandByName(name);
+            var band =await bandService.GetBandByNameAsync(name);
             if(band is null)return NotFound();
             return Ok(band);
         }
         
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)// treba vratit i members
+        public async Task<IActionResult> GetById(int id)// treba vratit i members
         {
-            var target = bandService.GetBandById(id);
+            var target =await bandService.GetBandByIdAsync(id);
             if (target is null) return NotFound();
             return Ok(target);
         }
 
         [HttpGet("byCountry")]
-        public IActionResult GetBandByCountry(string countryName) //kriva nomenklatura vraca vise bendova ne jedan
+        public async Task<IActionResult> GetBandByCountry(string countryName) //kriva nomenklatura vraca vise bendova ne jedan
         {
             if (countryName is null) throw new InvalidInputException("Country name cannot be null");
-            var target = bandService.GetBandsByCountry(countryName);
+            var target =await bandService.GetBandsByCountryAsync(countryName);
             if (target is null) return NotFound();
             return Ok(target);
         }
 
         [HttpGet("Genre")]
-        public IActionResult GetBandByGenre(string genreName)
+        public async Task<IActionResult> GetBandByGenre(string genreName)
         {
             if (genreName is null) throw new InvalidInputException("Genre name cannot be null");
-            var bands = bandService.GetBandsByGenre(genreName);
+            var bands =await bandService.GetBandsByGenreAsync(genreName);
             if (bands is null) return NotFound();
             return Ok(bands);
         }
 
         [HttpGet("Active")]
-        public IActionResult GetActiveBands()
+        public async Task<IActionResult> GetActiveBands()
         {
-            var bands = bandService.GetActiveBands();
+            var bands =await bandService.GetActiveBandsAsync();
             return Ok(bands); 
         }
 
 
         [HttpPost]
-        public IActionResult CreateBand(ManipulateBandDTO bandDTO)
+        public async Task<IActionResult> CreateBand(ManipulateBandDTO bandDTO)
         {
-            var band = bandService.CreateBand(bandDTO);
+            var band =await bandService.CreateBandAsync(bandDTO);
             return CreatedAtAction(nameof(GetById), new {id=band.Id}, band);
         }
 
         [HttpPut("AddMember")]
-        public IActionResult AddBandMember(int bandId, int personId,string status, string role) // status vise nije enum pa samo string ovdje prima
+        public async Task<IActionResult> AddBandMember(int bandId, int personId,string status, string role) // status vise nije enum pa samo string ovdje prima
         {
             if (status is null) throw new InvalidInputException("Status cannot be null");
             if (role is null) throw new InvalidInputException("Role cannot be null");
-            var result = bandService.AddMember(bandId, personId, status, role);
+            var result =await bandService.AddMemberAsync(bandId, personId, status, role);
             return Ok(result); 
             //inace je bad request jer nesto ne postoji 
         }
 
         [HttpPut("RemoveMember")]
-        public IActionResult RemoveBandMember(int bandId,int memberId)
+        public async Task<IActionResult> RemoveBandMember(int bandId,int memberId)
         {
-            var result = bandService.RemoveMember(bandId, memberId);
+            var result =await bandService.RemoveMemberAsync(bandId, memberId);
             return Ok(result);
         }
 
         [HttpPut("AddGenre")]
-        public IActionResult AddBandGenre(int bandId, int genreId)
+        public async Task<IActionResult> AddBandGenre(int bandId, int genreId)
         {
-            var result = bandService.AddGenre(bandId, genreId);
+            var result =await bandService.AddGenreAsync(bandId, genreId);
             return Ok(result);
         }
         [HttpPut("RemoveGenre")]
-        public IActionResult RemoveBandGenre(int bandId, int genreId)
+        public async Task<IActionResult> RemoveBandGenre(int bandId, int genreId)
         {
-            var result = bandService.RemoveGenre(bandId, genreId);
+            var result =await bandService.RemoveGenreAsync(bandId, genreId);
             return Ok(result);
         }
         [HttpPut("UpdateBand")]
-        public IActionResult UpdateBand(int id, ManipulateBandDTO updatedDTO)
+        public async Task<IActionResult> UpdateBand(int id, ManipulateBandDTO updatedDTO)
         {
-            var result = bandService.UpdateBand(id, updatedDTO);
+            var result =await bandService.UpdateBandAsync(id, updatedDTO);
             return Ok(result);
         }
 
         [HttpDelete]
-        public IActionResult DeleteBand(int id)
+        public async Task<IActionResult> DeleteBand(int id)
         {
-            bandService.DeleteBand(id);
+            await bandService.DeleteBandAsync(id);
             return NoContent();
         }
     }

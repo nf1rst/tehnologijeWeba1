@@ -9,19 +9,19 @@ namespace HeavyArchives.Application.Interfaces
 {
     public interface ILabelService
     {
-        LabelDTO? GetLabelById(int id);
-        ICollection<JustLabelDTO> GetAllLabels();
-        LabelDTO? GetLabelByName(string labelName);
-        LabelDTO CreateLabel(ManipulateLabelDTO createLabelDTO);
-        ICollection<LabelWithThemesDTO> GetLabelsWithDetailsByTheme(string themeName);
-        ICollection<LabelWithThemesDTO> GetLabelsForBand(string bandName);
-        ICollection<JustLabelDTO> GetActiveLabels();
-        LabelDTO UpdateLabel(int id, ManipulateLabelDTO updatedDTO);
-        void DeleteLabel(int id);
-        LabelWithMembersDTO AddBand(int bandId, int labelId);
-        LabelWithMembersDTO RemoveBand(int bandId, int labelId);
-        LabelWithThemesDTO AddTheme(int themeId, int labelId);
-        LabelWithThemesDTO RemoveTheme(int themeId, int labelId);
+        Task<LabelDTO?> GetLabelByIdAsync(int id);
+        Task<ICollection<JustLabelDTO>> GetAllLabelsAsync();
+       Task<LabelDTO?> GetLabelByNameAsync(string labelName);
+        Task<LabelDTO> CreateLabelAsync(ManipulateLabelDTO createLabelDTO);
+        Task<ICollection<LabelWithThemesDTO>> GetLabelsWithDetailsByThemeAsync(string themeName);
+        Task<ICollection<LabelWithThemesDTO>> GetLabelsForBandAsync(string bandName);
+        Task<ICollection<JustLabelDTO>> GetActiveLabelsAsync();
+        Task<LabelDTO> UpdateLabelAsync(int id, ManipulateLabelDTO updatedDTO);
+        Task DeleteLabelAsync(int id);
+        Task<LabelWithMembersDTO >AddBandAsync(int bandId, int labelId);
+        Task<LabelWithMembersDTO > RemoveBandAsync(int bandId, int labelId);
+        Task<LabelWithThemesDTO >AddThemeAsync(int themeId, int labelId);
+        Task<LabelWithThemesDTO >RemoveThemeAsync(int themeId, int labelId);
 
     }
 }

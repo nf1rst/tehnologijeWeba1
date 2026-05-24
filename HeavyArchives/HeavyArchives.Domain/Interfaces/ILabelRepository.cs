@@ -9,12 +9,12 @@ namespace HeavyArchives.Domain.Interfaces
 {
     public interface ILabelRepository:IRepository<Label>
     {
-        ICollection<Label> GetLabelsByTheme(string theme);
-        ICollection<Label> GetAllLabels();
-        ICollection<Label> GetLabelsWithDetailsByBand(string bandName);
-        Label GetLabelWithDetails(int id);
-        Label GetLabelWithDetailsByName(string name);
-        ICollection<Label> GetActiveLabels();
+        Task<ICollection<Label>> GetLabelsByThemeAsync(string theme);
+        Task<ICollection<Label>> GetAllLabelsAsync();
+        Task<ICollection<Label>> GetLabelsWithDetailsByBandAsync(string bandName);
+        Task<Label?> GetLabelWithDetailsAsync(int id);
+        Task<Label?> GetLabelWithDetailsByNameAsync(string name);
+        Task<ICollection<Label>> GetActiveLabelsAsync();
 
     }
 }

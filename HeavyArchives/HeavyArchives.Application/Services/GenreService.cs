@@ -4,6 +4,7 @@ using HeavyArchives.Application.DTOs.Genres;
 using HeavyArchives.Application.Interfaces;
 using HeavyArchives.Domain.Entities;
 using HeavyArchives.Domain.Interfaces;
+using System.Threading.Tasks;
 
 namespace HeavyArchives.Application.Services
 {
@@ -18,57 +19,57 @@ namespace HeavyArchives.Application.Services
             this.mapper = mapper;
         }
 
-        public GenreDTO CreateGenre(ManipulateGenreDTO createdDTO)
+        public async Task<GenreDTO> CreateGenreAsync(ManipulateGenreDTO createdDTO)
         {
             Genre genre = mapper.Map<Genre>(createdDTO);
 
-            uow.Genres.Insert(genre);
-            uow.SaveChanges();
+            await uow.Genres.InsertAsync(genre);
+            await uow.SaveChangesAsync();
             return mapper.Map<GenreDTO>(genre);
         }
 
-        public void DeleteGenre(int id)
+        public async Task DeleteGenreAsync(int id)
         {
-            Genre? genre = uow.Genres.GetById(id);
+            Genre? genre =await uow.Genres.GetByIdAsync(id);
             if (genre is null) throw new EntityNotExistant("Genre wasn't found");
-            uow.Genres.Delete(genre);
+            await uow.Genres.DeleteAsync(genre);
 
-            uow.SaveChanges();
+            await uow.SaveChangesAsync();
         }
 
-        public ICollection<GenreDTO> GetAllGenres()
+        public async Task<ICollection<GenreDTO>> GetAllGenresAsync()
         {
-            var genres = uow.Genres.GetAllGenres();
+            var genres =await uow.Genres.GetAllGenresAsync();
             return mapper.Map<ICollection<GenreDTO>>(genres);
         }
 
-        public GenreDTO? GetGenreById(int id)
+        public async Task<GenreDTO?> GetGenreByIdAsync(int id)
         {
-            var genre = uow.Genres.GetGenre(id);
+            var genre =await uow.Genres.GetGenreAsync(id);
             if (genre is null) throw new EntityNotExistant("Genre does not exist");
             return mapper.Map<GenreDTO>(genre);
         }
 
-        public GenreDTO? GetGenreByName(string name)
+        public async Task<GenreDTO?> GetGenreByNameAsync(string name)
         {
-            var genre = uow.Genres.GetGenreByName(name);
+            var genre =await uow.Genres.GetGenreByNameAsync(name);
             if (genre is null) throw new EntityNotExistant("Genre does not exist");
             return mapper.Map<GenreDTO>(genre);
         }
 
-        public ICollection<GenreDTO> GetGenresByBand(string bandName)
+        public async Task<ICollection<GenreDTO>> GetGenresByBandAsync(string bandName)
         {
-            var genres = uow.Genres.GetGenresByBand(bandName);
+            var genres =await uow.Genres.GetGenresByBandAsync(bandName);
             return mapper.Map<ICollection<GenreDTO>>(genres);
         }
 
-        public GenreDTO UpdateGenre(int id, ManipulateGenreDTO updateDTO)
+        public async Task<GenreDTO> UpdateGenreAsync(int id, ManipulateGenreDTO updateDTO)
         {
-            Genre? genre = uow.Genres.GetGenreWithDetails(id);
+            Genre? genre =await uow.Genres.GetGenreWithDetailsAsync(id);
             if (genre is null) throw new EntityNotExistant("Genre wasn't found");
 
             mapper.Map(updateDTO, genre);
-            uow.SaveChanges();
+            await uow.SaveChangesAsync();
 
             return mapper.Map<GenreDTO>(genre);
         }

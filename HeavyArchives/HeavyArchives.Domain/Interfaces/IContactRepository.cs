@@ -9,7 +9,7 @@ namespace HeavyArchives.Domain.Interfaces
 {
     public interface IContactRepository:IRepository<Contact>
     {
-        Contact? GetContactForBand(string bandName);
+        Task<Contact? >GetContactForBandAsync(string bandName);
 
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace HeavyArchives.API.Controllers
 {
@@ -19,47 +20,47 @@ namespace HeavyArchives.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllCountries()
+        public async Task<IActionResult> GetAllCountries()
         {
-            var countries = countryservice.GetAllCountries();
+            var countries =await countryservice.GetAllCountriesAsync();
             return Ok(countries);// ne trea provjera jer ce uvijek vratit praznu listu ako nema niceg
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetCountryById(int id)
+        public async Task<IActionResult> GetCountryById(int id)
         {
-            var country = countryservice.GetCountryById(id);
+            var country =await countryservice.GetCountryByIdAsync(id);
             if (country is null) return NotFound();
             return Ok(country);
         }
 
         [HttpGet("Name")]
-        public IActionResult GetCountryByName(string countryname)
+        public async Task<IActionResult> GetCountryByName(string countryname)
         {
             if (countryname is null) throw new InvalidInputException("Country name cannot be null");
-            var country = countryservice.GetCountryByName(countryname);
+            var country =await countryservice.GetCountryByNameAsync(countryname);
             if (country is null) return NotFound();
             return Ok(country);
         }
 
         [HttpPost]
-        public IActionResult CreateCountry(ManipulateCountryDTO createDTO)
+        public async Task<IActionResult> CreateCountry(ManipulateCountryDTO createDTO)
         {
-            var country = countryservice.CreateCountry(createDTO);
+            var country =await countryservice.CreateCountryAsync(createDTO);
             return Created();
         }
 
         [HttpPut]
-        public IActionResult UpdateCoutry(int id, ManipulateCountryDTO updateDTO)
+        public async Task<IActionResult> UpdateCoutry(int id, ManipulateCountryDTO updateDTO)
         {
-            var country = countryservice.UpdateCountry(id, updateDTO);
+            var country =await countryservice.UpdateCountryAsync(id, updateDTO);
             return Ok(country);
         }
 
         [HttpDelete]
-        public IActionResult DeleteCountry(int id)
+        public async Task<IActionResult> DeleteCountry(int id)
         {
-            countryservice.DeleteCountry(id);
+            await countryservice.DeleteCountryAsync(id);
             return NoContent();
         }
         

@@ -9,9 +9,9 @@ namespace HeavyArchives.Domain.Interfaces
 {
     public interface ICityRepository:IRepository<City>
     {
-        City? GetCityWithDetailsByName(string name);
-        City? GetCityWithDetailsById(int id);
-        ICollection<City> GetCitiesWithDetailsByCountry(string countryName);
+        Task<City?> GetCityWithDetailsByNameAsync(string name);
+        Task<City?> GetCityWithDetailsByIdAsync(int id);
+        Task<ICollection<City>> GetCitiesWithDetailsByCountryAsync(string countryName);
 
     }
 }

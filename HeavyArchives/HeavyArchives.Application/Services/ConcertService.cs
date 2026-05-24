@@ -4,6 +4,7 @@ using HeavyArchives.Application.DTOs.Concert;
 using HeavyArchives.Application.Interfaces;
 using HeavyArchives.Domain.Entities;
 using HeavyArchives.Domain.Interfaces;
+using System.Threading.Tasks;
 
 namespace HeavyArchives.Application.Services
 {
@@ -16,12 +17,12 @@ namespace HeavyArchives.Application.Services
             this.uow = uow;
             this.mapper = mapper;
         }
-        public ConcertDTO CreateConcert(ManipulateConcertDTO createDTO)
+        public async Task<ConcertDTO> CreateConcertAsync(ManipulateConcertDTO createDTO)
         {
-            Tour tour = uow.Tours.GetTourWithDetailsByName(createDTO.TourName);
+            Tour? tour =await uow.Tours.GetTourWithDetailsByNameAsync(createDTO.TourName);
             if (tour is null) throw new Exceptions.EntityNotExistant("Tour wasn't found");
 
-            City city = uow.Cities.GetCityWithDetailsByName(createDTO.CityName);
+            City? city =await uow.Cities.GetCityWithDetailsByNameAsync(createDTO.CityName);
             if (city is null) throw new Exceptions.EntityNotExistant("City wasn't found");
 
             Concert concert = new Concert()
@@ -33,58 +34,58 @@ namespace HeavyArchives.Application.Services
                 Tour= tour
             };
 
-            uow.Concerts.Insert(concert);
-            uow.SaveChanges();
+           await uow.Concerts.InsertAsync(concert);
+           await uow.SaveChangesAsync();
 
             return mapper.Map<ConcertDTO>(concert);
         }
 
-        public void DeleteConcert(int id)
+        public async Task DeleteConcertAsync(int id)
         {
-            Concert? concert = uow.Concerts.GetConcertWithDetailsById(id);
+            Concert? concert =await uow.Concerts.GetConcertWithDetailsByIdAsync(id);
             if (concert is null) throw new EntityNotExistant("Concert wasn't found");
 
-            uow.Concerts.Delete(concert);
-            uow.SaveChanges();
+           await uow.Concerts.DeleteAsync(concert);
+           await uow.SaveChangesAsync();
         }
 
-        public ICollection<ConcertDTO> GetAllConcerts()
+        public async Task<ICollection<ConcertDTO>> GetAllConcertsAsync()
         {
-            var concerts = uow.Concerts.GetConcertsWithDetails();
+            var concerts =await uow.Concerts.GetConcertsWithDetailsAsync();
             return mapper.Map<ICollection<ConcertDTO>>(concerts);
         }
 
-        public ICollection<ConcertDTO> GetConcertsForCity(string cityName)
+        public async Task<ICollection<ConcertDTO>> GetConcertsForCityAsync(string cityName)
         {
-            var concerts = uow.Concerts.GetConcertsWithDetailsByCity(cityName);
+            var concerts = await uow.Concerts.GetConcertsWithDetailsByCityAsync(cityName);
             return mapper.Map<ICollection<ConcertDTO>>(concerts);
         }
 
-        public ICollection<ConcertDTO> GetConcertsForCountry(string countryName)
+        public async Task<ICollection<ConcertDTO>> GetConcertsForCountryAsync(string countryName)
         {
-            var concerts = uow.Concerts.GetConcertsWithDetailsByCountry(countryName);
+            var concerts = await uow.Concerts.GetConcertsWithDetailsByCountryAsync(countryName);
             return mapper.Map<ICollection<ConcertDTO>>(concerts);
         }
 
-        public ICollection<ConcertDTO> GetConcertsForTour(string tourName)
+        public async Task<ICollection<ConcertDTO>> GetConcertsForTourAsync(string tourName)
         {
-            var concerts = uow.Concerts.GetConcertsWithDetailsByTour(tourName);
+            var concerts =await uow.Concerts.GetConcertsWithDetailsByTourAsync(tourName);
             return mapper.Map<ICollection<ConcertDTO>>(concerts);
         }
 
-        public ConcertDTO UpdateConcert(int id, ManipulateConcertDTO updateDTO)
+        public async Task<ConcertDTO> UpdateConcertAsync(int id, ManipulateConcertDTO updateDTO)
         {
-            Concert? concert = uow.Concerts.GetConcertWithDetailsById(id);
+            Concert? concert =await uow.Concerts.GetConcertWithDetailsByIdAsync(id);
             if (concert is null) throw new Exceptions.EntityNotExistant("Concert wasn't found");
 
-            City? city = uow.Cities.GetCityWithDetailsByName(updateDTO.CityName);
-            Tour? tour = uow.Tours.GetTourWithDetailsByName(updateDTO.TourName);
+            City? city =await uow.Cities.GetCityWithDetailsByNameAsync(updateDTO.CityName);
+            Tour? tour =await uow.Tours.GetTourWithDetailsByNameAsync(updateDTO.TourName);
 
             if (city is null) throw new Exceptions.EntityNotExistant("City wasn't found");
             if (tour is null) throw new Exceptions.EntityNotExistant("Tour wasn't found");
 
             mapper.Map(updateDTO, concert);
-            uow.SaveChanges();
+           await uow.SaveChangesAsync();
             return mapper.Map<ConcertDTO>(concert);
         } 
     }

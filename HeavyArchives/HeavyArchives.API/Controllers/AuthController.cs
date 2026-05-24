@@ -3,6 +3,7 @@ using HeavyArchives.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace HeavyArchives.API.Controllers
 {
@@ -19,31 +20,31 @@ namespace HeavyArchives.API.Controllers
         //[ProducesResponseType(typeof(UserDTO), StatusCodes.Status201Created)]
         //[ProducesResponseType(StatusCodes.Status400BadRequest)]
         //[ProducesResponseType(StatusCodes.Status409Conflict)]
-        public IActionResult Register(RegisterDTO registerDTO)
+        public async Task<IActionResult> Register(RegisterDTO registerDTO)
         {
-            var user = authService.Register(registerDTO);
+            var user =await authService.RegisterAsync(registerDTO);
             return CreatedAtAction(nameof(Register), user);
         }
 
         [HttpPost("login")]
         [ProducesResponseType(typeof(AuthResponseDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public IActionResult Login(LoginDTO loginDTO)
+        public async Task<IActionResult> Login(LoginDTO loginDTO)
         {
-            var response = authService.Login(loginDTO);
+            var response =await authService.LoginAsync(loginDTO);
             return Ok(response);
         }
         
         [HttpPost("refresh")]
-        public IActionResult RefreshToken(RefreshTokenDTO refreshDTO)
+        public async Task<IActionResult> RefreshToken(RefreshTokenDTO refreshDTO)
         {
-            var response = authService.RefreshToken(refreshDTO);
+            var response =await authService.RefreshTokenAsync(refreshDTO);
             return Ok(response);
         }
         [HttpPost("logout")]
-        public IActionResult Logout(RefreshTokenDTO refreshDTO)
+        public async Task<IActionResult> Logout(RefreshTokenDTO refreshDTO)
         {
-            authService.RevokeRefreshToken(refreshDTO.RefreshToken);
+            await authService.RevokeRefreshTokenAsync(refreshDTO.RefreshToken);
             return NoContent();
         }
     }

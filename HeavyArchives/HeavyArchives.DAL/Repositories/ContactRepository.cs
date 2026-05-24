@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HeavyArchives.DAL.Repositories
 {
-    public class ContactRepository:BaseRepository<Contact>, IContactRepository
+    public class ContactRepository : BaseRepository<Contact>, IContactRepository
     {
         private readonly HeavyArchivesContext context;
         public ContactRepository(HeavyArchivesContext context):base(context)
@@ -18,6 +18,13 @@ namespace HeavyArchives.DAL.Repositories
             return context.Contacts
                 .Include(c=>c.Band)
                 .FirstOrDefault(c => c.Band.Name == bandName); // include band?
+        }
+
+        public async Task<Contact?> GetContactForBandAsync(string bandName)
+        {
+            return await context.Contacts
+                .Include(c => c.Band)
+                .FirstOrDefaultAsync(c => c.Band.Name == bandName); // include band?
         }
     }
 }

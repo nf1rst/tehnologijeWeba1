@@ -3,6 +3,7 @@ using HeavyArchives.Application.DTOs.Genres;
 using HeavyArchives.Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace HeavyArchives.API.Controllers
 {
@@ -17,56 +18,56 @@ namespace HeavyArchives.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllGenres()
+        public async Task<IActionResult> GetAllGenres()
         {
-            var genres = genreService.GetAllGenres();
+            var genres =await genreService.GetAllGenresAsync();
             if (genres is null) return NotFound();
             return Ok(genres);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetGenreById(int id)
+        public async Task<IActionResult> GetGenreById(int id)
         {
-            var genre = genreService.GetGenreById(id);
+            var genre =await genreService.GetGenreByIdAsync(id);
             if (genre is null) return NotFound();
             return Ok(genre);
         }
 
         [HttpGet("ByName")]
-        public IActionResult GetGenreByName(string name)
+        public async Task<IActionResult> GetGenreByName(string name)
         {
             if (name is null) throw new InvalidInputException("Genre name cannot be null");
-            var genre = genreService.GetGenreByName(name);
+            var genre =await genreService.GetGenreByNameAsync(name);
             if (genre is null) return NotFound();
             return Ok(genre);
         }
 
         [HttpGet("forBand")]
-        public IActionResult GetGenresForSpecificBand(string bandName)
+        public async Task<IActionResult> GetGenresForSpecificBand(string bandName)
         {
             if (bandName is null) throw new InvalidInputException("Band name cannot be null");
-            var genres = genreService.GetGenresByBand(bandName);
+            var genres =await genreService.GetGenresByBandAsync(bandName);
             if (genres is null) return NotFound();
             return Ok(genres);
         }
 
         [HttpPost]
-        public IActionResult CreateGenre(ManipulateGenreDTO genreDTO)
+        public async Task<IActionResult> CreateGenre(ManipulateGenreDTO genreDTO)
         {
-            var genre = genreService.CreateGenre(genreDTO);
+            var genre =await genreService.CreateGenreAsync(genreDTO);
             return Created();
         }
 
         [HttpDelete]
-        public IActionResult DeleteGenre(int id)
+        public async Task<IActionResult> DeleteGenre(int id)
         {
-            genreService.DeleteGenre(id);
+            await genreService.DeleteGenreAsync(id);
             return NoContent();
         }
         [HttpPut]
-        public IActionResult UpdateGenre(int id, ManipulateGenreDTO genreDTO)
+        public async Task<IActionResult> UpdateGenre(int id, ManipulateGenreDTO genreDTO)
         {
-            var genre = genreService.UpdateGenre(id, genreDTO);
+            var genre =await genreService.UpdateGenreAsync(id, genreDTO);
             return Ok(genre);
         }
       

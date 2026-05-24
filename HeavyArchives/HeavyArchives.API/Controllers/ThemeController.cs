@@ -7,6 +7,7 @@ using HeavyArchives.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Principal;
+using System.Threading.Tasks;
 
 namespace HeavyArchives.API.Controllers
 {
@@ -21,58 +22,58 @@ namespace HeavyArchives.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllThemes()
+        public async Task<IActionResult> GetAllThemes()
         {
-            var themes = themeService.GetAllThemes();
+            var themes =await themeService.GetAllThemesAsync();
             return Ok(themes);
         }
         [HttpGet("{id}")]
-        public IActionResult GetThemeById(int id)
+        public async Task<IActionResult> GetThemeById(int id)
         {
-            var theme = themeService.GetThemeById(id);
+            var theme =await themeService.GetThemeByIdAsync(id);
             if (theme is null) return NotFound();
             return Ok(theme);
         }
         [HttpGet("Name")]
-        public IActionResult GetThemeByName(string name)
+        public async Task<IActionResult> GetThemeByName(string name)
         {
             if (name is null) throw new InvalidInputException("Theme name cannot be null");
-            var theme = themeService.GetThemeByName(name);
+            var theme =await themeService.GetThemeByNameAsync(name);
             if (theme is null) return NotFound();
             return Ok(theme);
         }
         [HttpGet("forBand")]
-        public IActionResult GetThemesForBand(string bandName)
+        public async Task<IActionResult> GetThemesForBand(string bandName)
         {
             if (bandName is null) throw new InvalidInputException("Band name cannot be null");
-            var themes = themeService.GetThemesForBand(bandName);
+            var themes =await themeService.GetThemesForBandAsync(bandName);
             if(themes is null)return NotFound();
             return Ok(themes);
         }
         [HttpGet("forLabel")]
-        public IActionResult GetThemesForLabel(string labelName)
+        public async Task<IActionResult> GetThemesForLabel(string labelName)
         {
             if (labelName is null) throw new InvalidInputException("Label name cannot be null");
-            var labels = themeService.GetThemesForLabel(labelName);
+            var labels =await themeService.GetThemesForLabelAsync(labelName);
             if (labels is null) return NotFound();
             return Ok(labels);
         }
         [HttpPost]
-        public IActionResult CreateTheme(ManipulateThemeDTO createDTO)
+        public async Task<IActionResult> CreateTheme(ManipulateThemeDTO createDTO)
         {
-            var theme = themeService.CreateTheme(createDTO);
+            var theme =await themeService.CreateThemeAsync(createDTO);
             return Created();
         }
         [HttpDelete]
-        public IActionResult DelteTheme(int id)
+        public async Task<IActionResult> DelteTheme(int id)
         {
-            themeService.DeleteTheme(id);
+            await themeService.DeleteThemeAsync(id);
             return NoContent();
         }
         [HttpPut]
-        public IActionResult UpdateTheme(int id, ManipulateThemeDTO updateDTO)
+        public async Task<IActionResult> UpdateTheme(int id, ManipulateThemeDTO updateDTO)
         {
-            var theme = themeService.UpdateTheme(id, updateDTO);
+            var theme = await themeService.UpdateThemeAsync(id, updateDTO);
             return Ok(theme);
         }
     }

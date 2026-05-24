@@ -1,6 +1,7 @@
 ﻿using HeavyArchives.DAL.Data;
 using HeavyArchives.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Abstractions;
 
 namespace HeavyArchives.DAL.Repositories
 {
@@ -14,36 +15,41 @@ namespace HeavyArchives.DAL.Repositories
             this.dbSet = context.Set<T>(); // PROUCI OVO DALJE sta radi
         }
 
-        public void Delete(T entity)
+
+        public Task DeleteAsync(T entity)
         {
             context.Remove(entity);
+            return Task.CompletedTask;
         }
 
-        public bool Exists(int id)
-        { 
-            var found = dbSet.Find(id);
-            return found==null?false:true;
-        }
-
-        public ICollection<T> GetAll()
+        public async  Task<bool> ExistsAsync(int id)
         {
-            return dbSet.ToList(); //ovo vraca praznu listu ali nikad null
+            return await dbSet.FindAsync(id) is not null;
         }
 
-        public T? GetById(int id)
+
+        public async Task<ICollection<T>> GetAllAsync()
         {
-            return dbSet.Find(id);
+            return await dbSet.ToListAsync();
         }
 
-        public T Insert(T entity)
+
+        public async Task<T?> GetByIdAsync(int id)
         {
-            context.Add(entity);
+            return await dbSet.FindAsync(id);
+        }
+
+
+
+        public async Task<T> InsertAsync(T entity)
+        {
+            await context.AddAsync(entity);
             return entity;
         }
-
-        public void Update(T entity)
+        public Task UpdateAsync(T entity)
         {
-            dbSet.Update(entity); // sto ovo zapravo radi i hoce li utjecat na id
+            dbSet.Update(entity);
+            return Task.CompletedTask;
         }
     }
 }

@@ -3,6 +3,7 @@ using HeavyArchives.Application.DTOs.Person;
 using HeavyArchives.Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace HeavyArchives.API.Controllers
 {
@@ -17,57 +18,57 @@ namespace HeavyArchives.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllPeople()
+        public async Task<IActionResult> GetAllPeople()
         {
-            var people = personService.GetAllPersons();
+            var people =await personService.GetAllPersonsAsync();
             if (people is null) return NotFound();
             return Ok(people);
         }
 
 
         [HttpGet("ByBand")]
-        public IActionResult GetPeopleByBandName(string bandName)
+        public async Task<IActionResult> GetPeopleByBandName(string bandName)
         {
             if (bandName is null) throw new InvalidInputException("Band name cannot be null");
-            var people = personService.GetPeopleByBand(bandName);
+            var people =await personService.GetPeopleByBandAsync(bandName);
             if (people is null) return NotFound();
             return Ok(people);
         }
 
         [HttpGet("Alive")]
-        public IActionResult GetLivingPeople()
+        public async Task<IActionResult> GetLivingPeople()
         {
-            var people = personService.GetLivingPeople();
+            var people =await personService.GetLivingPeopleAsync();
             if (people is null) return NotFound();
             return Ok(people);
         }
         [HttpGet("Deceased")]
-        public IActionResult GetDeadPeople()
+        public async Task<IActionResult> GetDeadPeople()
         {
-            var people = personService.GetDeceasedPeople();
+            var people =await personService.GetDeceasedPeopleAsync();
             if (people is null) return NotFound();
             return Ok(people);
         }
         [HttpGet("ByCountry")]
-        public IActionResult GetPeopleByCountry(string countryName)
+        public async Task<IActionResult> GetPeopleByCountry(string countryName)
         {
             if (countryName is null) throw new InvalidInputException("Country name cannot be null");
-            var people = personService.GetPeopleByCountry(countryName);
+            var people =await personService.GetPeopleByCountryAsync(countryName);
             if (people is null) return NotFound();
             return Ok(people);
         }
 
         [HttpPut("UpdatePerson")]
-        public IActionResult UpdatePerson(int id, ManipulatePersonDTO updatePersonDTO)
+        public async Task<IActionResult> UpdatePerson(int id, ManipulatePersonDTO updatePersonDTO)
         {
-            var person = personService.UpdatePerson(id, updatePersonDTO);
+            var person =await personService.UpdatePersonAsync(id, updatePersonDTO);
             return Ok(person);
         }
 
         [HttpPost]
-        public IActionResult CreatePerson(ManipulatePersonDTO personDTO)
+        public async Task<IActionResult> CreatePerson(ManipulatePersonDTO personDTO)
         {
-            var created = personService.CreatePerson(personDTO);
+            var created =await personService.CreatePersonAsync(personDTO);
 
             if (created is null) return BadRequest("User information given was wrong");
 
@@ -76,9 +77,9 @@ namespace HeavyArchives.API.Controllers
         }
 
         [HttpDelete]
-        public IActionResult DeletePerson(int id)
+        public async Task<IActionResult> DeletePerson(int id)
         {
-            personService.DeletePerson(id);
+           await  personService.DeletePersonAsync(id);
             return NoContent();
         }
 

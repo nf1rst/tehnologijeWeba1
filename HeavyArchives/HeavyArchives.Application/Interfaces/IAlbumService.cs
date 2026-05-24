@@ -1,23 +1,17 @@
 ﻿using HeavyArchives.Application.DTOs.Album;
-using HeavyArchives.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HeavyArchives.Application.Interfaces
 {
     public interface IAlbumService
     {
-        ICollection<AlbumDTO> GetAllAlbums();
-        AlbumDTO GetAlbumById(int id);
-        ICollection<AlbumDTO> GetAlbumsByBand(string bandName);
-        ICollection<AlbumDTO> GetAlbumsByYear(int year);
-        AlbumDTO UpdateAlbum(int id, UpdateAlbuumDTO updatedBandDTO);
-        void DeleteAlbum(int id);
-        AlbumDTO CreateAlbum(CreateAlbumDTO bandDTO);
-        AlbumDTO GetAlbumByName(string name);
-        ICollection<AlbumDTO> GetAlbumsByType(string type);
+        Task<ICollection<AlbumDTO>> GetAllAlbumsAsync();
+        Task<AlbumDTO> GetAlbumByIdAsync(int id);
+        Task<ICollection<AlbumDTO>> GetAlbumsByBandAsync(string bandName);
+        Task<ICollection<AlbumDTO>> GetAlbumsByYearAsync(int year);
+        Task<AlbumDTO > UpdateAlbumAsync(int id, UpdateAlbuumDTO updatedBandDTO);
+        Task DeleteAlbumAsync(int id);
+        Task<AlbumDTO> CreateAlbumAsync(CreateAlbumDTO bandDTO);
+        Task<AlbumDTO> GetAlbumByNameAsync(string name);
+        Task<ICollection<AlbumDTO>> GetAlbumsByTypeAsync(string type);
     }
 }

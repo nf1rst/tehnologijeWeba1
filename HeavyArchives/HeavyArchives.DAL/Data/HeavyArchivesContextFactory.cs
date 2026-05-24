@@ -16,7 +16,7 @@ namespace HeavyArchives.DAL.Data
         {
             var optionsBuilder = new DbContextOptionsBuilder<HeavyArchivesContext>();
 
-            optionsBuilder.UseSqlServer("Server=DESKTOP-R8V30UJ;User Id=sa;Password=SQL;TrustServerCertificate=true;Database=HeavyArchivesDB");
+            optionsBuilder.UseSqlServer("Server=NINOSLAV;User Id=sa;Password=SQL;TrustServerCertificate=true;Database=HeavyArchivesDB");
             //jer ovaj ne vidi ovo sto je zapisano tamo u appsettings
 
 

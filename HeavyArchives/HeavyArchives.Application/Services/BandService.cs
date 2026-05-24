@@ -9,6 +9,7 @@ using HeavyArchives.Domain.Entities;
 using HeavyArchives.Domain.Entities.M2MTables;
 using HeavyArchives.Domain.Interfaces;
 using System.Net.NetworkInformation;
+using System.Threading.Tasks;
 
 namespace HeavyArchives.Application.Services
 {
@@ -22,28 +23,28 @@ namespace HeavyArchives.Application.Services
             this.uow = uow;
             this.mapper=mapper;
         }
-        public BandWithMembersDTO AddGenre(int bandId, int genreId)
+        public async Task<BandWithMembersDTO> AddGenreAsync(int bandId, int genreId)
         {
-            var band = uow.Bands.GetBandWithDetails(bandId);
+            var band = await uow.Bands.GetBandWithDetailsAsync(bandId);
             if (band is null) throw new EntityNotExistant("Band wasn't found");
-            var genre = uow.Genres.GetGenreWithDetails(genreId);
+            var genre = await uow.Genres.GetGenreWithDetailsAsync(genreId);
             if (genre is null) throw new EntityNotExistant("Genre wasn't found");
 
             if (band.GenreBand.Any(gb => gb.GenreId == genreId)) throw new Exceptions.RelationExistsException("That genre is already attibuted to the band"); //ako zanr vec postoji da podupla
 
             band.GenreBand.Add(new GenreBand() { Genre=genre, Band=band});
-            uow.SaveChanges();
+            await uow.SaveChangesAsync();
             return mapper.Map<BandWithMembersDTO>(band);
         }
 
-        public BandWithMembersDTO AddMember(int bandId, int personId, string status, string role)
+        public async Task<BandWithMembersDTO> AddMemberAsync(int bandId, int personId, string status, string role)
         {
-            var band = uow.Bands.GetBandWithDetails(bandId);
+            var band = await  uow.Bands.GetBandWithDetailsAsync(bandId);
             if (band is null) throw new EntityNotExistant("Band wasn't found");
-            var person = uow.Persons.GetPersonWithDetails(personId);
+            var person = await uow.Persons.GetPersonWithDetailsAsync(personId);
             if (person is null) throw new EntityNotExistant("Person wasn't found");
 
-            BandMemberStatus? statusFound = uow.BandMemberStatuses.GetStatusWithDetailsByName(status);
+            BandMemberStatus? statusFound = await  uow.BandMemberStatuses.GetStatusWithDetailsByNameAsync(status);
             if (statusFound is null) throw new EntityNotExistant("Status you've put doesn't exist");
 
             //da bi ovdje mogao usporedivat mora se u entitetu inicijalizirat svaka lista 
@@ -51,128 +52,128 @@ namespace HeavyArchives.Application.Services
 
             band.BandPerson.Add(new BandPerson { PersonId = personId, BandId = bandId, Status=statusFound, RoleInBand=role }); // ovaj status dio treba fact checkat
 
-            uow.SaveChanges();
+            await uow.SaveChangesAsync();
             return mapper.Map<BandWithMembersDTO>(band);
         }
 
-        public BandDTO CreateBand(ManipulateBandDTO createdBandDTO)
+        public async Task<BandDTO> CreateBandAsync(ManipulateBandDTO createdBandDTO)
         {
-            Country? country = uow.Countries.GetCountryWithDetailsByName(createdBandDTO.CounrtyName);
+            Country? country =await uow.Countries.GetCountryWithDetailsByNameAsync(createdBandDTO.CounrtyName);
             if(country is null && createdBandDTO.CounrtyName != null)
             {
                 country=new Country() { Name=createdBandDTO.CounrtyName };
-                uow.Countries.Insert(country);
+                await uow.Countries.InsertAsync(country);
             }
             Band band = mapper.Map<Band>(createdBandDTO);
 
             band.Country = country; //jer mapper ignorira
 
-            uow.Bands.Insert(band);
-            uow.SaveChanges();
+            await uow.Bands.InsertAsync(band);
+            await uow.SaveChangesAsync();
             return mapper.Map<BandDTO>(band);
         }
 
-        public void DeleteBand(int id)
+        public async Task DeleteBandAsync(int id)
         {
-            var band = uow.Bands.GetById(id);
+            var band = await uow.Bands.GetByIdAsync(id);
             if (band is null) throw new Exceptions.EntityNotExistant("Band wasn't found");
 
-            uow.Bands.Delete(band);
-            uow.SaveChanges();
+            await uow.Bands.DeleteAsync(band);
+            await uow.SaveChangesAsync();
         }
 
-        public ICollection<BandMinimumInfoDTO> GetAllBands()
+        public async Task<ICollection<BandMinimumInfoDTO>> GetAllBandsAsync()
         {
-            var bands = uow.Bands.GetAllBands();
+            var bands =await uow.Bands.GetAllBandsAsync();
             return mapper.Map<ICollection<BandMinimumInfoDTO>>(bands);
         }
 
-        public ICollection<BandMinimumInfoDTO> GetBandsByCountry(string countryName)
+        public async Task<ICollection<BandMinimumInfoDTO>> GetBandsByCountryAsync(string countryName)
         {
-            var bands= uow.Bands.GetBandByCountry(countryName);
+            var bands=await uow.Bands.GetBandByCountryAsync(countryName);
             return mapper.Map<ICollection<BandMinimumInfoDTO>>(bands);
         }
 
-        public ICollection<BandMinimumInfoDTO> GetBandsByGenre(string genreName)
+        public async Task<ICollection<BandMinimumInfoDTO>> GetBandsByGenreAsync(string genreName)
         {
-            var bands= uow.Bands.GetBandsByGenre(genreName);
+            var bands=await uow.Bands.GetBandsByGenreAsync(genreName);
             return mapper.Map<ICollection<BandMinimumInfoDTO>>(bands);
         }
 
-        public ICollection<BandMinimumInfoDTO> GetBandsDetailsWithMembers()
+        public async Task<ICollection<BandMinimumInfoDTO>> GetBandsDetailsWithMembersAsync()
         {
-            var bands = uow.Bands.GetBandsWithDetails();
+            var bands =await uow.Bands.GetBandsWithDetailsAsync();
             return mapper.Map<ICollection<BandMinimumInfoDTO>>(bands);
         }
 
-        public BandWithMembersDTO GetBandById(int id)
+        public async Task<BandWithMembersDTO> GetBandByIdAsync(int id)
         {
-            Band? b= uow.Bands.GetBandWithDetails(id);
+            Band? b=await uow.Bands.GetBandWithDetailsAsync(id);
             if (b is null) throw new EntityNotExistant("Band wasn't found"); 
             return mapper.Map<BandWithMembersDTO>(b);
         }
 
-        public BandWithMembersDTO RemoveGenre(int bandId, int genreId)
+        public async Task<BandWithMembersDTO> RemoveGenreAsync(int bandId, int genreId)
         {               
-            var band = uow.Bands.GetBandWithDetails(bandId);
+            var band =await uow.Bands.GetBandWithDetailsAsync(bandId);
             if (band is null) throw new EntityNotExistant("Band wasn't found");
 
-            var genre = uow.Genres.GetGenreWithDetails(genreId);
+            var genre =await uow.Genres.GetGenreWithDetailsAsync(genreId);
             if (genre is null) throw new EntityNotExistant("Genre wasn't found");
 
             var entry = band.GenreBand.FirstOrDefault(b => b.GenreId == genreId);
             if (entry is null) throw new Exceptions.NoRelationException("That genre is not assiciated with the band");// ne postoji taj genre za odredeni bend 
 
             band.GenreBand.Remove(entry);
-            uow.SaveChanges();
+            await uow.SaveChangesAsync();
             return mapper.Map<BandWithMembersDTO>(band);
         }
 
-        public BandWithMembersDTO RemoveMember(int bandId, int personId)
+        public async Task<BandWithMembersDTO> RemoveMemberAsync(int bandId, int personId)
         { 
-            var band = uow.Bands.GetBandWithDetails(bandId);
+            var band = await uow.Bands.GetBandWithDetailsAsync(bandId);
             if (band is null) throw new EntityNotExistant("Band wasn't found");
 
-            var person = uow.Persons.GetPersonWithDetails(personId);
+            var person =await uow.Persons.GetPersonWithDetailsAsync(personId);
             if (person is null) throw new EntityNotExistant("Person wasn't found");
 
             var entry = band.BandPerson.FirstOrDefault(b=>b.PersonId==personId);
             if (entry is null) throw new NoRelationException("That person is not associated with the band");
 
             band.BandPerson.Remove(entry);
-            uow.SaveChanges();
+            await uow.SaveChangesAsync();
             return mapper.Map<BandWithMembersDTO>(band);
         }
 
-        public BandMinimumInfoDTO UpdateBand(int id, ManipulateBandDTO updatedBand)
+        public async Task<BandMinimumInfoDTO> UpdateBandAsync(int id, ManipulateBandDTO updatedBand)
         {
-            Country? country = uow.Countries.GetCountryWithDetailsByName(updatedBand.CounrtyName);
+            Country? country =await uow.Countries.GetCountryWithDetailsByNameAsync(updatedBand.CounrtyName);
             if(country is null && updatedBand.CounrtyName != null)
             {
                 country=new Country() { Name= updatedBand.CounrtyName };
-                uow.Countries.Insert(country);
+                await uow.Countries.InsertAsync(country);
             }
 
-            Band? band = uow.Bands.GetBandWithDetails(id);
+            Band? band =await uow.Bands.GetBandWithDetailsAsync(id);
             if (band is null) throw new EntityNotExistant("Band does not exist");
 
             mapper.Map(updatedBand, band);
             band.Country = country;
 
-            uow.Bands.Update(band);
-            uow.SaveChanges();
+            await uow.Bands.UpdateAsync(band);
+            await uow.SaveChangesAsync();
             return mapper.Map<BandMinimumInfoDTO>(band);
         }
 
-        public BandWithMembersDTO GetBandByName(string name)
+        public async Task<BandWithMembersDTO> GetBandByNameAsync(string name)
         {
-            Band? band = uow.Bands.GetBandWithDetailsByName(name);
+            Band? band =await uow.Bands.GetBandWithDetailsByNameAsync(name);
             return mapper.Map<BandWithMembersDTO>(band);
         }
 
-        public ICollection<BandMinimumInfoDTO> GetActiveBands()
+        public async Task<ICollection<BandMinimumInfoDTO>> GetActiveBandsAsync()
         {
-            var bands = uow.Bands.GetActiveBands();
+            var bands = await uow.Bands.GetActiveBandsAsync();
             return mapper.Map<ICollection<BandMinimumInfoDTO>>(bands);
         }
     }

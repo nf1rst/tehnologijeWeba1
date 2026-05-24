@@ -23,114 +23,115 @@ namespace HeavyArchives.Application.Services
             this.uow = uow;
             this.mapper = mapper;
         }
-        public TourDTO AddConcert(int tourId, int concertId)
+        public async Task<TourDTO> AddConcertAsync(int tourId, int concertId)
         {
-            if (!uow.Tours.Exists(tourId)) throw new EntityNotExistant("There is no such tour");
-            if (!uow.Concerts.Exists(concertId)) throw new EntityNotExistant("There is no such concert");
+            Tour? tour =await uow.Tours.GetTourWithDetailsByIdAsync(tourId)!;
+            Concert? concert =await uow.Concerts.GetConcertWithDetailsByIdAsync(concertId)!;
 
-            Tour tour = uow.Tours.GetTourWithDetailsById(tourId)!;
-            Concert concert = uow.Concerts.GetConcertWithDetailsById(concertId)!;
+            if (tour is null) throw new EntityNotExistant("There is no such tour");
+            if (concert is null) throw new EntityNotExistant("There is no such concert");
 
             tour.Concerts.Add(concert);
-            uow.SaveChanges();
+            await uow.SaveChangesAsync();
             return mapper.Map<TourDTO>(tour); // jel ga tu moram jos jednom izvuc iz baze ili ce se odmah vidjet promijene 
         }
 
-        public TourDTO AddSupportBand(int tourId, int bandId)
+        public async Task<TourDTO> AddSupportBandAsync(int tourId, int bandId)
         {
-            if (!uow.Tours.Exists(tourId)) throw new EntityNotExistant("There is no such tour");
-            if (!uow.Bands.Exists(bandId)) throw new EntityNotExistant("There is no such band");
+            Tour? tour = await uow.Tours.GetTourWithDetailsByIdAsync(tourId)!;
+            Band? band = await uow.Bands.GetBandWithDetailsAsync(bandId)!;
 
-            Tour tour = uow.Tours.GetTourWithDetailsById(tourId)!;
-            Band band = uow.Bands.GetBandWithDetails(bandId)!;
+            if (tour is null) throw new EntityNotExistant("There is no such tour");
+            if (band is null) throw new EntityNotExistant("There is no such band");
 
             tour.SupportBands.Add(band);
-            uow.SaveChanges();
+            await uow.SaveChangesAsync();
             return mapper.Map<TourDTO>(tour);
         }
 
-        public TourDTO CreateTour(ManipulateTourDTO createDTO)
+        public async Task<TourDTO> CreateTourAsync(ManipulateTourDTO createDTO)
         {
             Tour tour = mapper.Map<Tour>(createDTO);
 
-            uow.Tours.Insert(tour);
-            uow.SaveChanges();
+            await uow.Tours.InsertAsync(tour);
+            await uow.SaveChangesAsync();
             return mapper.Map<TourDTO>(tour);
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            if (!uow.Tours.Exists(id)) throw new EntityNotExistant("There is not such band");
-            Tour tour = uow.Tours.GetById(id)!;
-            uow.Tours.Delete(tour);
-            uow.SaveChanges();
+            Tour? tour =await uow.Tours.GetByIdAsync(id);
+            if (tour is null) throw new EntityNotExistant("There is not such band");
+
+            await uow.Tours.DeleteAsync(tour);
+            await  uow.SaveChangesAsync();
         }
 
-        public ICollection<TourDTO> GetAllTours()
+        public async Task<ICollection<TourDTO>> GetAllToursAsync()
         {
-            var tours = uow.Tours.GetAllToursWithDetails();
+            var tours =await uow.Tours.GetAllToursWithDetailsAsync();
             return mapper.Map<ICollection<TourDTO>>(tours);
         }
 
-        public ICollection<TourDTO> GetAllToursByManager(string manager)
+        public async Task<ICollection<TourDTO>> GetAllToursByManagerAsync(string manager)
         {
             string[] info = manager.Split(' ');
             if (info.Length != 2) throw new Exceptions.InvalidInformationException("You must enter first and second name");
 
-            Person? person = uow.Persons.GetPersonByFirstAndLastName(info[0], info[1]);
+            Person? person =await uow.Persons.GetPersonByFirstAndLastNameAsync(info[0], info[1]);
             if (person is null) throw new EntityNotExistant("That person does not exist");
-            var tours = uow.Tours.GetAllToursWithDetailsByManager(person.Id);
+            var tours = uow.Tours.GetAllToursWithDetailsByManagerAsync(person.Id);
             return mapper.Map<ICollection<TourDTO>>(tours);
         }
 
-        public TourDTO? GetTourById(int id)
+        public async Task<TourDTO?> GetTourByIdAsync(int id)
         {
-            Tour? tour = uow.Tours.GetTourWithDetailsById(id);
+            Tour? tour =await uow.Tours.GetTourWithDetailsByIdAsync(id);
             if (tour is null) throw new EntityNotExistant("That tour does not exist");
             return mapper.Map<TourDTO>(tour);
         }
 
-        public TourDTO? GetTourByName(string tourName)
+        public async Task<TourDTO?> GetTourByNameAsync(string tourName)
         {
-            Tour? tour = uow.Tours.GetTourWithDetailsByName(tourName);
+            Tour? tour =await uow.Tours.GetTourWithDetailsByNameAsync(tourName);
             if (tour is null) throw new EntityNotExistant("That tour does not exist");
             return mapper.Map<TourDTO>(tour);
 
         }
 
-        public TourDTO RemoveConcert(int tourId, int concertId)
+        public async Task<TourDTO> RemoveConcertAsync(int tourId, int concertId)
         {
-            if (!uow.Tours.Exists(tourId)) throw new EntityNotExistant("There is no such tour");
-            if (!uow.Bands.Exists(concertId)) throw new EntityNotExistant("There is no such concert");
+            Tour? tour = await uow.Tours.GetTourWithDetailsByIdAsync(tourId)!;
+            Concert? concert = await uow.Concerts.GetConcertWithDetailsByIdAsync(concertId)!;
 
-            Tour tour = uow.Tours.GetTourWithDetailsById(tourId)!;
-            Concert concert = uow.Concerts.GetConcertWithDetailsById(concertId)!;
+            if (tour is null) throw new EntityNotExistant("There is no such tour");
+            if (concert is null) throw new EntityNotExistant("There is no such concert");
 
             tour.Concerts.Remove(concert);
-            uow.SaveChanges();
+           await uow.SaveChangesAsync();
             return mapper.Map<TourDTO>(tour);
         }
 
-        public TourDTO RemoveSupportBand(int tourId, int bandId)
+        public async Task<TourDTO> RemoveSupportBandAsync(int tourId, int bandId)
         {
-            if (!uow.Tours.Exists(tourId)) throw new EntityNotExistant("There is no such tour");
-            if (!uow.Bands.Exists(bandId)) throw new EntityNotExistant("There is no such band");
+            Tour? tour = await uow.Tours.GetTourWithDetailsByIdAsync(tourId)!;
+            Band? band = await uow.Bands.GetBandWithDetailsAsync(bandId)!;
 
-            Tour tour = uow.Tours.GetTourWithDetailsById(tourId)!;
-            Band band = uow.Bands.GetBandWithDetails(bandId)!;
+            if (tour is null) throw new EntityNotExistant("There is no such tour");
+            if (band is null) throw new EntityNotExistant("There is no such band");
 
             tour.SupportBands.Remove(band);
-            uow.SaveChanges();
+            await uow.SaveChangesAsync();
             return mapper.Map<TourDTO>(tour);
         }
 
-        public TourDTO UpdateTour(int id, ManipulateTourDTO updateDTO)
+        public async Task<TourDTO> UpdateTourAsync(int id, ManipulateTourDTO updateDTO)
         {
-            Tour? tour = uow.Tours.GetTourWithDetailsById(id);
+            Tour? tour =await uow.Tours.GetTourWithDetailsByIdAsync(id);
             if (tour is null) throw new EntityNotExistant("There is no such tour");
 
             mapper.Map(updateDTO, tour);
-            uow.SaveChanges();
+            await uow.SaveChangesAsync();
             return mapper.Map<TourDTO>(tour);
         }
     }

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Exceptions;
 using HeavyArchives.Application.DTOs.BandMemberStatus;
 using HeavyArchives.Application.Interfaces;
 using HeavyArchives.Domain.Entities;
 using HeavyArchives.Domain.Interfaces;
+using System.Threading.Tasks;
 
 namespace HeavyArchives.Application.Services
 {
@@ -15,32 +17,33 @@ namespace HeavyArchives.Application.Services
             this.uow = uow;
             this.mapper = mapper;
         }
-        public BandMemberStatusDTO CreateBandMemberStatus(ManipulateBandMemberStatusDTO createDTO)
+        public async Task<BandMemberStatusDTO> CreateBandMemberStatusAsync(ManipulateBandMemberStatusDTO createDTO)
         {
             BandMemberStatus status = mapper.Map<BandMemberStatus>(createDTO);
 
-            uow.BandMemberStatuses.Insert(status);
+            await uow.BandMemberStatuses.InsertAsync(status);
             return mapper.Map<BandMemberStatusDTO>(status);
         }
 
-        public void DeleteBandMemberStatus(int id)
+        public async Task DeleteBandMemberStatusAsync(int id)
         {
-            if (!uow.BandMemberStatuses.Exists(id)) throw new Exceptions.EntityNotExistant("Band member status with that ID does not exist");
-            BandMemberStatus status = uow.BandMemberStatuses.GetById(id)!;
-            uow.BandMemberStatuses.Delete(status);
-            uow.SaveChanges();
+            BandMemberStatus? status =  await uow.BandMemberStatuses.GetByIdAsync(id);
+            if (status is null) throw new Exceptions.EntityNotExistant("Band member status with that ID does not exist");
+
+            await uow.BandMemberStatuses.DeleteAsync(status);
+            await uow.SaveChangesAsync();
         }
 
-        public ICollection<BandMemberStatusDTO> GetAllStatuses()
+        public async Task<ICollection<BandMemberStatusDTO>> GetAllStatusesAsync()
         {
-            var statuses = uow.BandMemberStatuses.GetAllStatusesWithDetails();
+            var statuses = await uow.BandMemberStatuses.GetAllStatusesWithDetailsAsync();
             return mapper.Map<ICollection<BandMemberStatusDTO>>(statuses);
         }
 
-        public BandMemberStatusDTO UpdateBandMemberStatus(int id, ManipulateBandMemberStatusDTO updateDTO)
+        public async Task<BandMemberStatusDTO> UpdateBandMemberStatusAsync(int id, ManipulateBandMemberStatusDTO updateDTO)
         {
-            BandMemberStatus status = uow.BandMemberStatuses.GetStatusWithDetailsByID(id);
-
+            BandMemberStatus? status = await uow.BandMemberStatuses.GetStatusWithDetailsByIDAsync(id);
+            if (status is null) throw new EntityNotExistant("Band member status not found");
             mapper.Map(updateDTO, status);
             return mapper.Map<BandMemberStatusDTO>(status);
 

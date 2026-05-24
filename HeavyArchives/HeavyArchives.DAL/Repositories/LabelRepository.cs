@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient.DataClassification;
 using HeavyArchives.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Xml.Serialization;
+
 namespace HeavyArchives.DAL.Repositories
 
 
@@ -15,71 +16,61 @@ namespace HeavyArchives.DAL.Repositories
             this.context = context;
         } //tu nema nista jer je u baznoj klasi kontruktor koji speicifira context
 
-        public ICollection<Domain.Entities.Label> GetActiveLabels()
-        {
-            return context.Labels
-                .Where(l => l.Status == "Active")
-                .ToList();
-        }
 
-        public ICollection<Domain.Entities.Label> GetLabelsByTheme(string themeName)
+        public async Task<ICollection<Domain.Entities.Label>> GetLabelsByThemeAsync(string theme)
         {
-            return context.Labels
+            return await context.Labels
                  .Include(l => l.LabelTheme)
                      .ThenInclude(lt => lt.Theme)
-                 .Where(t=>t.LabelTheme.Any(lt=>lt.Theme.Name==themeName))
-                 .ToList();
+                 .Where(t => t.LabelTheme.Any(lt => lt.Theme.Name == theme))
+                 .ToListAsync();
         }
 
-        public ICollection<Domain.Entities.Label> GetAllLabels()
+        public async Task<ICollection<Domain.Entities.Label>> GetAllLabelsAsync()
         {
-            return context.Labels
-                .ToList();
+            return await context.Labels
+                .ToListAsync();
         }
 
-        public ICollection<Domain.Entities.Label> GetLabelsWithDetailsByBand(int bandId)
+        public async Task<ICollection<Domain.Entities.Label>> GetLabelsWithDetailsByBandAsync(string bandName)
         {
-            return context.Labels
+            return await  context.Labels
                 .Include(l => l.BandLabel)
                     .ThenInclude(bl => bl.Band)
                        .ThenInclude(b => b.Country)
                 .Include(l => l.LabelTheme)
                     .ThenInclude(lt => lt.Theme)
-                .Where(l=>l.BandLabel.Any(bl=>bl.Band.Id==bandId))
-                .ToList();
-        }
-
-        public ICollection<Domain.Entities.Label> GetLabelsWithDetailsByBand(string bandName)
-        {
-            return context.Labels
-                .Include(l => l.LabelTheme)
-                    .ThenInclude(bt => bt.Theme)
                 .Where(l => l.BandLabel.Any(bl => bl.Band.Name == bandName))
-                .ToList();
+                .ToListAsync();
         }
 
-        public Domain.Entities.Label? GetLabelWithDetails(int id)
+        public async Task<Domain.Entities.Label?> GetLabelWithDetailsAsync(int id)
         {
-            return context.Labels
+            return await context.Labels
                 .Include(l => l.LabelTheme)
                     .ThenInclude(lt => lt.Theme)
                 .Include(l => l.BandLabel)
                     .ThenInclude(bl => bl.Band)
                        .ThenInclude(b => b.Country)
-                .FirstOrDefault(l => l.Id == id);
+                .FirstOrDefaultAsync(l => l.Id == id);
         }
 
-        public Domain.Entities.Label? GetLabelWithDetailsByName(string name)
+        public async Task<Domain.Entities.Label?> GetLabelWithDetailsByNameAsync(string name)
         {
-            return context.Labels
-                .Include(l => l.LabelTheme)
-                    .ThenInclude(lt => lt.Theme)
-                .Include(l => l.BandLabel)
-                    .ThenInclude(bl => bl.Band)
-                       .ThenInclude(b => b.Country)
-                .FirstOrDefault(l => l.Name == name);
+            return await  context.Labels
+                  .Include(l => l.LabelTheme)
+                      .ThenInclude(lt => lt.Theme)
+                  .Include(l => l.BandLabel)
+                      .ThenInclude(bl => bl.Band)
+                         .ThenInclude(b => b.Country)
+                  .FirstOrDefaultAsync(l => l.Name == name);
         }
 
-
+        public  async Task<ICollection<Domain.Entities.Label>> GetActiveLabelsAsync()
+        {
+            return await context.Labels
+                .Where(l => l.Status == "Active")
+                .ToListAsync();
+        }
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HeavyArchives.DAL.Migrations
 {
     [DbContext(typeof(HeavyArchivesContext))]
-    [Migration("20260509103932_BandStatus")]
-    partial class BandStatus
+    [Migration("20260521071921_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -1,6 +1,8 @@
 -- =========================
 -- COUNTRIES
 -- =========================
+
+use HeavyArchivesDB
 INSERT INTO Countries (Name) VALUES
 ('Germany'),
 ('Sweden'),
@@ -39,30 +41,35 @@ INSERT INTO Persons (Fname, Lname, DateOfBirth, Sex, ArtistName, PlaceOfBirthId)
 -- Death
 ('Chuck', 'Schuldiner', '1967-05-13', 'M', NULL, 3);
 
+insert into Statuses(Name) values('Active'), ('Inactive')
+
 -- =========================
 -- BANDPERSON (M:N)
 -- =========================
 
 -- Rammstein (BandId = 1)
-INSERT INTO BandPersons (BandId, PersonId, Status, RoleInBand) VALUES
-(1, 1, 0, 'Vocals'),
-(1, 2, 0, 'Lead Guitar'),
-(1, 3, 0, 'Rhythm Guitar'),
-(1, 4, 0, 'Drums'),
-(1, 5, 0, 'Bass'),
-(1, 6, 0, 'Keyboard');
+INSERT INTO BandPersons (BandId, PersonId, StatusID, RoleInBand) VALUES
+(1, 1, 2, 'Vocals'),
+(1, 2, 1, 'Lead Guitar'),
+(1, 3, 1, 'Rhythm Guitar'),
+(1, 4, 1, 'Drums'),
+(1, 5, 1, 'Bass'),
+(1, 6, 1, 'Keyboard');
 
 -- Ghost (BandId = 2)
-INSERT INTO BandPersons (BandId, PersonId, Status, RoleInBand) VALUES
-(2, 7, 0, 'Vocals');
+INSERT INTO BandPersons (BandId, PersonId, StatusID, RoleInBand) VALUES
+(2, 7, 1, 'Vocals');
 
 -- System of a Down (BandId = 3)
-INSERT INTO BandPersons (BandId, PersonId, Status, RoleInBand) VALUES
-(3, 8, 0, 'Vocals'),
-(3, 9, 0, 'Guitar'),
-(3, 10, 0, 'Bass'),
-(3, 11, 0, 'Drums');
+INSERT INTO BandPersons (BandId, PersonId, StatusID, RoleInBand) VALUES
+(3, 8, 1, 'Vocals'),
+(3, 9, 1, 'Guitar'),
+(3, 10, 1, 'Bass'),
+(3, 11, 1, 'Drums');
 
 -- Death (BandId = 4)
-INSERT INTO BandPersons (BandId, PersonId, Status, RoleInBand) VALUES
-(4, 12, 1, 'Vocals/Guitar');
+INSERT INTO BandPersons (BandId, PersonId, StatusID, RoleInBand) VALUES
+(4, 12, 2, 'Vocals/Guitar');
+
+select * from users
+select * from roles

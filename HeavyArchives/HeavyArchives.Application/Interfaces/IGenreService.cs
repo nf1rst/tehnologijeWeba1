@@ -9,12 +9,12 @@ namespace HeavyArchives.Application.Interfaces
 {
     public interface IGenreService
     {
-        ICollection<GenreDTO> GetAllGenres();
-        GenreDTO? GetGenreById(int id);
-        GenreDTO? GetGenreByName(string name);
-        ICollection<GenreDTO> GetGenresByBand(string bandName);
-        GenreDTO CreateGenre(ManipulateGenreDTO createdDTO);
-        void DeleteGenre(int id);
-        GenreDTO UpdateGenre(int id, ManipulateGenreDTO updateDTO);
+        Task<ICollection<GenreDTO>> GetAllGenresAsync();
+        Task<GenreDTO?> GetGenreByIdAsync(int id);
+        Task<GenreDTO?> GetGenreByNameAsync(string name);
+        Task<ICollection<GenreDTO>> GetGenresByBandAsync(string bandName);
+        Task<GenreDTO> CreateGenreAsync(ManipulateGenreDTO createdDTO);
+        Task DeleteGenreAsync(int id);
+        Task<GenreDTO >UpdateGenreAsync(int id, ManipulateGenreDTO updateDTO);
     }
 }

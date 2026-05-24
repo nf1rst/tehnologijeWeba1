@@ -2,6 +2,7 @@
 using HeavyArchives.Application.DTOs.Concert;
 using HeavyArchives.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace HeavyArchives.API.Controllers
 {
@@ -17,53 +18,53 @@ namespace HeavyArchives.API.Controllers
 
 
         [HttpGet]
-        public IActionResult GetAllConcerts()
+        public async Task<IActionResult> GetAllConcerts()
         {
-            var concerts = concertService.GetAllConcerts();
+            var concerts =await concertService.GetAllConcertsAsync();
             return Ok(concerts);
         }
 
         [HttpGet("/Tour/{tourName}")]
-        public IActionResult GetConcertsForTour( [FromRoute]string tourName)
+        public async Task<IActionResult> GetConcertsForTour( [FromRoute]string tourName)
         {
             if (tourName is null) throw new InvalidInputException("Tour name cannot be null");
-            var concerts = concertService.GetConcertsForTour(tourName);
+            var concerts =await concertService.GetConcertsForTourAsync(tourName);
             return Ok(concerts);
         }
 
         [HttpGet("/Country/{countryName}")]
-        public IActionResult GetConcertsForCountry( [FromRoute]string countryName){
+        public async Task<IActionResult> GetConcertsForCountry( [FromRoute]string countryName){
             if (countryName is null) throw new InvalidInputException("Country name cannot be null");
-            var concerts = concertService.GetConcertsForCountry(countryName);
+            var concerts =await concertService.GetConcertsForCountryAsync(countryName);
             return Ok(concerts);
         }
 
         [HttpGet("/City/{cityName}")]
-        public IActionResult GetConcertsForCity([FromRoute]string cityName){
+        public async Task<IActionResult> GetConcertsForCity([FromRoute]string cityName){
             if (cityName is null) throw new InvalidInputException("City name cannot be null");
-            var concerts = concertService.GetConcertsForCity(cityName);
+            var concerts =await concertService.GetConcertsForCityAsync(cityName);
             return Ok(concerts);
         }
 
         [HttpPost]
-        public IActionResult CreateConcert(ManipulateConcertDTO createDTO)
+        public async Task<IActionResult> CreateConcert(ManipulateConcertDTO createDTO)
         {
 
-            var created = concertService.CreateConcert(createDTO);
+            var created =await concertService.CreateConcertAsync(createDTO);
             return Created();
         }
         [HttpPut]
-        public IActionResult UpdateConcert(int id, ManipulateConcertDTO updateDTO)
+        public async Task<IActionResult> UpdateConcert(int id, ManipulateConcertDTO updateDTO)
         {
-            var updated = concertService.UpdateConcert(id, updateDTO);
+            var updated =await concertService.UpdateConcertAsync(id, updateDTO);
             return Ok(updated);
         }
 
         [HttpDelete]
 
-        public IActionResult DeleteConcert(int id)
+        public async Task<IActionResult> DeleteConcert(int id)
         {
-            concertService.DeleteConcert(id);
+            await concertService.DeleteConcertAsync(id);
             return NoContent();
         }
     }

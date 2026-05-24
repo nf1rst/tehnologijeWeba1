@@ -10,43 +10,44 @@ namespace HeavyArchives.DAL.Repositories
 
         //ovaj cancellation token koji je u svima ce se treba poslat u rezultat kasnije kad impl async
         private readonly HeavyArchivesContext context;
-        public UserRepository(HeavyArchivesContext context):base(context)
+        public UserRepository(HeavyArchivesContext context) : base(context)
         {
             this.context = context;
         }
-        public bool UsernameExists(string username)
+
+        public async Task<User?> GetUserWithDetailsByUsernameAsync(string username)
         {
-            return context.Users
+            return await context.Users
                 .Include(u => u.Role)
-                .FirstOrDefault(u => u.Username == username)!=null?true:false;
+                .FirstOrDefaultAsync(u => u.Username == username);
         }
 
-        public ICollection<User> GetAllUsersWithDetails()
+        public async Task<bool> UsernameExistsAsync(string username)
         {
-            return context.Users
+            return await context.Users
                 .Include(u => u.Role)
-                .ToList();
+                .FirstOrDefaultAsync(u => u.Username == username) != null ? true : false;
         }
 
-        public User? GetUserWithDetailsByUsername(string username)
+        public async  Task<ICollection<User>> GetAllUsersWithDetailsAsync()
         {
-            return context.Users
+            return await context.Users
                 .Include(u => u.Role)
-                .FirstOrDefault(u => u.Username== username);
+                .ToListAsync();
         }
 
-        public User GetUserWithDetailsByRefreshToken(string refreshToken)
+        public async Task<User?> GetUserWithDetailsByRefreshTokenAsync(string refreshToken)
         {
-            return context.Users
+            return await context.Users
                 .Include(u => u.Role)
-                .FirstOrDefault(u => u.RefreshToken == refreshToken);
+                .FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
         }
 
-        public User GetUserWithDetailsById(int id)
+        public async Task<User?> GetUserWithDetailsByIdAsync(int id)
         {
-            return context.Users
+            return await context.Users
                 .Include(u => u.Role)
-                .FirstOrDefault(u => u.Id == id);
+                .FirstOrDefaultAsync(u => u.Id == id);
         }
     }
 }

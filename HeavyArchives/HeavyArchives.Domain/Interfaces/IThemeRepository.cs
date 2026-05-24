@@ -9,11 +9,10 @@ namespace HeavyArchives.Domain.Interfaces
 {
     public interface IThemeRepository:IRepository<Theme>
     {
-        ICollection<Theme> GetThemesWithDetails();
-
-        Theme GetThemeWithDetailsById(int id);
-        Theme GetThemeWithDetailsByName(string name);
-        ICollection<Theme> GetThemesWithDetailsForLabel(int labelId);
-        ICollection<Theme> GetThemesWithDetailsForBand(int bandId);
+        Task<ICollection<Theme>> GetThemesWithDetailsAsync();
+        Task<Theme?> GetThemeWithDetailsByIdAsync(int id);
+        Task<Theme?> GetThemeWithDetailsByNameAsync(string name);
+        Task<ICollection<Theme>> GetThemesWithDetailsForLabelAsync(int labelId);
+        Task<ICollection<Theme>> GetThemesWithDetailsForBandAsync(int bandId);
     }
 }

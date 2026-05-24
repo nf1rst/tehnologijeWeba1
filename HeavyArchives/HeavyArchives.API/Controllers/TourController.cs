@@ -3,6 +3,7 @@ using HeavyArchives.Application.DTOs.Tour;
 using HeavyArchives.Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace HeavyArchives.API.Controllers
 {
@@ -18,40 +19,40 @@ namespace HeavyArchives.API.Controllers
         [HttpGet]
         public IActionResult GetAllTours()
         {
-            var tours = tourService.GetAllTours();
+            var tours = tourService.GetAllToursAsync();
             return Ok(tours);
         }
 
         [HttpGet("Manager/{id}")]
-        public IActionResult GetToursByManager(string manager)
+        public async Task<IActionResult> GetToursByManager(string manager)
         {
             if (manager is null) throw new InvalidInputException("Manager name name cannot be null");
-            var tours = tourService.GetAllToursByManager(manager);
+            var tours =await tourService.GetAllToursByManagerAsync(manager);
             return Ok(tours);
         }
         [HttpGet("{name}")]
-        public IActionResult GetTourByName([FromRoute]string name)
+        public async Task<IActionResult> GetTourByName([FromRoute]string name)
         {
             if (name is null) throw new InvalidInputException("Tour name cannot be null");
-            var tour = tourService.GetTourByName(name);
+            var tour =await tourService.GetTourByNameAsync(name);
             return Ok(tour);
         }
         [HttpDelete]
-        public IActionResult DeleteTour(int id)
+        public async Task<IActionResult> DeleteTour(int id)
         {
-            tourService.Delete(id);
+            await tourService.DeleteAsync(id);
             return NoContent();
         }
         [HttpPost]
-        public IActionResult CreateTour(ManipulateTourDTO createDTO)
+        public async Task<IActionResult> CreateTour(ManipulateTourDTO createDTO)
         {
-            var tour = tourService.CreateTour(createDTO);
+            var tour =await tourService.CreateTourAsync(createDTO);
             return Ok(tour);
         }
         [HttpPut]
-        public IActionResult UpdateTour(int id, ManipulateTourDTO updateDTO)
+        public async Task<IActionResult> UpdateTour(int id, ManipulateTourDTO updateDTO)
         {
-            var tour = tourService.UpdateTour(id, updateDTO);
+            var tour =await tourService.UpdateTourAsync(id, updateDTO);
             return Ok(tour);
         }
     }

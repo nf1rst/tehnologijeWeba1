@@ -42,7 +42,7 @@ namespace HeavyArchives.API.Middleware
                 UserAlreadyExistsException => (HttpStatusCode.Conflict, ex.Message),
                 EntityNotExistant => (HttpStatusCode.NotFound, ex.Message),
                 InvalidInputException => (HttpStatusCode.BadGateway, ex.Message),
-                _ => (HttpStatusCode.InternalServerError, "Server is not feeling very well")
+                _ => (HttpStatusCode.InternalServerError, ex.Message)
             };
 
             response.StatusCode = (int)statusCode;

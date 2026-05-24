@@ -63,9 +63,9 @@ namespace HeavyArchives.DAL.Repositories
             context.Dispose();
         }
 
-        public int SaveChanges()
+        public async Task<int> SaveChangesAsync()
         {
-            return context.SaveChanges();
+            return await context.SaveChangesAsync();
         }
     }
 }

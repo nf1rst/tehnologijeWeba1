@@ -9,13 +9,13 @@ namespace HeavyArchives.Application.Interfaces
 {
     public interface IThemeService
     {
-        ICollection<ThemeDTO> GetAllThemes();
-        ThemeDTO? GetThemeById(int id);
-        ThemeDTO? GetThemeByName(string name);
-        ICollection<ThemeDTO> GetThemesForBand(string bandName);
-        ICollection<ThemeDTO> GetThemesForLabel(string labelName);
-        ThemeDTO CreateTheme(ManipulateThemeDTO createDTO);
-        void DeleteTheme(int id);
-        ThemeDTO UpdateTheme(int id, ManipulateThemeDTO updateDTO);
+        Task<ICollection<ThemeDTO>> GetAllThemesAsync();
+        Task<ThemeDTO?> GetThemeByIdAsync(int id);
+        Task<ThemeDTO?> GetThemeByNameAsync(string name);
+        Task<ICollection<ThemeDTO>> GetThemesForBandAsync(string bandName);
+        Task<ICollection<ThemeDTO>> GetThemesForLabelAsync(string labelName);
+        Task<ThemeDTO> CreateThemeAsync(ManipulateThemeDTO createDTO);
+        Task DeleteThemeAsync(int id);
+        Task<ThemeDTO > UpdateThemeAsync(int id, ManipulateThemeDTO updateDTO);
     }
 }

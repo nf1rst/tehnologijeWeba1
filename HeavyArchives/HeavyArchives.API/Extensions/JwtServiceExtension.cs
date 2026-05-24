@@ -27,6 +27,7 @@ namespace HeavyArchives.API.Extensions
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
+                    ValidAudience=jwtSettings.Audience,
                     ValidIssuer = jwtSettings.Issuer,
                     IssuerSigningKey = new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),

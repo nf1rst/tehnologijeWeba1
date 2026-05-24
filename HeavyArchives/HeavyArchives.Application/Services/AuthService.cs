@@ -6,6 +6,7 @@ using HeavyArchives.Domain.Entities;
 using HeavyArchives.Domain.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace HeavyArchives.Application.Services
 {
@@ -26,9 +27,9 @@ namespace HeavyArchives.Application.Services
 
         private const int DefaultUserRoleId = 2; // 1 admin, 2 je user
 
-        public UserDTO Register(RegisterDTO registerDTO)
+        public async Task<UserDTO> RegisterAsync(RegisterDTO registerDTO)
         {
-            if (uow.Users.UsernameExists(registerDTO.Username)) throw new UserAlreadyExistsException(registerDTO.Username);
+            if (await uow.Users.UsernameExistsAsync(registerDTO.Username)) throw new UserAlreadyExistsException(registerDTO.Username);
             var(hash, salt)= passwordHasher.HashPassword(registerDTO.Password);
            
             var user = new User {
@@ -39,17 +40,17 @@ namespace HeavyArchives.Application.Services
                 RoleID=DefaultUserRoleId //user 
             };
 
-            uow.Users.Insert(user);
-            uow.SaveChanges();
-
-            var savedUser = uow.Users.GetUserWithDetailsByUsername(user.Username);
+            await uow.Users.InsertAsync(user);
+            await uow.SaveChangesAsync();
+             
+            var savedUser = uow.Users.GetUserWithDetailsByUsernameAsync(user.Username);
 
             return mapper.Map<UserDTO>(savedUser);
         }
 
-        public AuthResponseDTO Login(LoginDTO loginDTO)
+        public async Task<AuthResponseDTO> LoginAsync(LoginDTO loginDTO)
         {
-            var user = uow.Users.GetUserWithDetailsByUsername(loginDTO.Username);
+            var user = await uow.Users.GetUserWithDetailsByUsernameAsync(loginDTO.Username);
             if (user is null) throw new Exceptions.AuthenticationInvalidException("User does not exist");
 
             if (!passwordHasher.VerifyPassword(loginDTO.Password, user.PasswordHash, user.PasswordSalt)) throw new AuthenticationInvalidException("Incorrect login data");
@@ -60,12 +61,12 @@ namespace HeavyArchives.Application.Services
             user.RefreshToken= refreshToken;
             user.RefreshTokenExpiryDate= refreshExpiry;
 
-            uow.Users.Update(user);
-            uow.SaveChanges();
+            await uow.Users.UpdateAsync(user);
+            await uow.SaveChangesAsync();
             return new AuthResponseDTO(accessToken, refreshToken, accessExpiry,refreshExpiry); 
         }
 
-        public AuthResponseDTO RefreshToken(RefreshTokenDTO refreshDTO)
+        public async Task<AuthResponseDTO> RefreshTokenAsync(RefreshTokenDTO refreshDTO)
         {
             //validiraj istekli access token
             ClaimsPrincipal? principal = tokenService.GetPrincipalFromExpiredToken(refreshDTO.AccessToken);
@@ -76,7 +77,7 @@ namespace HeavyArchives.Application.Services
             if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId)) throw new InvalidRefreshTokenException();
 
             //pronadi korisnika
-            var user = uow.Users.GetUserWithDetailsById(userId);
+            var user =await uow.Users.GetUserWithDetailsByIdAsync(userId);
             if(user is null ||user.RefreshToken!=refreshDTO.RefreshToken || user.RefreshTokenExpiryDate<=DateTime.UtcNow)
             {
                 throw new InvalidRefreshTokenException();
@@ -88,22 +89,22 @@ namespace HeavyArchives.Application.Services
             user.RefreshToken = refreshToken;
             user.RefreshTokenExpiryDate = refreshExpiry;
 
-            uow.Users.Update(user);
-            uow.SaveChanges();
+            await uow.Users.UpdateAsync(user);
+            await uow.SaveChangesAsync();
 
             return new AuthResponseDTO(accessToken, refreshToken, accessExpiry, refreshExpiry);
         }
 
         //logout
-        public void RevokeRefreshToken(string refreshToken)
+        public async Task RevokeRefreshTokenAsync(string refreshToken)
         {
-            var user = uow.Users.GetUserWithDetailsByRefreshToken(refreshToken);
+            var user = await uow.Users.GetUserWithDetailsByRefreshTokenAsync(refreshToken);
             if (user is null) return;
 
             user.RefreshToken = null;
             user.RefreshTokenExpiryDate = null;
-            uow.Users.Update(user);
-            uow.SaveChanges();
+            await uow.Users.UpdateAsync(user);
+             await uow.SaveChangesAsync();
         }
     }
 }

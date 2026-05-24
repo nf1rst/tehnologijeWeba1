@@ -17,37 +17,38 @@ namespace HeavyArchives.DAL.Repositories
             this.context = context;
         }
 
-        public Genre? GetGenreWithDetails(int id)
+
+        public async Task<ICollection<Genre>> GetGenresByBandAsync(string bandName)
         {
-            return context.Genres
+            return await context.Genres
+                .Where(g => g.GenreBand.Any(gb => gb.Band.Name == bandName))
+                .ToListAsync();
+        }
+
+        public async Task<Genre?> GetGenreAsync(int id)
+        {
+            return await context.Genres
+                .FirstOrDefaultAsync(g => g.Id == id);
+        }
+
+        public async Task<Genre?> GetGenreByNameAsync(string name)
+        {
+            return await context.Genres
+                .FirstOrDefaultAsync(g => g.Name == name);
+        }
+
+        public async Task<Genre?> GetGenreWithDetailsAsync(int id)
+        {
+            return await context.Genres
                 .Include(g => g.GenreBand)
                     .ThenInclude(gb => gb.Band)
-                .FirstOrDefault(g => g.Id == id);
+                .FirstOrDefaultAsync(g => g.Id == id);
         }
 
-        public Genre? GetGenre(int id)
+        public async Task<ICollection<Genre>> GetAllGenresAsync()
         {
-            return context.Genres
-                .FirstOrDefault(g => g.Id == id);
-        }
-
-        public ICollection<Genre> GetAllGenres()
-        {
-            return context.Genres
-                .ToList();
-        }
-
-        public ICollection<Genre> GetGenresByBand(string bandName)
-        {
-            return context.Genres
-                .Where(g=>g.GenreBand.Any(gb=>gb.Band.Name==bandName))
-                .ToList();
-        }
-
-        public Genre? GetGenreByName(string name)
-        {
-            return context.Genres
-                .FirstOrDefault(g => g.Name == name);
+            return await context.Genres
+                .ToListAsync();
         }
     }
 }

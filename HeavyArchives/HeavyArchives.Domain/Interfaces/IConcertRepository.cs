@@ -9,10 +9,10 @@ namespace HeavyArchives.Domain.Interfaces
 {
     public interface IConcertRepository:IRepository<Concert>
     {
-        ICollection<Concert> GetConcertsWithDetailsByTour(string tourName);
-        ICollection<Concert> GetConcertsWithDetailsByCity(string cityName);
-        ICollection<Concert> GetConcertsWithDetailsByCountry(string countryName);
-        ICollection<Concert> GetConcertsWithDetails();
-        Concert? GetConcertWithDetailsById(int id);
+        Task<ICollection<Concert>> GetConcertsWithDetailsByTourAsync(string tourName);
+        Task<ICollection<Concert>> GetConcertsWithDetailsByCityAsync(string cityName);
+        Task<ICollection<Concert>> GetConcertsWithDetailsByCountryAsync(string countryName);
+        Task<ICollection<Concert>> GetConcertsWithDetailsAsync();
+        Task<Concert? >GetConcertWithDetailsByIdAsync(int id);
     }
 }

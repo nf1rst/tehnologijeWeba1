@@ -9,14 +9,14 @@ namespace HeavyArchives.Domain.Interfaces
 {
     public interface IAlbumRepository:IRepository<Album>
     {
-        ICollection<Album> GetAlbumsByBand(int bandId);// !OVO SE MOZDA NE KORISTI NIGDJE
-        ICollection<Album> GetAlbumsByBandName(string bandName);
-        ICollection<Album> GetAlbumsByYear(int year);
-        ICollection<Album> GetAlbumsByType(string type);
+        Task<ICollection<Album>> GetAlbumsByBandAsync(int bandId);// !OVO SE MOZDA NE KORISTI NIGDJE
+        Task<ICollection<Album>> GetAlbumsByBandNameAsync(string bandName);
+        Task<ICollection<Album>> GetAlbumsByYearAsync(int year);
+        Task<ICollection<Album>> GetAlbumsByTypeAsync(string type);
 
-        ICollection<Album> GetAlbumsWithDetails();
-        Album? GetAlbumWithDetailsById(int id);
-        Album? GetAlbumByName(string name);
+        Task<ICollection<Album>> GetAlbumsWithDetailsAsync();
+        Task<Album?> GetAlbumWithDetailsByIdAsync(int id);
+        Task<Album?> GetAlbumByNameAsync(string name);
 
     }
 }

@@ -9,10 +9,10 @@ namespace HeavyArchives.Application.Interfaces
 {
     public interface IContactService
     {
-        ContactDTO GetContactForBand(string bandName);
+        Task<ContactDTO> GetContactForBandAsync(string bandName);
 
-        ContactDTO CreateContact(ManipulateContactDTO createDTO);
-        ContactDTO UpdateContact(string bandName, ManipulateContactDTO updateContactDTO);
-        void DeleteContact(string bandName); // kontat ce se brisat po bendu
+        Task<ContactDTO> CreateContactAsync(ManipulateContactDTO createDTO);
+        Task<ContactDTO > UpdateContactAsync(string bandName, ManipulateContactDTO updateContactDTO);
+        Task DeleteContactAsync(string bandName); // kontat ce se brisat po bendu
     }
 }

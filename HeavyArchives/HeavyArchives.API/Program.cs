@@ -14,7 +14,7 @@ internal class Program
 
 
         builder.Services.SetDALServices(
-            builder.Configuration.GetConnectionString("ConnectionStrings:HeavyConnection")!);
+            builder.Configuration.GetConnectionString("HeavyConnection")!);
 
         builder.Services.SetApplicationServices(builder.Configuration);
 

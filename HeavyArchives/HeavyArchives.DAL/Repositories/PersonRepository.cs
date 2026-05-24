@@ -20,62 +20,60 @@ namespace HeavyArchives.DAL.Repositories
             this.context = context;
         }
 
-        public ICollection<Person> GetDeceasedPeople()
+        public async Task<ICollection<Person>> GetPeopleByBandAsync(string bandName)
         {
-            return context.Persons
+            return await context.Persons
+                .Include(p => p.PlaceOfBirth)
+                .Where(p => p.BandPerson
+                    .Any(bp => bp.Band.Name == bandName))
+                .ToListAsync();
+        }
+
+        public async Task<ICollection<Person>> GetAllPeopleASync()
+        {
+            return await context.Persons
+                .Include(p => p.PlaceOfBirth)
+                .ToListAsync();
+        }
+
+        public async Task<ICollection<Person>> GetDeceasedPeopleAsync()
+        {
+            return await context.Persons
                 .Include(p => p.PlaceOfBirth)
                 .Where(p => p.DateOfDeath != null)
-                .ToList();
+                .ToListAsync();
         }
 
-        public ICollection<Person> GetLivingPeople()
+        public async Task<ICollection<Person>> GetLivingPeopleAsync()
         {
-            return context.Persons
+            return  await context.Persons
                 .Include(p => p.PlaceOfBirth)
                 .Where(p => p.DateOfDeath == null)
-                .ToList();
+                .ToListAsync();
         }
 
-        public ICollection<Person> GetPeopleWithDetailByCountry(string countryName)
+        public async Task<ICollection<Person>> GetPeopleWithDetailByCountryAsync(string countryName)
         {
-            return context.Persons
+            return await context.Persons
                 .Include(p => p.PlaceOfBirth)
-                .Where(p => p.PlaceOfBirth!=null && p.PlaceOfBirth.Name == countryName)  //jer je nullable property
-                .ToList();
+                .Where(p => p.PlaceOfBirth != null && p.PlaceOfBirth.Name == countryName)  //jer je nullable property
+                .ToListAsync();
         }
 
-        public ICollection<Person> GetAllPeople()
+        public async Task<Person?> GetPersonWithDetailsAsync(int id)
         {
-            return context.Persons
-                .Include(p => p.PlaceOfBirth)
-                .ToList();
-        }
-
-        public ICollection<Person> GetPeopleByBand(string bandName)
-        {
-            return context.Persons
-                .Include(p=>p.PlaceOfBirth)
-                .Where(p => p.BandPerson
-                    .Any(bp => bp.Band.Name==bandName))
-                .ToList();
-        }
-
-        //moze se potencijalno smanjit - ovo je ono za tour manager a 
-        public Person? GetPersonByFirstAndLastName(string fname, string lname)
-        {
-            return context.Persons
-                 .Include(P => P.PlaceOfBirth)
-                 .FirstOrDefault(p => p.Fname==fname &&p.Lname==lname);
-        }
-        
-        //ovo tu se potencijano moze smanjit
-        public Person? GetPersonWithDetails(int id)
-        {
-            return context.Persons
+            return await context.Persons
                 .Include(p => p.BandPerson)
                     .ThenInclude(bp => bp.Band)
                 .Include(P => P.PlaceOfBirth)
-                .FirstOrDefault(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task<Person?> GetPersonByFirstAndLastNameAsync(string fname, string lname)
+        {
+            return await context.Persons
+                 .Include(P => P.PlaceOfBirth)
+                 .FirstOrDefaultAsync(p => p.Fname == fname && p.Lname == lname);
         }
     }
 }

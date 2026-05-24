@@ -17,54 +17,56 @@ namespace HeavyArchives.DAL.Repositories
         {
             this.context= context;
         }
-        public ICollection<Tour> GetAllToursWithDetails()
+
+        public async Task<ICollection<Tour>> GetAllToursWithDetailsAsync()
         {
-            return context.Tours
+            return await context.Tours
                 .Include(t => t.Concerts)
                 .Include(t => t.SupportBands)
                 .Include(t => t.HeadlinerBand)
                 .Include(t => t.TourManager)
                 .Include(t => t.TourBand)
                     .ThenInclude(tb => tb.Band)
-                .ToList();
+                .ToListAsync();
         }
 
-        public ICollection<Tour> GetAllToursWithDetailsByManager(int managerId)
+
+
+        public async Task<ICollection<Tour>> GetAllToursWithDetailsByManagerAsync(int managerId)
         {
-            return context.Tours
+            return await  context.Tours
                 .Include(t => t.Concerts)
                 .Include(t => t.SupportBands)
                 .Include(t => t.HeadlinerBand)
                 .Include(t => t.TourManager)
                 .Include(t => t.TourBand)
                     .ThenInclude(tb => tb.Band)
-                .Where(t=>t.TourManager.Id==managerId)
-                .ToList();
+                .Where(t => t.TourManager.Id == managerId)
+                .ToListAsync();
         }
 
-        public Tour? GetTourWithDetailsById(int id)
+        public async Task<Tour?> GetTourWithDetailsByIdAsync(int id)
         {
-            return context.Tours
+            return await context.Tours
                 .Include(t => t.Concerts)
                 .Include(t => t.SupportBands)
                 .Include(t => t.HeadlinerBand)
                 .Include(t => t.TourManager)
                 .Include(t => t.TourBand)
                     .ThenInclude(tb => tb.Band)
-                .FirstOrDefault(t => t.Id == id);
+                .FirstOrDefaultAsync(t => t.Id == id);
         }
 
-        public Tour? GetTourWithDetailsByName(string tourName)
+        public async Task<Tour?> GetTourWithDetailsByNameAsync(string tourName)
         {
-            return context.Tours
+            return await context.Tours
              .Include(t => t.Concerts)
              .Include(t => t.SupportBands)
              .Include(t => t.HeadlinerBand)
              .Include(t => t.TourManager)
              .Include(t => t.TourBand)
                  .ThenInclude(tb => tb.Band)
-             .FirstOrDefault(t => t.Name == tourName);
+             .FirstOrDefaultAsync(t => t.Name == tourName);
         }
-
     }
 }

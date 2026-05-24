@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
 using System.Security.AccessControl;
+using System.Threading.Tasks;
 
 namespace HeavyArchives.API.Controllers
 {
@@ -22,96 +23,96 @@ namespace HeavyArchives.API.Controllers
 
       
         [HttpGet]
-        public IActionResult GetAllLabels()
+        public async Task<IActionResult> GetAllLabels()
         {
-            var labels = labelService.GetAllLabels();
+            var labels =await labelService.GetAllLabelsAsync();
             if (labels is null) return NotFound();
             return Ok(labels);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetLabelByID(int id)
+        public async Task<IActionResult> GetLabelByID(int id)
         {
-            var label = labelService.GetLabelById(id);
+            var label =await labelService.GetLabelByIdAsync(id);
             if (label is null) return NotFound();
             return Ok(label);
         }
         [HttpGet("Name")]
-        public IActionResult GetLabelByName(string labelName)
+        public async Task<IActionResult> GetLabelByName(string labelName)
         {
             if (labelName is null) throw new InvalidInputException("Label name cannot be null");
-            var label = labelService.GetLabelByName(labelName);
+            var label =await labelService.GetLabelByNameAsync(labelName);
             if (label is null) return NotFound();
             return Ok(label);
         }
         [HttpGet("ByTheme")]
-        public IActionResult GetLabelsByTheme(string themeName)
+        public async Task<IActionResult> GetLabelsByTheme(string themeName)
         {
             if (themeName is null) throw new InvalidInputException("Theme name cannot be null");
-            var labels = labelService.GetLabelsWithDetailsByTheme(themeName);
+            var labels =await labelService.GetLabelsWithDetailsByThemeAsync(themeName);
             if (labels is null) return NotFound();
             return Ok(labels);
         }
         [HttpGet("ForBand")]
-        public IActionResult GetLabelsForBand(string bandName)
+        public async Task<IActionResult> GetLabelsForBand(string bandName)
         {
             if (bandName is null) throw new InvalidInputException("Band name cannot be null");
-            var labels = labelService.GetLabelsForBand(bandName);
+            var labels =await labelService.GetLabelsForBandAsync(bandName);
             if (labels is null) return NotFound();
             return Ok(labels);
         }
 
         [HttpGet("Active")]
-        public IActionResult GetActiveLabels()
+        public async Task<IActionResult> GetActiveLabels()
         {
-            var labels = labelService.GetActiveLabels();
+            var labels =await labelService.GetActiveLabelsAsync();
             return Ok(labels);
         }
 
         [HttpPost]
-        public IActionResult CreateLabel(ManipulateLabelDTO labelDTO)
+        public async Task<IActionResult> CreateLabel(ManipulateLabelDTO labelDTO)
         {
-            var created = labelService.CreateLabel(labelDTO);
+            var created =await labelService.CreateLabelAsync(labelDTO);
             return Created();
         }
 
 
         [HttpDelete]
-        public IActionResult DeleteLabel(int id)
+        public async Task<IActionResult> DeleteLabel(int id)
         {
-            labelService.DeleteLabel(id);
+            await labelService.DeleteLabelAsync(id);
             return NoContent();
         }
 
         [HttpPut]
-        public IActionResult UpdateLabel(int id, ManipulateLabelDTO updatedDTO)
+        public async Task<IActionResult> UpdateLabel(int id, ManipulateLabelDTO updatedDTO)
         {
-            var label = labelService.UpdateLabel(id, updatedDTO);
+            var label =await labelService.UpdateLabelAsync(id, updatedDTO);
             return Ok(label);
         }
 
         [HttpPut("AddBand")]
-        public IActionResult AddBand(int bandId, int labelId)
+        public async Task<IActionResult> AddBand(int bandId, int labelId)
         {
-            var band = labelService.AddBand(bandId, labelId);
+            var band =await labelService.AddBandAsync(bandId, labelId);
             return Ok(band);
         }
         [HttpPut("RemoveBand")]
-        public IActionResult RemoveBand(int bandId, int labelId)
+        public async Task<IActionResult> RemoveBand(int bandId, int labelId)
         {
-            var band = labelService.RemoveBand(bandId, labelId);
+            var band =await labelService.RemoveBandAsync(bandId, labelId);
             return Ok(band);
         }
         [HttpPut("AddTheme")]
-        public IActionResult AddTheme(int bandId, int labelId)
+        public async Task<IActionResult> AddTheme(int bandId, int labelId)
         {
-            var band = labelService.AddTheme(bandId, labelId);
+            var band =await labelService.AddThemeAsync(bandId, labelId);
             return Ok(band);
         }
         [HttpPut("RemoveTheme")]
-        public IActionResult RemoveTheme(int bandId, int labelId)
+        public async Task<IActionResult> RemoveTheme(int bandId, int labelId)
         {
-            var band = labelService.RemoveBand(bandId, labelId);
+            var band =await labelService.RemoveBandAsync(bandId, labelId);
             return Ok(band);
         }
       

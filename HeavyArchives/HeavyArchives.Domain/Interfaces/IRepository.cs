@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HeavyArchives.Domain.Interfaces
+﻿namespace HeavyArchives.Domain.Interfaces
 {
     public interface IRepository<T> where T:class
     {
-        T? GetById(int id); //ovaj moze vratit null zato ?
-        ICollection<T> GetAll();
-        T Insert(T entity);
-        void Update(T entity); 
-        void Delete(T entity);
-        bool Exists(int id);
+        Task<T?> GetByIdAsync(int id); //ovaj moze vratit null zato ?
+        Task<ICollection<T>> GetAllAsync();
+        Task<T> InsertAsync(T entity);
+        Task UpdateAsync(T entity); 
+        Task DeleteAsync(T entity);
+        Task<bool> ExistsAsync(int id);
     }
 }

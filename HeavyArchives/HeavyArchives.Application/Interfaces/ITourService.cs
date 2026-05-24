@@ -1,25 +1,20 @@
 ﻿using HeavyArchives.Application.DTOs.Tour;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HeavyArchives.Application.Interfaces
 {
     public interface ITourService
     {
-        TourDTO? GetTourById(int id);
-        TourDTO? GetTourByName(string tourName);
-        ICollection<TourDTO> GetAllTours();
-        ICollection<TourDTO> GetAllToursByManager(string manager);
-        TourDTO AddSupportBand(int tourId, int bandId);
-        TourDTO RemoveSupportBand(int tourId, int bandId);
-        TourDTO AddConcert(int tourId, int concertId);
-        TourDTO RemoveConcert(int tourId, int concertId);
-        void Delete(int id);
-        TourDTO CreateTour(ManipulateTourDTO createDTO);
-        TourDTO UpdateTour(int id, ManipulateTourDTO updateDTO);
+        Task<TourDTO?> GetTourByIdAsync(int id);
+        Task<TourDTO?> GetTourByNameAsync(string tourName);
+        Task<ICollection<TourDTO>> GetAllToursAsync();
+        Task<ICollection<TourDTO>> GetAllToursByManagerAsync(string manager);
+        Task<TourDTO> AddSupportBandAsync(int tourId, int bandId);
+        Task<TourDTO> RemoveSupportBandAsync(int tourId, int bandId);
+        Task<TourDTO> AddConcertAsync(int tourId, int concertId);
+        Task<TourDTO> RemoveConcertAsync(int tourId, int concertId);
+        Task DeleteAsync(int id);
+        Task<TourDTO> CreateTourAsync(ManipulateTourDTO createDTO);
+        Task<TourDTO> UpdateTourAsync(int id, ManipulateTourDTO updateDTO);
 
     }
 }

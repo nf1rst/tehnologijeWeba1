@@ -1,21 +1,16 @@
 ﻿using HeavyArchives.Application.DTOs.Concert;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HeavyArchives.Application.Interfaces
 {
     public interface IConcertService
     {
-        ICollection<ConcertDTO> GetConcertsForTour(string tourName);
-        ICollection<ConcertDTO> GetConcertsForCity(string cityName);
-        ICollection<ConcertDTO> GetConcertsForCountry(string countryName);
-        ICollection<ConcertDTO> GetAllConcerts();
-        ConcertDTO CreateConcert(ManipulateConcertDTO createDTO);
-        ConcertDTO  UpdateConcert(int id, ManipulateConcertDTO updateDTO);
-        void DeleteConcert(int id);
+        Task<ICollection<ConcertDTO>> GetConcertsForTourAsync(string tourName);
+        Task<ICollection<ConcertDTO>> GetConcertsForCityAsync(string cityName);
+        Task<ICollection<ConcertDTO>> GetConcertsForCountryAsync(string countryName);
+        Task<ICollection<ConcertDTO>> GetAllConcertsAsync();
+        Task<ConcertDTO> CreateConcertAsync(ManipulateConcertDTO createDTO);
+        Task<ConcertDTO  >UpdateConcertAsync(int id, ManipulateConcertDTO updateDTO);
+        Task DeleteConcertAsync(int id);
 
     }
 }
