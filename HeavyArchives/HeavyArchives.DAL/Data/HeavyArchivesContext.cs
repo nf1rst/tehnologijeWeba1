@@ -150,20 +150,17 @@ namespace HeavyArchives.DAL.Data
             modelBuilder.Entity<BandTour>()
                 .HasOne(tb => tb.Tour)
                 .WithMany(b => b.TourBand)
-                .HasForeignKey(tb => tb.TourID)
-                .OnDelete(DeleteBehavior.Restrict); // kad se obrise tour obrisat ce se i zapisi u tour band 
+                .HasForeignKey(tb => tb.TourID); // kad se obrise tour obrisat ce se i zapisi u tour band 
 
             modelBuilder.Entity<BandTour>()
                 .HasOne(tb => tb.Band)
                 .WithMany(b => b.TourBand)
-                .HasForeignKey(tb => tb.BandId)
-                .OnDelete(DeleteBehavior.Restrict);  // nece obisat bend ako se izrise nesto iz tourBand
+                .HasForeignKey(tb => tb.BandId); // nece obisat bend ako se izrise nesto iz tourBand
 
             modelBuilder.Entity<Tour>()
                 .HasMany(t => t.Concerts)
                 .WithOne(c => c.Tour)
-                .HasForeignKey(t => t.TourId)
-                .OnDelete(DeleteBehavior.Restrict); 
+                .HasForeignKey(t => t.TourId);
 
             modelBuilder.Entity<City>()
                 .HasMany(city => city.Concerts)
@@ -179,8 +176,7 @@ namespace HeavyArchives.DAL.Data
                 .HasOne(t => t.TourManager)
                 .WithMany(p => p.ManagedTours)
                 .HasForeignKey(t => t.TourManagerId)
-                .OnDelete(DeleteBehavior.Restrict); // da ako se obrise manager da se ne pobrisu i svi tourovi 
-
+                .OnDelete(DeleteBehavior.ClientSetNull); // da ako se obrise manager da se ne pobrisu i svi tourovi 
 
 
             modelBuilder.Entity<BandMemberStatus>()

@@ -3,4 +3,5 @@
   <Project Path="HeavyArchives.Application/HeavyArchives.Application.csproj" />
   <Project Path="HeavyArchives.DAL/HeavyArchives.DAL.csproj" />
   <Project Path="HeavyArchives.Domain/HeavyArchives.Domain.csproj" />
+  <Project Path="HeavyArchives.Tests/HeavyArchives.Tests.csproj" Id="74353bf2-2db8-4917-a309-550907a2d34e" />
 </Solution>

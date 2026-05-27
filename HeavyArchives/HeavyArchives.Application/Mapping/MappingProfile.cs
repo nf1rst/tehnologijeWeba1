@@ -10,6 +10,7 @@ using HeavyArchives.Application.DTOs.Genres;
 using HeavyArchives.Application.DTOs.Label;
 using HeavyArchives.Application.DTOs.Person;
 using HeavyArchives.Application.DTOs.Theme;
+using HeavyArchives.Application.DTOs.Tour;
 using HeavyArchives.Domain.Entities;
 
 namespace HeavyArchives.Application.Mapping
@@ -157,6 +158,10 @@ namespace HeavyArchives.Application.Mapping
                 dest=>dest.Band, opt=>opt.MapFrom(
                     src=>src.Band.Name));
 
+            CreateMap<ManipulateContactDTO, Contact>();
+
+            CreateMap<UpdateContactDTO, Contact>();
+
             CreateMap<User, UserDTO>();
 
 
@@ -167,6 +172,11 @@ namespace HeavyArchives.Application.Mapping
                 .ForMember(
                 dest => dest.PartOfTour, opt => opt.MapFrom(
                     src => src.Tour.Name));
+
+            CreateMap<ManipulateConcertDTO, Concert>()
+                .ForMember(dest => dest.City, opt => opt.Ignore())
+                .ForMember(dest => dest.Tour, opt => opt.Ignore())
+                .ForMember(dest => dest.City, opt => opt.Ignore());
 
             CreateMap<ManipulateBandMemberStatusDTO, BandMemberStatus>()
                 .ForMember(
@@ -179,6 +189,20 @@ namespace HeavyArchives.Application.Mapping
                 .ForMember(
                 dest => dest.Status, opt => opt.MapFrom(
                     src => src.Name));
+
+
+            CreateMap<Tour, TourDTO>()
+                .ForMember(dest => dest.HeadlinerBand, opt => opt.MapFrom(src=>src.TourBand.FirstOrDefault(tb=>tb.IsHeadliner==true).Band.Name))//rucno
+                .ForMember(dest=>dest.SupportBands, opt=>opt.MapFrom(src=>src.TourBand.Where(tb=>tb.IsHeadliner==false).Select(tb=>tb.Band.Name))) // rucno
+                .ForMember(dest => dest.TourManger, opt => opt.MapFrom(src => src.TourManager.Fname + " " + src.TourManager.Lname));
+
+            CreateMap<ManipulateTourDTO, Tour>()
+                .ForMember(dest => dest.TourBand, opt => opt.Ignore()) //rucno
+                .ForMember(dest => dest.TourManager, opt => opt.Ignore())
+                .ForMember(dest => dest.Concerts, opt => opt.Ignore()); //headeliner i tourManager rucno
+
+
+
         }
 
     }

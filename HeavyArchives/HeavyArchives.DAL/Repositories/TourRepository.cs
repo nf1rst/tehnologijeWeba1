@@ -22,8 +22,9 @@ namespace HeavyArchives.DAL.Repositories
         {
             return await context.Tours
                 .Include(t => t.Concerts)
-                .Include(t => t.SupportBands)
-                .Include(t => t.HeadlinerBand)
+                    .ThenInclude(c=>c.City)
+                .Include(t => t.TourBand)
+                .ThenInclude(tb => tb.Band)
                 .Include(t => t.TourManager)
                 .Include(t => t.TourBand)
                     .ThenInclude(tb => tb.Band)
@@ -36,8 +37,8 @@ namespace HeavyArchives.DAL.Repositories
         {
             return await  context.Tours
                 .Include(t => t.Concerts)
-                .Include(t => t.SupportBands)
-                .Include(t => t.HeadlinerBand)
+             .Include(t => t.TourBand)
+                .ThenInclude(tb => tb.Band)
                 .Include(t => t.TourManager)
                 .Include(t => t.TourBand)
                     .ThenInclude(tb => tb.Band)
@@ -49,8 +50,8 @@ namespace HeavyArchives.DAL.Repositories
         {
             return await context.Tours
                 .Include(t => t.Concerts)
-                .Include(t => t.SupportBands)
-                .Include(t => t.HeadlinerBand)
+             .Include(t => t.TourBand)
+                .ThenInclude(tb => tb.Band)
                 .Include(t => t.TourManager)
                 .Include(t => t.TourBand)
                     .ThenInclude(tb => tb.Band)
@@ -61,8 +62,8 @@ namespace HeavyArchives.DAL.Repositories
         {
             return await context.Tours
              .Include(t => t.Concerts)
-             .Include(t => t.SupportBands)
-             .Include(t => t.HeadlinerBand)
+             .Include(t=>t.TourBand)
+                .ThenInclude(tb=>tb.Band)
              .Include(t => t.TourManager)
              .Include(t => t.TourBand)
                  .ThenInclude(tb => tb.Band)

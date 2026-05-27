@@ -13,6 +13,6 @@ namespace HeavyArchives.Application.DTOs.Tour
         public string HeadlinerBand { get; set; }
         public DateOnly StartingDate { get; set; }
         public DateOnly FinishingDate { get; set; }
-        public string TourManager { get; set; }
+        public int TourManagerID { get; set; }
     }
 }

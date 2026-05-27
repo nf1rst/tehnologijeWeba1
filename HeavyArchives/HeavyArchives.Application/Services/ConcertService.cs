@@ -19,20 +19,12 @@ namespace HeavyArchives.Application.Services
         }
         public async Task<ConcertDTO> CreateConcertAsync(ManipulateConcertDTO createDTO)
         {
-            Tour? tour =await uow.Tours.GetTourWithDetailsByNameAsync(createDTO.TourName);
-            if (tour is null) throw new Exceptions.EntityNotExistant("Tour wasn't found");
-
+   
             City? city =await uow.Cities.GetCityWithDetailsByNameAsync(createDTO.CityName);
             if (city is null) throw new Exceptions.EntityNotExistant("City wasn't found");
 
-            Concert concert = new Concert()
-            {
-                Price = createDTO.Price,
-                Venue = createDTO.Venue,
-                StartingTime = createDTO.StartingTime,
-                City= city,
-                Tour= tour
-            };
+            Concert concert = mapper.Map<Concert>(createDTO);
+            concert.City = city;
 
            await uow.Concerts.InsertAsync(concert);
            await uow.SaveChangesAsync();
@@ -79,10 +71,7 @@ namespace HeavyArchives.Application.Services
             if (concert is null) throw new Exceptions.EntityNotExistant("Concert wasn't found");
 
             City? city =await uow.Cities.GetCityWithDetailsByNameAsync(updateDTO.CityName);
-            Tour? tour =await uow.Tours.GetTourWithDetailsByNameAsync(updateDTO.TourName);
-
             if (city is null) throw new Exceptions.EntityNotExistant("City wasn't found");
-            if (tour is null) throw new Exceptions.EntityNotExistant("Tour wasn't found");
 
             mapper.Map(updateDTO, concert);
            await uow.SaveChangesAsync();

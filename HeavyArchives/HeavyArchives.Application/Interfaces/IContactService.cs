@@ -12,7 +12,7 @@ namespace HeavyArchives.Application.Interfaces
         Task<ContactDTO> GetContactForBandAsync(string bandName);
 
         Task<ContactDTO> CreateContactAsync(ManipulateContactDTO createDTO);
-        Task<ContactDTO > UpdateContactAsync(string bandName, ManipulateContactDTO updateContactDTO);
+        Task<ContactDTO > UpdateContactAsync(string bandName, UpdateContactDTO updateContactDTO);
         Task DeleteContactAsync(string bandName); // kontat ce se brisat po bendu
     }
 }

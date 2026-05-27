@@ -9,8 +9,8 @@ namespace HeavyArchives.Domain.Entities
     public class Concert
     {
         public int Id{ get; set; }
-        public int TourId{ get; set; }
-        public Tour Tour{ get; set; }
+        public int? TourId{ get; set; }
+        public Tour? Tour{ get; set; }
         public double Price{ get; set; }
         public City City{ get; set; }
         public int CityId{ get; set; }

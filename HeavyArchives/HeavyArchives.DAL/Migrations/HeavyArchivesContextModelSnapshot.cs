@@ -70,17 +70,12 @@ namespace HeavyArchives.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TourId")
-                        .HasColumnType("int");
-
                     b.Property<int>("YearOfFormation")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CountryId");
-
-                    b.HasIndex("TourId");
 
                     b.ToTable("Bands", (string)null);
                 });
@@ -141,7 +136,7 @@ namespace HeavyArchives.DAL.Migrations
                     b.Property<DateTime>("StartingTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TourId")
+                    b.Property<int?>("TourId")
                         .HasColumnType("int");
 
                     b.Property<string>("Venue")
@@ -340,6 +335,9 @@ namespace HeavyArchives.DAL.Migrations
                     b.Property<int>("BandId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsHeadliner")
+                        .HasColumnType("bit");
+
                     b.Property<int>("TourID")
                         .HasColumnType("int");
 
@@ -494,9 +492,6 @@ namespace HeavyArchives.DAL.Migrations
                     b.Property<DateOnly>("FinishingDate")
                         .HasColumnType("date");
 
-                    b.Property<int>("HeadlinerBandId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -508,8 +503,6 @@ namespace HeavyArchives.DAL.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("HeadlinerBandId");
 
                     b.HasIndex("TourManagerId");
 
@@ -574,10 +567,6 @@ namespace HeavyArchives.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HeavyArchives.Domain.Entities.Tour", null)
-                        .WithMany("SupportBands")
-                        .HasForeignKey("TourId");
-
                     b.Navigation("Country");
                 });
 
@@ -602,9 +591,7 @@ namespace HeavyArchives.DAL.Migrations
 
                     b.HasOne("HeavyArchives.Domain.Entities.Tour", "Tour")
                         .WithMany("Concerts")
-                        .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("TourId");
 
                     b.Navigation("City");
 
@@ -692,13 +679,13 @@ namespace HeavyArchives.DAL.Migrations
                     b.HasOne("HeavyArchives.Domain.Entities.Band", "Band")
                         .WithMany("TourBand")
                         .HasForeignKey("BandId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("HeavyArchives.Domain.Entities.Tour", "Tour")
                         .WithMany("TourBand")
                         .HasForeignKey("TourID")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Band");
@@ -755,19 +742,10 @@ namespace HeavyArchives.DAL.Migrations
 
             modelBuilder.Entity("HeavyArchives.Domain.Entities.Tour", b =>
                 {
-                    b.HasOne("HeavyArchives.Domain.Entities.Band", "HeadlinerBand")
-                        .WithMany()
-                        .HasForeignKey("HeadlinerBandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("HeavyArchives.Domain.Entities.Person", "TourManager")
                         .WithMany("ManagedTours")
                         .HasForeignKey("TourManagerId")
-                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("HeadlinerBand");
 
                     b.Navigation("TourManager");
                 });
@@ -854,8 +832,6 @@ namespace HeavyArchives.DAL.Migrations
             modelBuilder.Entity("HeavyArchives.Domain.Entities.Tour", b =>
                 {
                     b.Navigation("Concerts");
-
-                    b.Navigation("SupportBands");
 
                     b.Navigation("TourBand");
                 });

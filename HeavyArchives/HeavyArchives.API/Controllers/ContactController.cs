@@ -33,7 +33,7 @@ namespace HeavyArchives.API.Controllers
             return Ok(contact);
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateContact(string bandName, ManipulateContactDTO updsateDTO)
+        public async Task<IActionResult> UpdateContact(string bandName, UpdateContactDTO updsateDTO)
         {
             if (bandName is null) throw new InvalidInputException("Band name cannot be null");
             var contact =await contactService.UpdateContactAsync(bandName, updsateDTO);
