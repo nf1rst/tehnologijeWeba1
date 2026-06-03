@@ -32,7 +32,7 @@ namespace HeavyArchives.Application.Services
             BandPerson? entry = person.BandPerson.FirstOrDefault(bp => bp.BandId == bandId);
             if (entry is null) throw new RelationExistsException("Band is already associated with that person"); // ne postoji veza persona i tog benda
 
-            person.BandPerson.Add(entry);
+            await uow.BandPersons.AddBandPersonAsync(entry);
 
             await uow.SaveChangesAsync();
             return mapper.Map<PersonWithBandsDTO>(person);

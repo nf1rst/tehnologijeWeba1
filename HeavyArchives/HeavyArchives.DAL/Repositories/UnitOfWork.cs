@@ -1,6 +1,7 @@
 ﻿using HeavyArchives.DAL.Data;
 using HeavyArchives.Domain.Entities;
 using HeavyArchives.Domain.Interfaces;
+using HeavyArchives.Domain.Interfaces.M2M;
 
 namespace HeavyArchives.DAL.Repositories
 {
@@ -21,7 +22,20 @@ namespace HeavyArchives.DAL.Repositories
         public ITourRepository Tours{ get; }
         public IConcertRepository Concerts{ get; }
         public ICityRepository Cities{ get; }
-        public IBandMemberStatusRepository BandMemberStatuses{ get; set; }
+        public IBandMemberStatusRepository BandMemberStatuses{ get; }
+
+        public IBandPersonRepository BandPersons { get; }
+
+        public IBandLabelRepository BandLabel { get; }
+
+        public IBandThemeRepository BandThemes { get; }
+
+        public IBandTourRepository BandTours { get; }
+
+        public IGenreBandRepository GenreBands { get; }
+
+        public ILabelThemeRepository LabelThemes { get; }
+
         private readonly HeavyArchivesContext context;
 
         public UnitOfWork
@@ -39,7 +53,13 @@ namespace HeavyArchives.DAL.Repositories
             ITourRepository tours,
             IConcertRepository concerts,
             ICityRepository cities,
-            IBandMemberStatusRepository bandMemberStatuses
+            IBandMemberStatusRepository bandMemberStatuses,
+            IBandPersonRepository bandPersons,
+            IBandLabelRepository bandLabels,
+            IBandThemeRepository bandThemes,
+            IBandTourRepository bandTour,
+            IGenreBandRepository genreBands,
+            ILabelThemeRepository labelTheme
             )
         {
             this.context = context;
@@ -55,7 +75,13 @@ namespace HeavyArchives.DAL.Repositories
             Tours = tours;
             Concerts = concerts;
             Cities = cities;
-            BandMemberStatuses = bandMemberStatuses;          
+            BandMemberStatuses = bandMemberStatuses;
+            BandPersons = bandPersons;
+            BandLabel = bandLabels;
+            BandThemes = bandThemes;
+            BandTours = bandTour;
+            GenreBands = genreBands;
+            LabelThemes = labelTheme;
         }
 
         public void Dispose()

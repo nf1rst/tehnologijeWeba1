@@ -41,7 +41,10 @@ namespace HeavyArchives.API.Middleware
                 InvalidRefreshTokenException => (HttpStatusCode.Unauthorized, ex.Message),
                 UserAlreadyExistsException => (HttpStatusCode.Conflict, ex.Message),
                 EntityNotExistant => (HttpStatusCode.NotFound, ex.Message),
-                InvalidInputException => (HttpStatusCode.BadGateway, ex.Message),
+                InvalidInputException => (HttpStatusCode.BadRequest, ex.Message),
+                RelationExistsException => (HttpStatusCode.Conflict, ex.Message),
+                InvalidLogicException => (HttpStatusCode.BadRequest, ex.Message),
+                NoRelationException => (HttpStatusCode.NotFound, ex.Message),
                 _ => (HttpStatusCode.InternalServerError, ex.Message)
             };
 

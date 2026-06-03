@@ -1,4 +1,6 @@
-﻿namespace HeavyArchives.Domain.Interfaces
+﻿using HeavyArchives.Domain.Interfaces.M2M;
+
+namespace HeavyArchives.Domain.Interfaces
 {
     public interface IUnitOfWork:IDisposable
     {
@@ -15,6 +17,14 @@
         ICityRepository Cities { get; }
         ITourRepository Tours { get; }
         IBandMemberStatusRepository BandMemberStatuses { get; }
+        IBandPersonRepository BandPersons { get; }
+        IBandLabelRepository BandLabel{ get; }
+        IBandThemeRepository BandThemes { get; }
+        IBandTourRepository BandTours { get; }
+        IGenreBandRepository GenreBands { get; }
+        ILabelThemeRepository LabelThemes { get; }
+
+
         //zasto ne i roles ovdje stavit 
 
         Task<int> SaveChangesAsync();

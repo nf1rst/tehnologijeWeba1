@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Interfaces\M2M\" />
     <Folder Include="Validators\" />
   </ItemGroup>
 

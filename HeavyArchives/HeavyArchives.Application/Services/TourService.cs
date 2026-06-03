@@ -56,6 +56,12 @@ namespace HeavyArchives.Application.Services
             Tour tour = mapper.Map<Tour>(createDTO);
             tour.TourManager = person;
 
+            if (tour.StartingDate > tour.FinishingDate)
+            {
+                throw new InvalidLogicException();
+            }
+
+
             await uow.Tours.InsertAsync(tour);
             tour.TourBand.Add(new BandTour() { Band = healiderBand, Tour = tour, IsHeadliner = true });
 

@@ -78,12 +78,15 @@ internal class Program
             app.UseSwaggerUI();
         }
 
-        app.UseCustomExceptionHandling(); // ako je app.useExceptionHandler(); to je build in pa ce se sve raspast ako ne konfigurairam posebno
 
         //app.UseRouting();
 
         app.UseAuthentication();
+
         app.UseAuthorization();
+
+        app.UseCustomExceptionHandling(); // ako je app.useExceptionHandler(); to je build in pa ce se sve raspast ako ne konfigurairam posebno
+
 
         app.MapControllers();
 

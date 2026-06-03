@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Exceptions;
 using HeavyArchives.Application.DTOs.Tour;
 using HeavyArchives.Application.Services;
 using HeavyArchives.Domain.Entities;
@@ -17,7 +18,7 @@ namespace HeavyArchives.Tests.ApplicationLayer.Service
     public class TourServiceTest
     {
         [Fact]
-        public async Task CreateTour_ShouldThrowIfBandInactive()
+        public async Task CreateTour_ShouldThrowInvalidExceptionIfBandInactive()
         {
             //arrange, act, assert
             var mockUow = new Mock<IUnitOfWork>();
@@ -25,9 +26,8 @@ namespace HeavyArchives.Tests.ApplicationLayer.Service
             var mockBandRepo = new Mock<IBandRepository>();
             var mockMapper = new Mock<IMapper>();
 
-            //ne smije zvrsit prije nego je poceo 
-            //ne smije headliner bit band koji nije Active 
-            //ne smije headliner bit bend koji je vec negdje headliner
+            //ne smije zvrsit prije nego je poceo  - OK
+            //ne smije headliner bit band koji nije Active - OK 
             //ne smije se desit da su koncerti na isti dan u razlicitim cities
             ManipulateTourDTO tour = new ManipulateTourDTO()
             {
@@ -46,17 +46,31 @@ namespace HeavyArchives.Tests.ApplicationLayer.Service
 
             var tourService = new TourService(mockUow.Object, mockMapper.Object);
 
-            var exception =await Assert.ThrowsAsync<InvalidOperationException>(()=>
-            tourService.CreateTourAsync(tour)
+            var exception =await Assert.ThrowsAsync<InvalidLogicException>(async ()=>
+            await tourService.CreateTourAsync(tour)
             );
 
             mockUow.Verify(u => u.SaveChangesAsync(), Times.Never); // provjera jesu li se saveali podaci ako je krivo bilo 
         }
 
         [Fact]
-        public void CreateTour_ShouldThrowInvalidLogicExceptionIfEndBeforeStart()
+        public async Task CreateTour_ShouldThrowInvalidLogicExceptionIfEndBeforeStart()
         {
             var mockUow = new Mock<IUnitOfWork>();
+            var mockMapper = new Mock<IMapper>();
+
+            ManipulateTourDTO experimentTour = new ManipulateTourDTO()
+            {
+                StartingDate = DateOnly.FromDateTime(DateTime.Now.AddDays(3)),
+                FinishingDate = DateOnly.FromDateTime(DateTime.Now)
+            };
+
+            var tourService = new TourService(mockUow.Object, mockMapper.Object);
+
+            await Assert.ThrowsAsync<InvalidLogicException>(async () =>
+            {
+                await tourService.CreateTourAsync(experimentTour);
+            });
            
         }
     }
