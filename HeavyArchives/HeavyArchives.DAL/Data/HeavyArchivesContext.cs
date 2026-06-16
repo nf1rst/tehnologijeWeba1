@@ -2,6 +2,7 @@
 using HeavyArchives.Domain.Entities;
 using HeavyArchives.Domain.Entities.M2MTables;
 using Microsoft.EntityFrameworkCore.Metadata;
+using EncyclopaediaBisemutum.Domain.Entities;
 namespace HeavyArchives.DAL.Data
 {
     public class HeavyArchivesContext:DbContext
@@ -27,6 +28,7 @@ namespace HeavyArchives.DAL.Data
         public DbSet<Concert> Concerts{ get; set; }
         public DbSet<City> Cities{ get; set; }
         public DbSet<BandMemberStatus> Statuses{ get; set; }
+        public DbSet<Log> Logs{ get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -54,7 +56,7 @@ namespace HeavyArchives.DAL.Data
             modelBuilder.Entity<GenreBand>().ToTable("GenreBands");
             modelBuilder.Entity<LabelTheme>().ToTable("LabelThemes");
             modelBuilder.Entity<BandMemberStatus>().ToTable("Statuses");
-            //stats koji je enum?
+            modelBuilder.Entity<Log>().ToTable("Logs");
 
             modelBuilder.Entity<Band>()
                 .HasMany(b => b.Albums)
@@ -133,6 +135,7 @@ namespace HeavyArchives.DAL.Data
             modelBuilder.Entity<Role>()
                 .Property(r => r.Id)
                 .ValueGeneratedNever(); // da ja mogu dole rucno ubacit id koji mi treba 
+            //https://stackoverflow.com/questions/40312925/ef-core-valuegeneratednever-vs-not-using-this-method-at-all      
 
             modelBuilder.Entity<Role>() 
                 .HasData(

@@ -31,6 +31,7 @@ namespace HeavyArchives.Application.Services
         public async Task<AlbumDTO?> GetAlbumByIdAsync(int id) //moze vratit null za kontroler da ovaj vrati 404 not found
         {
             Album? target = await uow.Albums.GetAlbumWithDetailsByIdAsync(id); //ako ovdje vrati getByID iz baznog repozitorija, nece imat bendove includane
+            if (target is null) throw new EntityNotExistant($"Album with id {id} was not found");
             return mapper.Map<AlbumDTO>(target);
                 
         }
@@ -57,6 +58,9 @@ namespace HeavyArchives.Application.Services
         {
             Album? album = await uow.Albums.GetAlbumWithDetailsByIdAsync(id);
             if (album is null) throw new EntityNotExistant("Album wasn't found");
+
+            Band? band = await uow.Bands.GetByIdAsync(updatedAlbumDTO.BandId);
+            if (band is null) throw new EntityNotExistant($"Band with id [{id}] was not found");
 
             mapper.Map(updatedAlbumDTO, album);
 

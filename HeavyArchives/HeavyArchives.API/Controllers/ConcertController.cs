@@ -1,6 +1,7 @@
 ﻿using Exceptions;
 using HeavyArchives.Application.DTOs.Concert;
 using HeavyArchives.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@ namespace HeavyArchives.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ConcertController : BASEController<ConcertController>
     {
         private readonly IConcertService concertService;
@@ -22,6 +24,12 @@ namespace HeavyArchives.API.Controllers
         {
             var concerts =await concertService.GetAllConcertsAsync();
             return Ok(concerts);
+        }
+        [HttpPatch("{concertId}/tickets")]
+        public async Task<IActionResult> PurchaseTicket(int concertId)
+        {
+            ConcertDTO? concert=await concertService.SellTicketAsync(concertId);
+            return Ok(concert);
         }
 
         [HttpGet("/Tour/{tourName}")]

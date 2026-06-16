@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using EncyclopaediaBisemutum.Application.Interfaces;
+using EncyclopaediaBisemutum.Application.Services;
 using HeavyArchives.Application.Interfaces;
 using HeavyArchives.Application.Mapping;
 using HeavyArchives.Application.Options;
@@ -29,6 +31,7 @@ namespace HeavyArchives.Application.Extensions
             services.AddScoped<IConcertService, ConcertService>();
             services.AddScoped<IBandMemberStatusService, BandMemberStatusService>();
             services.AddScoped<ITourService, TourService>();
+            services.AddScoped<IAdminService, AdminService>();
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();

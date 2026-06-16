@@ -2,6 +2,7 @@
 using HeavyArchives.Domain.Entities;
 using HeavyArchives.Domain.Interfaces;
 using HeavyArchives.Domain.Interfaces.M2M;
+using System.Threading.Tasks;
 
 namespace HeavyArchives.DAL.Repositories
 {
@@ -84,14 +85,14 @@ namespace HeavyArchives.DAL.Repositories
             LabelThemes = labelTheme;
         }
 
-        public void Dispose()
-        {
-            context.Dispose();
-        }
-
         public async Task<int> SaveChangesAsync()
         {
             return await context.SaveChangesAsync();
+        }
+
+        public void Dispose()
+        {
+            context.Dispose();
         }
     }
 }

@@ -4,7 +4,7 @@ namespace Exceptions
     [Serializable]
     internal class InvalidInformationException : Exception
     {
-        public InvalidInformationException()
+        public InvalidInformationException():base("Givnen information was not valid")
         {
         }
 

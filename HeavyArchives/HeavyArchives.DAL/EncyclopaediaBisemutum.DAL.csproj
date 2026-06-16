@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HeavyArchives.Domain\HeavyArchives.Domain.csproj" />
+    <ProjectReference Include="..\HeavyArchives.Domain\EncyclopaediaBisemutum.Domain.csproj" />
   </ItemGroup>
 
 </Project>

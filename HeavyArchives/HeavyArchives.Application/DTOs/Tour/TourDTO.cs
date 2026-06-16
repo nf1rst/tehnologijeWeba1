@@ -12,5 +12,6 @@ namespace HeavyArchives.Application.DTOs.Tour
         public DateOnly FinishingDate { get; set; }
         public ICollection<ConcertDTO> Concerts { get; set; } = new List<ConcertDTO>();
         public string TourManger { get; set; } = String.Empty;
+        public double Revenue{get; set; }
     }
 }

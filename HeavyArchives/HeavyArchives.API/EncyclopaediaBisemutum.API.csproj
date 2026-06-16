@@ -21,8 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HeavyArchives.Application\HeavyArchives.Application.csproj" />
-    <ProjectReference Include="..\HeavyArchives.DAL\HeavyArchives.DAL.csproj" />
+    <ProjectReference Include="..\HeavyArchives.Application\EncyclopaediaBisemutum.Application.csproj" />
+    <ProjectReference Include="..\HeavyArchives.DAL\EncyclopaediaBisemutum.DAL.csproj" />
   </ItemGroup>
 
 </Project>

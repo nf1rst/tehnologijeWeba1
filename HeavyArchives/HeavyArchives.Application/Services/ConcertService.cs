@@ -65,6 +65,21 @@ namespace HeavyArchives.Application.Services
             return mapper.Map<ICollection<ConcertDTO>>(concerts);
         }
 
+        public async Task<ConcertDTO?> SellTicketAsync(int concertId)
+        {
+            var concert = await uow.Concerts.GetByIdAsync(concertId);
+            if (concert is null) throw new EntityNotExistant("Concert with that id does not exist");
+
+            if (concert.Capacity<=concert.TicketsSold)
+            {
+                throw new Exceptions.LimitReachedException("The capacity for this concert is full, there are no more seats avalabile");
+            }
+            concert.TicketsSold++;
+            concert.Revenue += concert.Price;
+            await uow.SaveChangesAsync();
+            return mapper.Map<ConcertDTO>(concert);
+        }
+
         public async Task<ConcertDTO> UpdateConcertAsync(int id, ManipulateConcertDTO updateDTO)
         {
             Concert? concert =await uow.Concerts.GetConcertWithDetailsByIdAsync(id);

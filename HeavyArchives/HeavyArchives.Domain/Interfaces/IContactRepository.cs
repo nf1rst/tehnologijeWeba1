@@ -10,6 +10,5 @@ namespace HeavyArchives.Domain.Interfaces
     public interface IContactRepository:IRepository<Contact>
     {
         Task<Contact? >GetContactForBandAsync(string bandName);
-
     }
 }

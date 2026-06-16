@@ -30,7 +30,6 @@ namespace HeavyArchives.API.Controllers
 
 
         [HttpGet("byName")] // treba vratit i members
-        [Authorize(Roles ="User,Admin")]
         public async Task<IActionResult> GetBandByName(string name)
         {
             if (name is null) throw new InvalidInputException("Band name cannot be null");

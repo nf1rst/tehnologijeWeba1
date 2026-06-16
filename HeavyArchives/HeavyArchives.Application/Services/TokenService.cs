@@ -2,14 +2,16 @@
 using HeavyArchives.Application.Options;
 using HeavyArchives.Domain.Entities;
 using Microsoft.Extensions.Options;
+using System.IdentityModel.Tokens.Jwt;   //instead of JsonWebTokenHandler, simpler API
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace HeavyArchives.Application.Services
 {
+
+    //https://youtu.be/mgeuh8k3I4g?si=akVjp-au085jTZMP + milan jovanovic
     public class TokenService : ITokenService
     {
         private readonly JwtSettings jwtSettings;
@@ -17,79 +19,73 @@ namespace HeavyArchives.Application.Services
         {
             this.jwtSettings = jwtSettings.Value;
         }
+
         public (string token, DateTime expiry) GenerateAccessToken(User user)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey)); //key za potpisivanje tokena 
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256); // credentials - kako se token opisuje
+            string secretKey = jwtSettings.SecretKey;
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
 
-            var expiry = DateTime.UtcNow.AddMinutes(jwtSettings.AccessTokenExpirationMinutes); // koliko token vrijedi 
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var claims = new List<Claim> //podaci unutar tokena 
+            var exipiry = DateTime.UtcNow.AddMinutes(jwtSettings.AccessTokenExpirationMinutes);
+
+            var claims = new List<Claim>()
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()), //subject - 
-                new Claim (JwtRegisteredClaimNames.Email, user.Username),
-                new Claim (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), //JWT ID - da se osigura da se token moze koristit samo jedanput i da je unikatan
-                new Claim (JwtRegisteredClaimNames.Iat, // Issued at - vrijeme kad je JWT izdan 
-                    DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(),
-                    ClaimValueTypes.Integer64)
-            };  
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Username),
+                new Claim(ClaimTypes.Role, user.Role.Name!)
+            };
 
-
-            //u primjeru on u useru ima listu userRoles, ali to meni nema smisla, pa jel onda ovo dobro promijenjen kod
-            if (user.Role != null)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, user.Role.Name)); // ovo sluzi za ono u kotrnoleru - [Authorize(Roles="Admin")]
-            }
-
-            var token = new JwtSecurityToken( // kreiranje tokena s parametrima koji su tamo u appsettingsjson
+            var tokenDescriptor = new JwtSecurityToken(
                 issuer: jwtSettings.Issuer,
                 audience: jwtSettings.Audience,
                 claims: claims,
-                expires: expiry,
+                expires: exipiry,
                 signingCredentials: credentials
-            );
-            return (new JwtSecurityTokenHandler().WriteToken(token), expiry);
-        }
+                );
 
+            string token = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
+
+            return (token, exipiry);
+        }
         public (string token, DateTime expiry) GenerateRefreshToken()
         {
             var randomBytes = RandomNumberGenerator.GetBytes(64);
+            var token = Convert.ToBase64String(randomBytes);
             var expiry = DateTime.UtcNow.AddDays(jwtSettings.RefreshTokenExpirationDays);
-            return (Convert.ToBase64String(randomBytes), expiry);
+            return (token, expiry);
         }
 
+        //kad token expirea treba procitat userID da se tom istom useru zna izdat novi token 
         public ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
         {
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateAudience = true,
-                ValidateIssuer = true,
-                ValidateIssuerSigningKey = true,
-                ValidateLifetime = false, //dozvoljava da se moze procitat istekli token
-                ValidIssuer = jwtSettings.Issuer,
-                ValidAudience = jwtSettings.Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey))
-            };
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey));
 
-            var tokenHandler = new JwtSecurityTokenHandler();
+            var validationParameters = new TokenValidationParameters()
+            {
+                ValidateIssuer = true,
+                ValidIssuer = jwtSettings.Issuer,
+
+                ValidateAudience = true,
+                ValidAudience = jwtSettings.Audience,
+
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = key,
+
+                ValidateLifetime = false //isteknuti tokeni
+
+            };
 
             try
             {
-                ClaimsPrincipal? principal = tokenHandler.ValidateToken(
-                    token,
-                    tokenValidationParameters,
-                    out var securityToken);
-
-                if(securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(
-                        SecurityAlgorithms.HmacSha256,
-                        StringComparison.InvariantCultureIgnoreCase))
-                { // provjera jel token validan
-                    return null;
-                }
+                //ne gleda expiry   
+                var handler = new JwtSecurityTokenHandler();
+                var principal = handler.ValidateToken(token, validationParameters, out _);
                 return principal;
-            }
+            }   
             catch
             {
+                //token je promijenjen 
                 return null;
             }
         }

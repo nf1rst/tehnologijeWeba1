@@ -15,6 +15,9 @@ namespace HeavyArchives.Domain.Entities
         public City City{ get; set; }
         public int CityId{ get; set; }
         public DateTime StartingTime{ get; set; }
+        public int Capacity{ get; set; }
+        public int TicketsSold { get; set; } = 0;
         public string Venue{ get; set; } // posebni property?
+        public double Revenue { get; set; } = 0;
     }
 }

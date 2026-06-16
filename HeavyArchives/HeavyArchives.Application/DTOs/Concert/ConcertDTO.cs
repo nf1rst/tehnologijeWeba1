@@ -15,5 +15,8 @@ namespace HeavyArchives.Application.DTOs.Concert
         public string City{ get; set; }
         public DateTime StartingTime { get; set; }
         public string Venue { get; set; }
+        public int Capacity{ get; set; }
+        public int TicketsSold{ get; set; }
+        public double Revenue{ get; set; }
     }
 }

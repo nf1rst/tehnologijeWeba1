@@ -1,0 +1,54 @@
+﻿using EncyclopaediaBisemutum.Application.DTOs.User;
+using EncyclopaediaBisemutum.Application.Interfaces;
+using HeavyArchives.Application.DTOs.Auth;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+
+namespace EncyclopaediaBisemutum.API.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize(Roles ="Admin")]
+    public class AdminController : ControllerBase
+    {
+        private readonly IAdminService adminService;
+
+        public AdminController(IAdminService adminService)
+        {
+            this.adminService = adminService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            ICollection<UserDTO> users = await adminService.GetAllUsersAsync();
+            return Ok(users);
+        }
+
+        [HttpGet("{id:int}")] // inace ih registrira kao istu rutu jer je samo vrijabla 
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            UserWithDetailsDTO? user = await adminService.GetUserByIdAsync(id);
+            return Ok(user);
+        }
+
+        [HttpGet("{username}")]
+        public async Task<IActionResult> GetUserByUsername([FromRoute] string username)
+        {
+            UserWithDetailsDTO? user = await adminService.GetUserByUsernameAsync(username);
+            return Ok(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAdminUser(LoginDTO login)
+        {
+           UserWithDetailsDTO? user= await adminService.AddAdminUser(login);
+            return Created();
+        }
+
+        
+    }
+}

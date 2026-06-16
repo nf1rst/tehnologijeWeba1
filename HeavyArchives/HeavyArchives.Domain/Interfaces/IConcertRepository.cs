@@ -13,6 +13,6 @@ namespace HeavyArchives.Domain.Interfaces
         Task<ICollection<Concert>> GetConcertsWithDetailsByCityAsync(string cityName);
         Task<ICollection<Concert>> GetConcertsWithDetailsByCountryAsync(string countryName);
         Task<ICollection<Concert>> GetConcertsWithDetailsAsync();
-        Task<Concert? >GetConcertWithDetailsByIdAsync(int id);
+        Task<Concert?> GetConcertWithDetailsByIdAsync(int id);
     }
 }

@@ -47,10 +47,11 @@ namespace HeavyArchives.Application.Services
             BandMemberStatus? statusFound = await  uow.BandMemberStatuses.GetStatusWithDetailsByNameAsync(status);
             if (statusFound is null) throw new EntityNotExistant("Status you've put doesn't exist");
 
-            //da bi ovdje mogao usporedivat mora se u entitetu inicijalizirat svaka lista 
+            //da bi se ovdje moglo usporedivat mora se u entitetu inicijalizirat svaka lista 
             if (band.BandPerson.Any(bp => bp.PersonId == personId)) throw new Exceptions.RelationExistsException("That band member is already associated with the band"); // ako vec postoji bend member nemoj ga dodat 2 put 
 
-            band.BandPerson.Add(new BandPerson { PersonId = personId, BandId = bandId, Status=statusFound, RoleInBand=role }); // ovaj status dio treba fact checkat
+            await uow.BandPersons.AddBandPersonAsync(new BandPerson { Person = person, Band = band, Status = statusFound, RoleInBand = role });
+            //band.BandPerson.Add(new BandPerson { PersonId = personId, BandId = bandId, Status=statusFound, RoleInBand=role }); // ovaj status dio treba fact checkat
 
             await uow.SaveChangesAsync();
             return mapper.Map<BandWithMembersDTO>(band);
@@ -168,6 +169,7 @@ namespace HeavyArchives.Application.Services
         public async Task<BandWithMembersDTO> GetBandByNameAsync(string name)
         {
             Band? band =await uow.Bands.GetBandWithDetailsByNameAsync(name);
+            if (band is null) throw new EntityNotExistant("Band with that name is a figment of you imagination");
             return mapper.Map<BandWithMembersDTO>(band);
         }
 

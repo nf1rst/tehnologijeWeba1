@@ -1,8 +1,12 @@
+using EncyclopaediaBisemutum.API.Middleware;
 using HeavyArchives.API.Extensions;
 using HeavyArchives.Application.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using System.Text;
 
 internal class Program
 {
@@ -18,7 +22,6 @@ internal class Program
 
         builder.Services.SetApplicationServices(builder.Configuration);
 
-
         builder.Services.AddJwtAuthentication(builder.Configuration);
         ////////////////////////////////////////
 
@@ -27,25 +30,15 @@ internal class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(options =>
         {
-            options.SwaggerDoc("v1", new OpenApiInfo
-            {
-                Title = "Heavy Archives API",
-                Version = "v1",
-                Description = "Clean architecture API s JWT autentifikacijom",
-                Contact = new OpenApiContact
-                {
-                    Name = "Algebra",
-                    Email = "info@algebra.hr"
-                }
-            });
 
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 Description = "JWT authorization header",
                 Name = "Authorization",
                 In = ParameterLocation.Header,
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = "Bearer"
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT"
             });
 
             options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -71,6 +64,9 @@ internal class Program
 
         var app = builder.Build();
 
+        app.UseCustomExceptionHandling(); // ako je app.useExceptionHandler(); to je build in pa ce se sve raspast ako ne konfigurairam posebno
+
+
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
@@ -80,15 +76,15 @@ internal class Program
 
 
         //app.UseRouting();
-
         app.UseAuthentication();
-
         app.UseAuthorization();
 
-        app.UseCustomExceptionHandling(); // ako je app.useExceptionHandler(); to je build in pa ce se sve raspast ako ne konfigurairam posebno
 
 
         app.MapControllers();
+
+       // app.UseMiddleware<RateLimitingMiddleware>();
+
 
         app.Run();
     }

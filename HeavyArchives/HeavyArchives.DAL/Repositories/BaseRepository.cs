@@ -5,14 +5,16 @@ using Microsoft.IdentityModel.Abstractions;
 
 namespace HeavyArchives.DAL.Repositories
 {
-    public class BaseRepository<T> : IRepository<T> where T : class
+    public class BaseRepository<T> : IRepository<T> where T :class //constrain na reference type - za null
+        //https://stackoverflow.com/questions/10885260/c-sharp-generics-using-class-generic-in-where-clause-of-method-generic
+        //https://jigneshon.blogspot.com/2013/11/c-tutorial-generics-and-where-clause.html
     {
         protected readonly HeavyArchivesContext context;
-        protected readonly DbSet<T> dbSet; // tako da mogu izvrisat entitet T a ne nesto konretno 100 puta
+        protected readonly DbSet<T> dbSet; 
         public BaseRepository(HeavyArchivesContext context)
         {
             this.context = context;
-            this.dbSet = context.Set<T>(); // PROUCI OVO DALJE sta radi
+            this.dbSet = context.Set<T>();
         }
 
 

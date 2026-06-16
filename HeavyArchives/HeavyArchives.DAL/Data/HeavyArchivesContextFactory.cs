@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HeavyArchives.DAL.Data
 {
@@ -12,6 +7,9 @@ namespace HeavyArchives.DAL.Data
     {
         // bez ovoga se migracije ne zeel stvorit jer dotnet ef migrations add radi izvan aplikacije i nema pojma da sam ja u program.cs dodala neke
         //parametre da se to pokrene 
+
+        //https://stackoverflow.com/questions/50820275/how-to-use-idesigntimedbcontextfactory-implementation-in-asp-net-core-2-1
+        //https://www.reddit.com/r/dotnet/comments/1lzr7dx/how_works_idesigntimedbcontextfactory_in_an_asp/
         public HeavyArchivesContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<HeavyArchivesContext>();

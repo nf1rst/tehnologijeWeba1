@@ -8,7 +8,7 @@
         }
 
 
-        public InvalidIPAdress(string text)
+        public InvalidIPAdress(string text):base(text)
         {
             
         }

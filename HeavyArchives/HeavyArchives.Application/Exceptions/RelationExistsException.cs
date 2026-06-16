@@ -7,7 +7,7 @@
         {
         }
 
-        public RelationExistsException(string? message)
+        public RelationExistsException(string? message):base(message)
         {
         }
     }

@@ -22,6 +22,26 @@ namespace HeavyArchives.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("EncyclopaediaBisemutum.Domain.Entities.Log", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("IpAdress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Logs", (string)null);
+                });
+
             modelBuilder.Entity("HeavyArchives.Domain.Entities.Album", b =>
                 {
                     b.Property<int>("Id")
@@ -127,14 +147,23 @@ namespace HeavyArchives.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
+
                     b.Property<int>("CityId")
                         .HasColumnType("int");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
+                    b.Property<double>("Revenue")
+                        .HasColumnType("float");
+
                     b.Property<DateTime>("StartingTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("TicketsSold")
+                        .HasColumnType("int");
 
                     b.Property<int?>("TourId")
                         .HasColumnType("int");
@@ -495,6 +524,9 @@ namespace HeavyArchives.DAL.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Revenue")
+                        .HasColumnType("float");
 
                     b.Property<DateOnly>("StartingDate")
                         .HasColumnType("date");

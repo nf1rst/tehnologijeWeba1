@@ -11,6 +11,6 @@ namespace HeavyArchives.Application.Interfaces
         Task<ConcertDTO> CreateConcertAsync(ManipulateConcertDTO createDTO);
         Task<ConcertDTO  >UpdateConcertAsync(int id, ManipulateConcertDTO updateDTO);
         Task DeleteConcertAsync(int id);
-
+        Task<ConcertDTO?> SellTicketAsync(int concertId);
     }
 }

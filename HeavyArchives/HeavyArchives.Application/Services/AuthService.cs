@@ -53,6 +53,7 @@ namespace HeavyArchives.Application.Services
             var user = await uow.Users.GetUserWithDetailsByUsernameAsync(loginDTO.Username);
             if (user is null) throw new Exceptions.AuthenticationInvalidException("User does not exist");
 
+            //authentication
             if (!passwordHasher.VerifyPassword(loginDTO.Password, user.PasswordHash, user.PasswordSalt)) throw new AuthenticationInvalidException("Incorrect login data");
 
             var (accessToken, accessExpiry) = tokenService.GenerateAccessToken(user); //ovaj je kraci i sluzi za pristup zasticenim resursima 

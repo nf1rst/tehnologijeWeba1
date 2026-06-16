@@ -1,6 +1,7 @@
 ﻿using Exceptions;
 using HeavyArchives.Application.DTOs.Tour;
 using HeavyArchives.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace HeavyArchives.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles ="Admin")]
     public class TourController : ControllerBase
     {
         private readonly ITourService tourService;

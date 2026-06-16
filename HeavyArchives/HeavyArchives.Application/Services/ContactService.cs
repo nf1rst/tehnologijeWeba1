@@ -48,6 +48,7 @@ namespace HeavyArchives.Application.Services
         public async Task<ContactDTO> GetContactForBandAsync(string bandName)
         {
             var contact =await uow.Contacts.GetContactForBandAsync(bandName);
+            if (contact is null) throw new EntityNotExistant($"No contact found for band '{bandName}'");
             return mapper.Map<ContactDTO>(contact);
         }
 

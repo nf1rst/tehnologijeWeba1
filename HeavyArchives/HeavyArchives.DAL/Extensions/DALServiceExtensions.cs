@@ -14,8 +14,8 @@ namespace HeavyArchives.Application.Extensions
         {
 
             services.AddDbContext<HeavyArchivesContext>(options => options.UseSqlServer(connectionString));
-            //ovaj ne vidi appsettings pa se mora rucno string stavit?
 
+           //https://www.linkedin.com/pulse/understanding-addtransient-vs-addscoped-addsingleton-aspnet-shakkouf-nxraf#:~:text=AddScoped%3A%20Scoped%20lifetime%20services%20are,will%20use%20the%20same%20instance.
             services.AddScoped<IAlbumRepository, AlbumRepository>();
             services.AddScoped<IBandRepository, BandRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
@@ -35,7 +35,6 @@ namespace HeavyArchives.Application.Extensions
             services.AddScoped<IBandTourRepository, BandTourRepository>();
             services.AddScoped<IGenreBandRepository, GenreBandRepository>();
             services.AddScoped<ILabelThemeRepository, LabelThemeRepository>();
-
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
            

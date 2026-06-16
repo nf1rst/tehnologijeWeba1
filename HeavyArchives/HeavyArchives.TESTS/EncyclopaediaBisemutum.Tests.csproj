@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HeavyArchives.Application\HeavyArchives.Application.csproj" />
+    <ProjectReference Include="..\HeavyArchives.Application\EncyclopaediaBisemutum.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

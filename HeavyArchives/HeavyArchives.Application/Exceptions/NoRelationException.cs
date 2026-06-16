@@ -7,7 +7,7 @@
         {
         }
 
-        public NoRelationException(string text)
+        public NoRelationException(string text):base(text)
         {
         }
     }

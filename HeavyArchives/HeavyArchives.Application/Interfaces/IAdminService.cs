@@ -1,0 +1,19 @@
+﻿using EncyclopaediaBisemutum.Application.DTOs.User;
+using HeavyArchives.Application.DTOs.Auth;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EncyclopaediaBisemutum.Application.Interfaces
+{
+    public interface IAdminService
+    {
+        Task<ICollection<UserDTO>> GetAllUsersAsync();
+        Task<UserWithDetailsDTO?> GetUserByIdAsync(int id);
+        Task<UserWithDetailsDTO?> GetUserByUsernameAsync(string username);
+        Task DeleteUser(int id);
+        Task<UserWithDetailsDTO?> AddAdminUser(LoginDTO adminUserDTO); 
+    }
+}

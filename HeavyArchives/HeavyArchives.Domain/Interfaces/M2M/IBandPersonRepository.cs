@@ -6,5 +6,6 @@ namespace HeavyArchives.Domain.Interfaces.M2M
     {
         Task AddBandPersonAsync(BandPerson bandPerson);
         Task RemoveBandPersonAsync(BandPerson bandPerson);
+        Task<BandPerson> GetPersonFromBandByPersonIdAsync(int personId, int bandId);
     }
 }

@@ -26,7 +26,20 @@ namespace HeavyArchives.Application.Services
             Concert? concert =await uow.Concerts.GetConcertWithDetailsByIdAsync(concertId)!;
             if (concert is null) throw new EntityNotExistant("There is no such concert");
 
+            if (tour.Concerts.Contains(concert)) throw new RelationExistsException("Concert already part of the tour");
+
+            var attributedConcerts = await uow.Concerts.GetConcertsWithDetailsByTourAsync(tour.Name);
+
+            foreach (var item in attributedConcerts)
+            {
+                if (( item.StartingTime == concert.StartingTime))
+                {
+                    throw new InvalidLogicException("Tour cannot contain concerts that are happening at the same time ");
+                }
+            }
+
             tour.Concerts.Add(concert);
+            tour.Revenue += concert.Revenue;
             await uow.SaveChangesAsync();
             return mapper.Map<TourDTO>(tour); // jel ga tu moram jos jednom izvuc iz baze ili ce se odmah vidjet promijene 
         }
@@ -58,9 +71,13 @@ namespace HeavyArchives.Application.Services
 
             if (tour.StartingDate > tour.FinishingDate)
             {
-                throw new InvalidLogicException();
+                throw new InvalidLogicException("Tour cannot finish before it started");
             }
 
+            if (healiderBand.Status != "Active")
+            {
+                throw new InvalidLogicException("Headlinder band must be active to take part in tour");
+            }
 
             await uow.Tours.InsertAsync(tour);
             tour.TourBand.Add(new BandTour() { Band = healiderBand, Tour = tour, IsHeadliner = true });
@@ -120,6 +137,7 @@ namespace HeavyArchives.Application.Services
             if (concert is null) throw new EntityNotExistant("There is no such concert");
 
             tour.Concerts.Remove(concert);
+            tour.Revenue += concert.Revenue;
             await uow.SaveChangesAsync();
             return mapper.Map<TourDTO>(tour);
         }

@@ -6,5 +6,6 @@
         public string CityName { get; set; } // ako ne postoji opet isto
         public DateTime StartingTime { get; set; }
         public string Venue { get; set; } // posebni property?
+        public int Capacity { get; set; }
     }
 }
