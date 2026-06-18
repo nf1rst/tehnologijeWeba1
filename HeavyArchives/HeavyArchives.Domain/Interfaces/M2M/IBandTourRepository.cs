@@ -10,5 +10,6 @@ namespace HeavyArchives.Domain.Interfaces.M2M
     public interface IBandTourRepository
     {
         Task AddBandTourAsync(BandTour bandTour);
+        Task RemoveBandTourAsync(BandTour bandTour);
     }
 }

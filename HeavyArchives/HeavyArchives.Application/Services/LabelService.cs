@@ -19,16 +19,16 @@ namespace HeavyArchives.Application.Services;
             this.mapper = mapper;
         }
         public async Task<LabelWithMembersDTO> AddBandAsync(int bandId, int labelId)
-        {
-            Band? band =await uow.Bands.GetBandWithDetailsAsync(bandId);
+          {
+            Band? band = await uow.Bands.GetBandWithDetailsAsync(bandId);
             if (band is null) throw new EntityNotExistant("Band wasn't found");
-        
+
             Label? label =await uow.Labels.GetLabelWithDetailsAsync(labelId);
             if (label is null) throw new EntityNotExistant("Label wans't found");
 
             if (label.BandLabel.Any(bl => bl.BandId == bandId)) throw new RelationExistsException("That band is already associated with the label");
 
-            label.BandLabel.Add(new BandLabel() { BandId = bandId, LabelId = labelId });
+            label.BandLabel.Add(new BandLabel() { Band = band, Label = label});
             await uow.SaveChangesAsync();
             return mapper.Map<LabelWithMembersDTO>(label);
         }
@@ -38,12 +38,14 @@ namespace HeavyArchives.Application.Services;
             Label? label=await uow.Labels.GetLabelWithDetailsAsync(labelId);
             if (label is null) throw new EntityNotExistant("Label wasn't found");
 
-            Theme? theme =await uow.Themes.GetThemeWithDetailsByIdAsync(themeId);
+            Theme? theme = await uow.Themes.GetThemeWithDetailsByIdAsync(themeId);
             if (theme is null) throw new EntityNotExistant("Theme wans't found");
 
             if (label.LabelTheme.Any(lt=>lt.ThemeId==themeId)) throw new RelationExistsException("That theme is already associated with the label");
 
-            label.LabelTheme.Add(new LabelTheme() { ThemeId=themeId, LabelId = labelId });
+
+            label.LabelTheme.Add(new LabelTheme() { Theme= theme, Label=label});
+            //await uow.LabelThemes.AddLabelThemeAsync(new LabelTheme() { LabelId=labelId, ThemeId = themeId });
             await uow.SaveChangesAsync();
             return mapper.Map<LabelWithThemesDTO>(label);
     }
@@ -86,7 +88,7 @@ namespace HeavyArchives.Application.Services;
 
         public async Task<LabelDTO?> GetLabelByNameAsync(string labelName)
         {
-            Label label =await uow.Labels.GetLabelWithDetailsByNameAsync(labelName);
+            Label? label =await uow.Labels.GetLabelWithDetailsByNameAsync(labelName);
             if (label is null) throw new EntityNotExistant("Label wasn't found");
             return mapper.Map<LabelDTO>(label);
         }
@@ -105,23 +107,23 @@ namespace HeavyArchives.Application.Services;
 
         public async Task<LabelWithMembersDTO> RemoveBandAsync(int bandId, int labelId)
         {
-            Band? band =await uow.Bands.GetBandWithDetailsAsync(bandId);
-            if (band is null) throw new EntityNotExistant("Band wasn't found");
+            //Band? band =await uow.Bands.GetBandWithDetailsAsync(bandId);
+            //if (band is null) throw new EntityNotExistant("Band wasn't found");
 
             Label? label =await uow.Labels.GetLabelWithDetailsAsync(labelId);
             if (label is null) throw new EntityNotExistant("Label wasn't found");
 
             BandLabel? entry = label.BandLabel.FirstOrDefault(bl => bl.BandId == bandId);
             if (entry is null) throw new NoRelationException("Band is not associated with that label");
-            
-            label.BandLabel.Remove(entry);
+
+            await uow.BandLabel.RemoveBandLabelAsync(entry);
             await uow.SaveChangesAsync();
             return mapper.Map<LabelWithMembersDTO>(label);
         }
 
         public async Task<LabelWithThemesDTO> RemoveThemeAsync(int themeId, int labelId)
         {
-            Theme? theme =await uow.Themes.GetThemeWithDetailsByIdAsync(themeId);
+            Theme? theme = await uow.Themes.GetThemeWithDetailsByIdAsync(themeId);
             if (theme is null) throw new EntityNotExistant("Theme wasn't found");
 
             Label? label =await uow.Labels.GetLabelWithDetailsAsync(labelId);
@@ -130,7 +132,7 @@ namespace HeavyArchives.Application.Services;
             LabelTheme? entry = label.LabelTheme.FirstOrDefault(bl => bl.ThemeId== themeId);
             if (entry is null) throw new NoRelationException("Theme is not associated with that label");
 
-            label.LabelTheme.Remove(entry);
+            await uow.LabelThemes.RemoveLabelThemeAsync(entry);
             await uow.SaveChangesAsync();
             return mapper.Map<LabelWithThemesDTO>(label);
     }

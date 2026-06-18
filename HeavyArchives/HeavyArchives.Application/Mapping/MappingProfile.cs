@@ -13,6 +13,7 @@ using HeavyArchives.Application.DTOs.Person;
 using HeavyArchives.Application.DTOs.Theme;
 using HeavyArchives.Application.DTOs.Tour;
 using HeavyArchives.Domain.Entities;
+using HeavyArchives.Domain.Entities.M2MTables;
 
 namespace HeavyArchives.Application.Mapping
 {
@@ -29,12 +30,12 @@ namespace HeavyArchives.Application.Mapping
                         :"Unknown"
                     ));
 
-            CreateMap<Person, PersonFewDetailsDTO>()
+            CreateMap<BandPerson, PersonFewDetailsDTO>()
                 .ForMember
                 (dest => dest.Role, opt => opt.MapFrom(
-                    src => src.BandPerson.Select(bp => bp.RoleInBand)
-                    .FirstOrDefault() // zato sto DTO ocekuje jedan string, a ovaj selectg vraca IEnumerable pa bude cudni rezultat
-                    ));
+                    src=>src.RoleInBand 
+                ));
+
             
             //insertza insert u bazu 
             //ignorira plceofbirthID jer person prima cijeli country objekt ne id
@@ -79,40 +80,32 @@ namespace HeavyArchives.Application.Mapping
                 .ForMember(dest => dest.BandPerson, opt => opt.Ignore())
                 .ForMember(dest => dest.GenreBand, opt => opt.Ignore());
 
-            CreateMap<Band, BandWithMembersDTO>()
-                .ForMember(
-                    dest => dest.CoutnryName, opt => opt.MapFrom(
-                    src => src.Country!=null?
-                    src.Country.Name
-                    :"Unknown"))
-                .ForMember(
-                    dest => dest.CurrentMembers, opt => opt.MapFrom(
-                    src => src.BandPerson
-                        .Where(bp=>bp.Status!=null && bp.Status.Name!="Inactive")
-                        .Select(bp=>bp.Person))
-                )
-                .ForMember(
-                    dest=>dest.PastMembers, opt =>opt.MapFrom(
-                    src=>src.BandPerson
-                        .Where(bp=>bp.Status!=null && bp.Status.Name=="Inactive")
-                        .Select(bp=>bp.Person))
-                )
-                .ForMember(
-                    dest=>dest.Genres, opt=>opt.MapFrom(
-                    src=>src.GenreBand.Select(gb=>gb.Genre)))
-                .ForMember(
-                    dest=>dest.Contact, opt=>opt.MapFrom(
-                    src=>src.Contact));//da ovo zna mora dolje postojat Contact->contactDTO
 
-            CreateMap<Band, BandWithRolesForPersonDTO>()
-                .ForMember(
-                dest => dest.Band, opt => opt.MapFrom(
-                    src => src.Name))
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(
-                    src => src.BandPerson.Select(bp => bp.Status.Name))) //ovo treba provjerit
-                .ForMember(
-                dest => dest.Role, opt => opt.MapFrom(
-                    src => src.BandPerson.Select(bp => bp.RoleInBand)));
+                CreateMap<Band, BandWithMembersDTO>()
+                    .ForMember(
+                        dest => dest.CoutnryName, opt => opt.MapFrom(
+                        src => src.Country != null ? src.Country.Name : "Unknown"))
+                    .ForMember(
+                        dest => dest.CurrentMembers, opt => opt.MapFrom(
+                        src => src.BandPerson
+                            .Where(bp => bp.Status != null && bp.Status.Name != "Inactive")))
+                    .ForMember(
+                        dest => dest.PastMembers, opt => opt.MapFrom(
+                        src => src.BandPerson
+                            .Where(bp => bp.Status != null && bp.Status.Name == "Inactive")))
+                    .ForMember(
+                        dest => dest.Genres, opt => opt.MapFrom(
+                        src => src.GenreBand.Select(gb => gb.Genre)))
+                    .ForMember(
+                        dest => dest.Contact, opt => opt.MapFrom(
+                        src => src.Contact));
+
+            CreateMap<BandPerson, BandMinimumInfoDTO>()
+                .ForMember(dest=>dest.Id, opt=>opt.MapFrom(src=>src.BandId))
+                .ForMember(dest => dest.CoutnryName, opt => opt.MapFrom(src => src.Person.PlaceOfBirth.Name != null ? src.Person.PlaceOfBirth.Name : "Unknown"))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Band.Status))
+                .ForMember(dest=>dest.Name, opt=>opt.MapFrom(src=>src.Band.Name))
+                .ForMember(dest=>dest.YearOfFormation, opt=>opt.MapFrom(src=>src.Band.YearOfFormation));
 
             CreateMap<Label, LabelDTO>()
                 .ForMember(dest => dest.Themes, opt => opt.MapFrom(
@@ -206,8 +199,26 @@ namespace HeavyArchives.Application.Mapping
                 .ForMember(dest => dest.TourManager, opt => opt.Ignore())
                 .ForMember(dest => dest.Concerts, opt => opt.Ignore()); //headeliner i tourManager rucno
 
+            CreateMap<BandPerson, PersonFewDetailsDTO>()
+                .ForMember(dest=>dest.Id, opt=>opt.MapFrom(src=>src.PersonId))
+                .ForMember(dest => dest.Fname, opt => opt.MapFrom(src => src.Person.Fname))
+                .ForMember(dest => dest.Lname, opt => opt.MapFrom(src => src.Person.Lname))
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.RoleInBand));
 
+            CreateMap<BandPerson, BandWithMembersDTO>()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Band.Name))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.Name))
+                .ForMember(dest => dest.Contact, opt => opt.MapFrom(src => src.Band.Contact))
+                .ForMember(dest => dest.CoutnryName, opt => opt.MapFrom(src => src.Band.Country.Name))
+                .ForMember(dest => dest.YearOfFormation, opt => opt.MapFrom(src => src.Band.YearOfFormation))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Band.Id))
+                .ForMember(dest => dest.PastMembers, opt => opt.MapFrom(src=>src.Person)) //person->personFewDetails
+                .ForMember(dest => dest.CurrentMembers, opt => opt.Ignore());
 
+            CreateMap<Person, PersonFewDetailsDTO>()
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(
+                    src => src.BandPerson.Select(bp => bp.RoleInBand)
+                    .FirstOrDefault())); //ako ima vise roles u razlicitim bendovima uzimat ce samo rpvi unos
         }
 
     }

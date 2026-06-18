@@ -14,8 +14,8 @@ namespace HeavyArchives.Application.Interfaces
         Task<ICollection<PersonDTO>> GetPeopleByBandAsync(string bandName);
         Task<PersonDTO> UpdatePersonAsync(int id, ManipulatePersonDTO updatedPerson);
         Task DeletePersonAsync(int id);
-        Task<PersonWithBandsDTO > AddBandAsync(int bandId, int personId);
-        Task<PersonWithBandsDTO >RemoveBandAsync(int bandId, int personId);
+        //Task<PersonWithBandsDTO > AddBandAsync(int bandId, int personId);
+        //Task<PersonWithBandsDTO >RemoveBandAsync(int bandId, int personId);
 
 
     }

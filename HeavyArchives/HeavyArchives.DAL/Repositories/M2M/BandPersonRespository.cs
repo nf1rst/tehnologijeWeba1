@@ -23,11 +23,21 @@ namespace HeavyArchives.DAL.Repositories.M2M
             await context.BandPersons.AddAsync(bandPerson);
         }
 
-        public async Task<BandPerson> GetPersonFromBandByPersonIdAsync(int personId, int bandId)
+        public async Task<BandPerson?> GetBandPersonByParamAsync(int personId, int bandId)
         {
             return await context.BandPersons
-                .Where(bp => bp.BandId == bandId)
-                .FirstOrDefaultAsync(bp => bp.PersonId == personId);
+                .Where(bp=>bp.PersonId==personId)
+                .FirstOrDefaultAsync(bp=>bp.BandId==bandId);
+        }
+
+        public async Task<ICollection<BandPerson>> GetBandPersonByPersonId(int personId)
+        {
+            return await context.BandPersons
+                .Include(bp => bp.Person)
+                    .ThenInclude(p=>p.PlaceOfBirth)
+                .Include(bp => bp.Band)
+                .Where(bp => bp.PersonId == personId)
+                .ToListAsync();
         }
 
         public Task RemoveBandPersonAsync(BandPerson bandPerson)

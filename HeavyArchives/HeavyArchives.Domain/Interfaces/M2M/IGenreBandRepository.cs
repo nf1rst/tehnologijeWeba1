@@ -10,5 +10,6 @@ namespace HeavyArchives.Domain.Interfaces.M2M
     public interface IGenreBandRepository
     {
         Task AddGenreBandAsync(GenreBand genreBand);
+        Task RemoveGenreBand(GenreBand genreBand);
     }
 }

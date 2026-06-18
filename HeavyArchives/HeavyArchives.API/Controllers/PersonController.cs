@@ -1,6 +1,8 @@
 ﻿using Exceptions;
+using FluentValidation;
 using HeavyArchives.Application.DTOs.Person;
 using HeavyArchives.Application.Interfaces;
+using HeavyArchives.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -12,9 +14,11 @@ namespace HeavyArchives.API.Controllers
     public class PersonController : ControllerBase
     {
         private readonly IPersonService personService;
-        public PersonController(IPersonService personService)
+        private readonly IValidator<ManipulatePersonDTO> validator; 
+        public PersonController(IPersonService personService, IValidator<ManipulatePersonDTO> validator)
         {
             this.personService = personService;
+            this.validator = validator;
         }
 
         [HttpGet]
@@ -68,6 +72,13 @@ namespace HeavyArchives.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePerson(ManipulatePersonDTO personDTO)
         {
+            //https://oneuptime.com/blog/post/2026-01-25-fluentvalidation-dotnet/view
+            var val = await validator.ValidateAsync(personDTO);
+            if (!val.IsValid)
+            {
+                string message = string.Join(",", val.Errors.Select(e => e.ErrorMessage));
+                throw new InvalidInputException(message);
+            }
             var created =await personService.CreatePersonAsync(personDTO);
 
             if (created is null) return BadRequest("User information given was wrong");

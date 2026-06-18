@@ -104,15 +104,15 @@ namespace HeavyArchives.API.Controllers
             return Ok(band);
         }
         [HttpPut("AddTheme")]
-        public async Task<IActionResult> AddTheme(int bandId, int labelId)
+        public async Task<IActionResult> AddTheme(int labelId, int themeId)
         {
-            var band =await labelService.AddThemeAsync(bandId, labelId);
+            var band =await labelService.AddThemeAsync(themeId, labelId);
             return Ok(band);
         }
         [HttpPut("RemoveTheme")]
-        public async Task<IActionResult> RemoveTheme(int bandId, int labelId)
+        public async Task<IActionResult> RemoveTheme(int labelId, int themeid)
         {
-            var band =await labelService.RemoveBandAsync(bandId, labelId);
+            var band =await labelService.RemoveThemeAsync(themeid, labelId);
             return Ok(band);
         }
       

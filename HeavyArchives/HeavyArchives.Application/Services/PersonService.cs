@@ -21,22 +21,22 @@ namespace HeavyArchives.Application.Services
             this.mapper = mapper;
         }
 
-        public async Task<PersonWithBandsDTO> AddBandAsync(int bandId, int personId) //ovdje ne treba provjera inputa jer int ne moze bit null
-        {
-            Band? band =await uow.Bands.GetBandWithDetailsAsync(bandId);
-            if (band is null) throw new EntityNotExistant("Band wasn't found");
+        //public async Task<PersonWithBandsDTO> AddBandAsync(int bandId, int personId) //ovdje ne treba provjera inputa jer int ne moze bit null
+        //{
+        //    //Band? band =await uow.Bands.GetBandWithDetailsAsync(bandId);
+        //    //if (band is null) throw new EntityNotExistant("Band wasn't found");
 
-            Person? person =await uow.Persons.GetPersonWithDetailsAsync(personId);
-            if (person is null) throw new EntityNotExistant("Person wasn't found");
+        //    Person? person =await uow.Persons.GetPersonWithDetailsAsync(personId);
+        //    if (person is null) throw new EntityNotExistant("Person wasn't found");
 
-            BandPerson? entry = person.BandPerson.FirstOrDefault(bp => bp.BandId == bandId);
-            if (entry is null) throw new RelationExistsException("Band is already associated with that person"); // ne postoji veza persona i tog benda
+        //    BandPerson? entry = person.BandPerson.FirstOrDefault(bp => bp.BandId == bandId);
+        //    if (entry is null) throw new RelationExistsException("Band is already associated with that person"); // ne postoji veza persona i tog benda
 
-            await uow.BandPersons.AddBandPersonAsync(entry);
+        //    await uow.BandPersons.AddBandPersonAsync(entry);
 
-            await uow.SaveChangesAsync();
-            return mapper.Map<PersonWithBandsDTO>(person);
-        }
+        //    await uow.SaveChangesAsync();
+        //    return mapper.Map<PersonWithBandsDTO>(person);
+        //}
 
         public async Task<PersonDTO> CreatePersonAsync(ManipulatePersonDTO personDTO)
         {
@@ -101,23 +101,6 @@ namespace HeavyArchives.Application.Services
             Person? p =await uow.Persons.GetPersonWithDetailsAsync(id);
             if (p is null) throw new EntityNotExistant("Person wasn't found");
             return mapper.Map<PersonDTO>(p);
-        }
-
-        public async Task<PersonWithBandsDTO> RemoveBandAsync(int bandId, int personId)
-        {
-            Band? band =await uow.Bands.GetBandWithDetailsAsync(bandId);
-            if (band is null) throw new EntityNotExistant("Band wasn't found");
-
-            Person? person =await uow.Persons.GetPersonWithDetailsAsync(personId);
-            if (person is null) throw new EntityNotExistant("Person wasn't found");
-
-            BandPerson? entry = person.BandPerson.FirstOrDefault(bp => bp.BandId == bandId);
-            if (entry is null)throw new NoRelationException("Band is not associated with that person"); // ne postoji veza persona i tog benda
-
-            person.BandPerson.Remove(entry);
-
-            await uow.SaveChangesAsync();
-            return mapper.Map<PersonWithBandsDTO>(person);
         }
 
         public async Task<PersonDTO> UpdatePersonAsync(int id, ManipulatePersonDTO updatedPerson)

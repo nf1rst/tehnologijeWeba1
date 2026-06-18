@@ -137,7 +137,7 @@ namespace HeavyArchives.Application.Services
             if (concert is null) throw new EntityNotExistant("There is no such concert");
 
             tour.Concerts.Remove(concert);
-            tour.Revenue += concert.Revenue;
+            tour.Revenue -= concert.Revenue;
             await uow.SaveChangesAsync();
             return mapper.Map<TourDTO>(tour);
         }
@@ -147,10 +147,15 @@ namespace HeavyArchives.Application.Services
             Tour? tour = await uow.Tours.GetTourWithDetailsByIdAsync(tourId)!;
             if (tour is null) throw new EntityNotExistant("There is no such tour");
 
-            BandTour? bandTour = tour.TourBand.FirstOrDefault(tb => tb.BandId == bandId);
-            if (bandTour is null) throw new EntityNotExistant("Band not associated with tour");
+            //Band? band = await uow.Bands.GetBandWithDetailsAsync(bandId);
+            //if (band is null) throw new EntityNotExistant("There is not such band");
 
-            tour.TourBand.Remove(bandTour);
+            BandTour? entry = tour.TourBand.FirstOrDefault(tb => tb.BandId == bandId);
+            if (entry is null) throw new EntityNotExistant("Band not associated with tour");
+
+
+            //await uow.BandTours.RemoveBandTourAsync(entry);
+            tour.TourBand.Remove(entry);
 
             await uow.SaveChangesAsync();
             return mapper.Map<TourDTO>(tour);

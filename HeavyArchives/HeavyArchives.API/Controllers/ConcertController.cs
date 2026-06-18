@@ -32,7 +32,7 @@ namespace HeavyArchives.API.Controllers
             return Ok(concert);
         }
 
-        [HttpGet("/Tour/{tourName}")]
+        [HttpGet("Tour/{tourName}")]
         public async Task<IActionResult> GetConcertsForTour( [FromRoute]string tourName)
         {
             if (tourName is null) throw new InvalidInputException("Tour name cannot be null");
@@ -40,14 +40,14 @@ namespace HeavyArchives.API.Controllers
             return Ok(concerts);
         }
 
-        [HttpGet("/Country/{countryName}")]
+        [HttpGet("Country/{countryName}")]
         public async Task<IActionResult> GetConcertsForCountry( [FromRoute]string countryName){
             if (countryName is null) throw new InvalidInputException("Country name cannot be null");
             var concerts =await concertService.GetConcertsForCountryAsync(countryName);
             return Ok(concerts);
         }
 
-        [HttpGet("/City/{cityName}")]
+        [HttpGet("City/{cityName}")]
         public async Task<IActionResult> GetConcertsForCity([FromRoute]string cityName){
             if (cityName is null) throw new InvalidInputException("City name cannot be null");
             var concerts =await concertService.GetConcertsForCityAsync(cityName);

@@ -4,6 +4,9 @@ using HeavyArchives.Application.DTOs.Auth;
 using HeavyArchives.Application.Interfaces;
 using HeavyArchives.Domain.Entities;
 using HeavyArchives.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -32,7 +35,7 @@ namespace HeavyArchives.Application.Services
             if (await uow.Users.UsernameExistsAsync(registerDTO.Username)) throw new UserAlreadyExistsException(registerDTO.Username);
             var(hash, salt)= passwordHasher.HashPassword(registerDTO.Password);
            
-            var user = new User {
+            User user = new User {
                 Username = registerDTO.Username,
                 PasswordHash = hash,
                 PasswordSalt = salt,
@@ -43,7 +46,7 @@ namespace HeavyArchives.Application.Services
             await uow.Users.InsertAsync(user);
             await uow.SaveChangesAsync();
              
-            var savedUser = uow.Users.GetUserWithDetailsByUsernameAsync(user.Username);
+            var savedUser =await uow.Users.GetUserWithDetailsByUsernameAsync(user.Username);
 
             return mapper.Map<UserDTO>(savedUser);
         }
@@ -71,17 +74,17 @@ namespace HeavyArchives.Application.Services
         {
             //validiraj istekli access token
             ClaimsPrincipal? principal = tokenService.GetPrincipalFromExpiredToken(refreshDTO.AccessToken);
-            if (principal is null) throw new Exceptions.InvalidRefreshTokenException();
+            if (principal is null) throw new Exceptions.InvalidRefreshTokenException("No claims in access token");
 
             //sdohvati user id iz tokena
-            string? userIdClaim = principal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId)) throw new InvalidRefreshTokenException();
+            string? userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId)) throw new InvalidRefreshTokenException("User information in claims invalid");
 
             //pronadi korisnika
             var user =await uow.Users.GetUserWithDetailsByIdAsync(userId);
             if(user is null ||user.RefreshToken!=refreshDTO.RefreshToken || user.RefreshTokenExpiryDate<=DateTime.UtcNow)
             {
-                throw new InvalidRefreshTokenException();
+                throw new InvalidRefreshTokenException("Refresh token has expired");
             }
 
             var (accessToken, accessExpiry) = tokenService.GenerateAccessToken(user);
@@ -107,5 +110,6 @@ namespace HeavyArchives.Application.Services
             await uow.Users.UpdateAsync(user);
              await uow.SaveChangesAsync();
         }
+
     }
 }

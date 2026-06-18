@@ -1,4 +1,5 @@
-﻿using HeavyArchives.Application.DTOs.Auth;
+﻿using Azure.Core;
+using HeavyArchives.Application.DTOs.Auth;
 
 namespace HeavyArchives.Application.Interfaces
 {

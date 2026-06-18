@@ -83,9 +83,10 @@ internal class Program
 
         app.MapControllers();
 
-       // app.UseMiddleware<RateLimitingMiddleware>();
+        // app.UseMiddleware<RateLimitingMiddleware>();
 
-
+        //https://youtu.be/x-s-52kj4n8?si=ugdYI3oYFQ6pxtA0
+        app.UseSerilogRequestLogging();
         app.Run();
     }
 }

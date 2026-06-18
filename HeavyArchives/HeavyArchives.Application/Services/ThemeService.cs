@@ -48,19 +48,21 @@ namespace HeavyArchives.Application.Services
         public async Task<ThemeDTO?> GetThemeByIdAsync(int id)
         {
             var theme =await uow.Themes.GetThemeWithDetailsByIdAsync(id);
+            if (theme is null) throw new EntityNotExistant("Theme was not found");
             return mapper.Map<ThemeDTO>(theme);
         }
 
         public async Task<ThemeDTO?> GetThemeByNameAsync(string name)
         {
             var theme =await uow.Themes.GetThemeWithDetailsByNameAsync(name);
+            if (theme is null) throw new EntityNotExistant("Theme was not found");
             return mapper.Map<ThemeDTO>(theme);
         }
 
         public async Task<ICollection<ThemeDTO>> GetThemesForBandAsync(string bandName)
         {
             Band? band =await uow.Bands.GetBandWithDetailsByNameAsync(bandName);
-            if (band is null) return null;
+            if (band is null) throw new EntityNotExistant("Label was not found");
             var themes =await uow.Themes.GetThemesWithDetailsForBandAsync(band.Id);
             return mapper.Map<ICollection<ThemeDTO>>(themes);
         }
@@ -68,7 +70,7 @@ namespace HeavyArchives.Application.Services
         public async Task<ICollection<ThemeDTO>> GetThemesForLabelAsync(string labelName)
         {
             Label? label =await uow.Labels.GetLabelWithDetailsByNameAsync(labelName);
-            if (label is null) return null;
+            if (label is null) throw new EntityNotExistant("Label was not found");
             var themes = uow.Themes.GetThemesWithDetailsForLabelAsync(label.Id);
             return mapper.Map<ICollection<ThemeDTO>>(themes);
         }

@@ -10,5 +10,6 @@ namespace HeavyArchives.Domain.Interfaces.M2M
     public interface ILabelThemeRepository
     {
         Task AddLabelThemeAsync(LabelTheme labelTheme);
+        Task RemoveLabelThemeAsync(LabelTheme labelTheme);
     }
 }

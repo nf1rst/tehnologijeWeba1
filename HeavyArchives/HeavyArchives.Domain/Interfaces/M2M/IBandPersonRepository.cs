@@ -1,4 +1,5 @@
-﻿using HeavyArchives.Domain.Entities.M2MTables;
+﻿using HeavyArchives.Domain.Entities;
+using HeavyArchives.Domain.Entities.M2MTables;
 
 namespace HeavyArchives.Domain.Interfaces.M2M
 {
@@ -6,6 +7,8 @@ namespace HeavyArchives.Domain.Interfaces.M2M
     {
         Task AddBandPersonAsync(BandPerson bandPerson);
         Task RemoveBandPersonAsync(BandPerson bandPerson);
-        Task<BandPerson> GetPersonFromBandByPersonIdAsync(int personId, int bandId);
+        Task<BandPerson?> GetBandPersonByParamAsync(int personId, int bandId);
+        Task<ICollection<BandPerson>> GetBandPersonByPersonId(int personId);
+
     }
 }

@@ -10,5 +10,6 @@ namespace HeavyArchives.Domain.Interfaces.M2M
     public interface IBandThemeRepository
     {
         Task AddBandThemeAsync(BandTheme bandTheme);
+        Task RemoveBandThemeAsync(BandTheme bandTheme);
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HeavyArchives.DAL.Repositories
 {
-    public class BandRepository : BaseRepository<Band>, IBandRepository 
+    public class BandRepository : BaseRepository<Band>, IBandRepository
     {
         protected readonly HeavyArchivesContext context;
         public BandRepository(HeavyArchivesContext context) : base(context) {
@@ -109,5 +109,6 @@ namespace HeavyArchives.DAL.Repositories
                  .Include(b => b.Country)
                  .ToListAsync();
         }
+
     }
 }

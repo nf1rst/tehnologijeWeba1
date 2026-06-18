@@ -29,7 +29,7 @@ namespace HeavyArchives.API.Controllers
         }
 
 
-        [HttpGet("byName")] // treba vratit i members
+        [HttpGet("byName")] 
         public async Task<IActionResult> GetBandByName(string name)
         {
             if (name is null) throw new InvalidInputException("Band name cannot be null");
@@ -82,11 +82,11 @@ namespace HeavyArchives.API.Controllers
         [HttpPut("AddMember")]
         public async Task<IActionResult> AddBandMember(int bandId, int personId,string status, string role) // status vise nije enum pa samo string ovdje prima
         {
+            //validator
             if (status is null) throw new InvalidInputException("Status cannot be null");
             if (role is null) throw new InvalidInputException("Role cannot be null");
             var result =await bandService.AddMemberAsync(bandId, personId, status, role);
             return Ok(result); 
-            //inace je bad request jer nesto ne postoji 
         }
 
         [HttpPut("RemoveMember")]
@@ -120,6 +120,13 @@ namespace HeavyArchives.API.Controllers
         {
             await bandService.DeleteBandAsync(id);
             return NoContent();
+        }
+
+        [HttpGet("bands/{personId}")]
+        public async Task<IActionResult> GetBandsForPerson(int personId)
+        {
+            var bands = await bandService.GetBandsForPersonByPersonId(personId);
+            return Ok(bands);
         }
     }
 

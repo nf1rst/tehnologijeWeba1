@@ -10,5 +10,6 @@ namespace HeavyArchives.Domain.Interfaces.M2M
     public interface IBandLabelRepository
     {
         Task AddBandLabelAsync(BandLabel bandLabel);
+        Task RemoveBandLabelAsync(BandLabel bandLabel);
     }
 }

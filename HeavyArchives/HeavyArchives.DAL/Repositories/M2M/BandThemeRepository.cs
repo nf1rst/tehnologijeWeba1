@@ -22,5 +22,11 @@ namespace HeavyArchives.DAL.Repositories.M2M
         {
             await context.BandThemes.AddAsync(bandTheme);
         }
+
+        public Task RemoveBandThemeAsync(BandTheme bandTheme)
+        {
+            context.Remove(bandTheme);
+            return Task.CompletedTask;
+        }
     }
 }

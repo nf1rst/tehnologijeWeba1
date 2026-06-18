@@ -17,9 +17,6 @@ namespace HeavyArchives.API.Controllers
         }
 
         [HttpPost("register")]
-        //[ProducesResponseType(typeof(UserDTO), StatusCodes.Status201Created)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> Register(RegisterDTO registerDTO)
         {
             var user =await authService.RegisterAsync(registerDTO);
@@ -27,8 +24,6 @@ namespace HeavyArchives.API.Controllers
         }
 
         [HttpPost("login")]
-        [ProducesResponseType(typeof(AuthResponseDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Login(LoginDTO loginDTO)
         {
             var response =await authService.LoginAsync(loginDTO);
@@ -47,5 +42,7 @@ namespace HeavyArchives.API.Controllers
             await authService.RevokeRefreshTokenAsync(refreshDTO.RefreshToken);
             return NoContent();
         }
+
+    
     }
 }

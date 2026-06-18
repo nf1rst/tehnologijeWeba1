@@ -20,5 +20,11 @@ namespace HeavyArchives.DAL.Repositories.M2M
         {
             await context.GenreBands.AddAsync(genreBand);
         }
+
+        public Task RemoveGenreBand(GenreBand genreBand)
+        {
+            context.Remove(genreBand);
+            return Task.CompletedTask;
+        }
     }
 }

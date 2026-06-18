@@ -20,5 +20,11 @@ namespace HeavyArchives.DAL.Repositories.M2M
         {
             await context.BandLabels.AddAsync(bandLabel);
         }
+
+        public Task RemoveBandLabelAsync(BandLabel bandLabel)
+        {
+            context.Remove(bandLabel);
+            return Task.CompletedTask;
+        }
     }
 }

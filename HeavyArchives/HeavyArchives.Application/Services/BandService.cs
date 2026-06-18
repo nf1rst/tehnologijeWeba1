@@ -32,7 +32,10 @@ namespace HeavyArchives.Application.Services
 
             if (band.GenreBand.Any(gb => gb.GenreId == genreId)) throw new Exceptions.RelationExistsException("That genre is already attibuted to the band"); //ako zanr vec postoji da podupla
 
-            band.GenreBand.Add(new GenreBand() { Genre=genre, Band=band});
+            //in memory 
+            band.GenreBand.Add(new GenreBand() { BandId=bandId, GenreId=genreId});
+            //await uow.GenreBands.AddGenreBandAsync(new GenreBand() { BandId=bandId, GenreId=genreId });
+
             await uow.SaveChangesAsync();
             return mapper.Map<BandWithMembersDTO>(band);
         }
@@ -41,18 +44,29 @@ namespace HeavyArchives.Application.Services
         {
             var band = await  uow.Bands.GetBandWithDetailsAsync(bandId);
             if (band is null) throw new EntityNotExistant("Band wasn't found");
+
             var person = await uow.Persons.GetPersonWithDetailsAsync(personId);
             if (person is null) throw new EntityNotExistant("Person wasn't found");
 
             BandMemberStatus? statusFound = await  uow.BandMemberStatuses.GetStatusWithDetailsByNameAsync(status);
             if (statusFound is null) throw new EntityNotExistant("Status you've put doesn't exist");
 
-            //da bi se ovdje moglo usporedivat mora se u entitetu inicijalizirat svaka lista 
-            if (band.BandPerson.Any(bp => bp.PersonId == personId)) throw new Exceptions.RelationExistsException("That band member is already associated with the band"); // ako vec postoji bend member nemoj ga dodat 2 put 
+            if (person.DateOfDeath != null && statusFound.Name == "Active") throw new InvalidLogicException("Person cannot be dead and active in a band");
 
-            await uow.BandPersons.AddBandPersonAsync(new BandPerson { Person = person, Band = band, Status = statusFound, RoleInBand = role });
-            //band.BandPerson.Add(new BandPerson { PersonId = personId, BandId = bandId, Status=statusFound, RoleInBand=role }); // ovaj status dio treba fact checkat
+            
+            BandPerson? entry=await uow.BandPersons.GetBandPersonByParamAsync(personId, bandId);
+            if (entry is not null)throw new Exceptions.RelationExistsException("That band member is already associated with the band"); // ako vec postoji bend member nemoj ga dodat 2 put 
 
+            BandPerson? forInsert = new BandPerson()
+            {
+                Band = band,
+                Person = person,
+                Status = statusFound,
+                RoleInBand = role
+            };
+
+            band.BandPerson.Add(forInsert);
+            
             await uow.SaveChangesAsync();
             return mapper.Map<BandWithMembersDTO>(band);
         }
@@ -67,7 +81,7 @@ namespace HeavyArchives.Application.Services
             }
             Band band = mapper.Map<Band>(createdBandDTO);
 
-            band.Country = country; //jer mapper ignorira
+            band.Country = country!; //jer mapper ignorira
 
             await uow.Bands.InsertAsync(band);
             await uow.SaveChangesAsync();
@@ -119,13 +133,14 @@ namespace HeavyArchives.Application.Services
             var band =await uow.Bands.GetBandWithDetailsAsync(bandId);
             if (band is null) throw new EntityNotExistant("Band wasn't found");
 
-            var genre =await uow.Genres.GetGenreWithDetailsAsync(genreId);
-            if (genre is null) throw new EntityNotExistant("Genre wasn't found");
+            //var genre =await uow.Genres.GetGenreWithDetailsAsync(genreId);
+            //if (genre is null) throw new EntityNotExistant("Genre wasn't found");
 
             var entry = band.GenreBand.FirstOrDefault(b => b.GenreId == genreId);
             if (entry is null) throw new Exceptions.NoRelationException("That genre is not assiciated with the band");// ne postoji taj genre za odredeni bend 
 
-            band.GenreBand.Remove(entry);
+            await uow.GenreBands.RemoveGenreBand(entry);
+            
             await uow.SaveChangesAsync();
             return mapper.Map<BandWithMembersDTO>(band);
         }
@@ -138,10 +153,11 @@ namespace HeavyArchives.Application.Services
             var person =await uow.Persons.GetPersonWithDetailsAsync(personId);
             if (person is null) throw new EntityNotExistant("Person wasn't found");
 
-            var entry = band.BandPerson.FirstOrDefault(b=>b.PersonId==personId);
+            //3
+            var entry = await uow.BandPersons.GetBandPersonByParamAsync(personId, bandId);
             if (entry is null) throw new NoRelationException("That person is not associated with the band");
 
-            band.BandPerson.Remove(entry);
+            await uow.BandPersons.RemoveBandPersonAsync(entry);
             await uow.SaveChangesAsync();
             return mapper.Map<BandWithMembersDTO>(band);
         }
@@ -177,6 +193,14 @@ namespace HeavyArchives.Application.Services
         {
             var bands = await uow.Bands.GetActiveBandsAsync();
             return mapper.Map<ICollection<BandMinimumInfoDTO>>(bands);
+        }
+
+        public async Task<ICollection<BandMinimumInfoDTO>> GetBandsForPersonByPersonId(int personId)
+        {
+            ICollection<BandPerson> bandPersons = await uow.BandPersons.GetBandPersonByPersonId(personId);
+            if (bandPersons is null) throw new EntityNotExistant($"Band person with personID [{personId}] was not found");
+
+            return mapper.Map<ICollection<BandMinimumInfoDTO>>(bandPersons);
         }
     }
 }

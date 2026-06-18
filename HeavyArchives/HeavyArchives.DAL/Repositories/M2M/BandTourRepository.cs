@@ -20,5 +20,11 @@ namespace HeavyArchives.DAL.Repositories.M2M
         {
             await context.BandTours.AddAsync(bandTour);
         }
+
+        public Task RemoveBandTourAsync(BandTour bandTour)
+        {
+            context.Remove(bandTour);
+            return Task.CompletedTask;
+        }
     }
 }

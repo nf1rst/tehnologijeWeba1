@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
 using EncyclopaediaBisemutum.Application.Interfaces;
 using EncyclopaediaBisemutum.Application.Services;
+using EncyclopaediaBisemutum.Application.Validators;
+using FluentValidation;
+using HeavyArchives.Application.DTOs.Person;
 using HeavyArchives.Application.Interfaces;
 using HeavyArchives.Application.Mapping;
 using HeavyArchives.Application.Options;
 using HeavyArchives.Application.Services;
+using HeavyArchives.Domain.Entities;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,6 +40,8 @@ namespace HeavyArchives.Application.Extensions
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<ITokenService, TokenService>();
+
+            services.AddScoped<IValidator<ManipulatePersonDTO>, ManipulatePersonDTOValidator>();
 
             //https://docs.automapper.io/en/stable/Configuration.html
 
