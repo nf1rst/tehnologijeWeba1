@@ -18,5 +18,7 @@ namespace HeavyArchives.Domain.Entities
         public DateTime CreatedAt{ get; set; }=DateTime.Now;
         public Role Role { get; set; } = null;
         public int RoleID{ get; set; }
+        public string FavoriteBand{ get; set; }
+        public int Age { get; set; }
     }
 }

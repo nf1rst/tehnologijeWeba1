@@ -1,4 +1,5 @@
 ﻿using Exceptions;
+using FluentValidation;
 using HeavyArchives.Application.DTOs.Country;
 using HeavyArchives.Application.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -37,7 +38,8 @@ namespace HeavyArchives.API.Controllers
         [HttpGet("Name")]
         public async Task<IActionResult> GetCountryByName(string countryname)
         {
-            if (countryname is null) throw new InvalidInputException("Country name cannot be null");
+            if (countryname is null) throw new InvalidInputException("Name cannot be null");
+
             var country =await countryservice.GetCountryByNameAsync(countryname);
             if (country is null) return NotFound();
             return Ok(country);
@@ -47,7 +49,7 @@ namespace HeavyArchives.API.Controllers
         public async Task<IActionResult> CreateCountry(ManipulateCountryDTO createDTO)
         {
             var country =await countryservice.CreateCountryAsync(createDTO);
-            return Created();
+            return CreatedAtAction(nameof(GetCountryById), new {id=country.Id}, country);
         }
 
         [HttpPut]

@@ -1,4 +1,7 @@
-﻿using HeavyArchives.Application.DTOs.Auth;
+﻿using EncyclopaediaBisemutum.Application.DTOs.Auth;
+using Exceptions;
+using FluentValidation;
+using HeavyArchives.Application.DTOs.Auth;
 using HeavyArchives.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,14 +14,22 @@ namespace HeavyArchives.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService authService;
-        public AuthController(IAuthService authService)
+        private readonly IValidator<UserRegisterWithDetailsDTO> validator;
+        public AuthController(IAuthService authService, IValidator<UserRegisterWithDetailsDTO> validator)
         {
             this.authService = authService;
+            this.validator = validator;
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterDTO registerDTO)
+        public async Task<IActionResult> Register(UserRegisterWithDetailsDTO registerDTO)
         {
+            var res = await validator.ValidateAsync(registerDTO);
+            if (!res.IsValid)
+            {
+                string message = string.Join(", ", res.Errors);
+                throw new InvalidInputException(message);
+            }
             var user =await authService.RegisterAsync(registerDTO);
             return CreatedAtAction(nameof(Register), user);
         }

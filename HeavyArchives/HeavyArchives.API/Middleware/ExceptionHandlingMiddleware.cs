@@ -20,7 +20,7 @@ namespace HeavyArchives.API.Middleware
         {
             try
             {
-                await next(context); //ako ovo nema await i ako nije async metoda ovaa i ovaj ispod, nece radit
+                await next(context); 
             }
             catch (Exception ex)
             {
@@ -58,15 +58,5 @@ namespace HeavyArchives.API.Middleware
                 });
             await response.WriteAsync(result);
         }
-    }
-}
-
-public static class ExceptionHandlingMiddlewareExtensions
-{
-    //registriranje middleware, extenzijska metoda
-    //zasto ovo ne u posebnu klasu ili u vec postojece ektenzije
-    public static IApplicationBuilder UseCustomExceptionHandling(this IApplicationBuilder builder)
-    {
-        return builder.UseMiddleware<ExceptionHandlingMiddleware>();
     }
 }

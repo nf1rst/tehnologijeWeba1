@@ -191,6 +191,10 @@ namespace HeavyArchives.DAL.Data
             //modelBuilder.ApplyConfigurationsFromAssembly(typeof(HeavyArchivesContext).Assembly);
 
         }
-        
+
+        //https://learn.microsoft.com/en-us/ef/core/logging-events-diagnostics/simple-logging#message-categories
+        //da pise na konzolu SQL
+    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //=> optionsBuilder.LogTo(Console.WriteLine);
     }
 }

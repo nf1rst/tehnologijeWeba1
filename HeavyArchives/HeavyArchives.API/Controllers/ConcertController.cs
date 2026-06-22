@@ -1,8 +1,11 @@
 ﻿using Exceptions;
+using FluentValidation;
 using HeavyArchives.Application.DTOs.Concert;
 using HeavyArchives.Application.Interfaces;
+using HeavyArchives.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace HeavyArchives.API.Controllers
@@ -10,10 +13,10 @@ namespace HeavyArchives.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class ConcertController : BASEController<ConcertController>
+    public class ConcertController : ControllerBase
     {
         private readonly IConcertService concertService;
-        public ConcertController(IConcertService concertService, ILogger<ConcertController> logger):base(logger)
+        public ConcertController(IConcertService concertService)
         {
             this.concertService = concertService;
         }
@@ -36,6 +39,7 @@ namespace HeavyArchives.API.Controllers
         public async Task<IActionResult> GetConcertsForTour( [FromRoute]string tourName)
         {
             if (tourName is null) throw new InvalidInputException("Tour name cannot be null");
+
             var concerts =await concertService.GetConcertsForTourAsync(tourName);
             return Ok(concerts);
         }
@@ -43,6 +47,7 @@ namespace HeavyArchives.API.Controllers
         [HttpGet("Country/{countryName}")]
         public async Task<IActionResult> GetConcertsForCountry( [FromRoute]string countryName){
             if (countryName is null) throw new InvalidInputException("Country name cannot be null");
+
             var concerts =await concertService.GetConcertsForCountryAsync(countryName);
             return Ok(concerts);
         }
@@ -50,8 +55,16 @@ namespace HeavyArchives.API.Controllers
         [HttpGet("City/{cityName}")]
         public async Task<IActionResult> GetConcertsForCity([FromRoute]string cityName){
             if (cityName is null) throw new InvalidInputException("City name cannot be null");
+
             var concerts =await concertService.GetConcertsForCityAsync(cityName);
             return Ok(concerts);
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetConcertById(int id)
+        {
+            var concert = await concertService.GetConcertByIdAsyncAsync(id);
+            return Ok(concert);
         }
 
         [HttpPost]
@@ -59,7 +72,7 @@ namespace HeavyArchives.API.Controllers
         {
 
             var created =await concertService.CreateConcertAsync(createDTO);
-            return Created();
+            return CreatedAtAction(nameof(GetConcertById), new { id=created.Id}, created);
         }
         [HttpPut]
         public async Task<IActionResult> UpdateConcert(int id, ManipulateConcertDTO updateDTO)

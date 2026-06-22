@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EncyclopaediaBisemutum.Application.DTOs.Auth;
 using EncyclopaediaBisemutum.Application.DTOs.User;
 using HeavyArchives.Application.DTOs.Album;
 using HeavyArchives.Application.DTOs.Auth;
@@ -162,6 +163,7 @@ namespace HeavyArchives.Application.Mapping
             CreateMap<User, UserWithDetailsDTO>()
                 .ForMember(dest=>dest.Role, opt=>opt.MapFrom(src=>src.Role.Name));
 
+            CreateMap<User, UserRegisterWithDetailsDTO>();
 
             CreateMap<Concert, ConcertDTO>()
                 .ForMember(

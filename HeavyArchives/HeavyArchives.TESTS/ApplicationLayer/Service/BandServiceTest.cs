@@ -46,15 +46,12 @@ namespace HeavyArchives.Tests.ApplicationLayer.Service
             mockUow.Setup(u => u.Bands.GetBandWithDetailsAsync(1)).ReturnsAsync(band);
             mockUow.Setup(u => u.BandMemberStatuses.GetStatusWithDetailsByNameAsync("Active")).ReturnsAsync(bandMemberStatus);
 
-            //mapper napisi
             BandService bandService = new BandService(mockUow.Object, mockMapper.Object);
 
             await Assert.ThrowsAsync<InvalidLogicException>(async () =>
             {
                 await bandService.AddMemberAsync(band.Id, deadPerson.Id, "Active", "guitar");
             });
-
-
         }
     }
 }

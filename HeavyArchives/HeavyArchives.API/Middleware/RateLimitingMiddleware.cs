@@ -17,7 +17,7 @@ namespace EncyclopaediaBisemutum.API.Middleware
         {
             var clientAdres = httpContext.Connection.RemoteIpAddress.ToString();
 
-            var windowStart = DateTime.UtcNow.AddMinutes(-1); // limitano za svaku minutu 
+            var windowStart = DateTime.UtcNow.AddSeconds(-20); // limitano za svaku minutu 
 
            var requestCount=await dbCotnext.Logs
                 .Where(l => l.IpAdress == clientAdres && l.TimeStamp > windowStart)

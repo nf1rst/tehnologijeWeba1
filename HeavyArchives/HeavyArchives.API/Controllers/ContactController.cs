@@ -1,8 +1,10 @@
 ﻿using Exceptions;
+using FluentValidation;
 using HeavyArchives.Application.DTOs.Contact;
 using HeavyArchives.Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace HeavyArchives.API.Controllers
@@ -12,7 +14,6 @@ namespace HeavyArchives.API.Controllers
     public class ContactController : ControllerBase
     {
         private readonly IContactService contactService;
-
         public ContactController(IContactService contactService)
         {
             this.contactService = contactService;
@@ -21,13 +22,14 @@ namespace HeavyArchives.API.Controllers
         public async Task<IActionResult> CreateContact(ManipulateContactDTO createDTO)
         {
             var contact =await contactService.CreateContactAsync(createDTO);
-            return Ok(contact);
+            return CreatedAtAction(nameof(GetContactForBand), new {id=contact.Id}, contact);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetContactForBand(string bandName)
         {
             if (bandName is null) throw new InvalidInputException("Band name cannot be null");
+
             var contact =await contactService.GetContactForBandAsync(bandName);
             if (contact is null) return NotFound();
             return Ok(contact);
@@ -36,6 +38,7 @@ namespace HeavyArchives.API.Controllers
         public async Task<IActionResult> UpdateContact(string bandName, UpdateContactDTO updsateDTO)
         {
             if (bandName is null) throw new InvalidInputException("Band name cannot be null");
+
             var contact =await contactService.UpdateContactAsync(bandName, updsateDTO);
             return Ok(contact);
         }

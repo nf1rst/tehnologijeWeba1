@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EncyclopaediaBisemutum.Application.DTOs.Auth;
 using EncyclopaediaBisemutum.Application.Interfaces;
 using EncyclopaediaBisemutum.Application.Services;
 using EncyclopaediaBisemutum.Application.Validators;
@@ -42,6 +43,8 @@ namespace HeavyArchives.Application.Extensions
             services.AddScoped<ITokenService, TokenService>();
 
             services.AddScoped<IValidator<ManipulatePersonDTO>, ManipulatePersonDTOValidator>();
+            services.AddScoped<IValidator<String>, StringNotEmptyValidator>();
+            services.AddScoped<IValidator<UserRegisterWithDetailsDTO>, RegisterWithDetailsDTOValidator>();
 
             //https://docs.automapper.io/en/stable/Configuration.html
 

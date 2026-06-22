@@ -17,7 +17,6 @@ namespace HeavyArchives.DAL.Repositories
             this.dbSet = context.Set<T>();
         }
 
-
         public Task DeleteAsync(T entity)
         {
             context.Remove(entity);
@@ -40,8 +39,6 @@ namespace HeavyArchives.DAL.Repositories
         {
             return await dbSet.FindAsync(id);
         }
-
-
 
         public async Task<T> InsertAsync(T entity)
         {

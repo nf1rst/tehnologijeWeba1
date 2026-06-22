@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EncyclopaediaBisemutum.Application.DTOs.Auth;
 using Exceptions;
 using HeavyArchives.Application.DTOs.Auth;
 using HeavyArchives.Application.Interfaces;
@@ -30,7 +31,7 @@ namespace HeavyArchives.Application.Services
 
         private const int DefaultUserRoleId = 2; // 1 admin, 2 je user
 
-        public async Task<UserDTO> RegisterAsync(RegisterDTO registerDTO)
+        public async Task<UserDTO> RegisterAsync(UserRegisterWithDetailsDTO registerDTO)
         {
             if (await uow.Users.UsernameExistsAsync(registerDTO.Username)) throw new UserAlreadyExistsException(registerDTO.Username);
             var(hash, salt)= passwordHasher.HashPassword(registerDTO.Password);
@@ -40,7 +41,8 @@ namespace HeavyArchives.Application.Services
                 PasswordHash = hash,
                 PasswordSalt = salt,
                 CreatedAt=DateTime.UtcNow,
-                RoleID=DefaultUserRoleId //user 
+                RoleID=DefaultUserRoleId, //user
+                FavoriteBand=registerDTO.FavoriteBand
             };
 
             await uow.Users.InsertAsync(user);

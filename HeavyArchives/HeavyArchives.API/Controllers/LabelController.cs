@@ -1,4 +1,5 @@
 ﻿using Exceptions;
+using FluentValidation;
 using HeavyArchives.Application.DTOs.Label;
 using HeavyArchives.Application.Interfaces;
 using HeavyArchives.Domain.Entities;
@@ -40,7 +41,8 @@ namespace HeavyArchives.API.Controllers
         [HttpGet("Name")]
         public async Task<IActionResult> GetLabelByName(string labelName)
         {
-            if (labelName is null) throw new InvalidInputException("Label name cannot be null");
+            if (labelName is null) throw new InvalidInputException("Name cannot be null");
+
             var label =await labelService.GetLabelByNameAsync(labelName);
             if (label is null) return NotFound();
             return Ok(label);
@@ -48,7 +50,8 @@ namespace HeavyArchives.API.Controllers
         [HttpGet("ByTheme")]
         public async Task<IActionResult> GetLabelsByTheme(string themeName)
         {
-            if (themeName is null) throw new InvalidInputException("Theme name cannot be null");
+            if (themeName is null) throw new InvalidInputException("Name cannot be null");
+
             var labels =await labelService.GetLabelsWithDetailsByThemeAsync(themeName);
             if (labels is null) return NotFound();
             return Ok(labels);
@@ -56,7 +59,8 @@ namespace HeavyArchives.API.Controllers
         [HttpGet("ForBand")]
         public async Task<IActionResult> GetLabelsForBand(string bandName)
         {
-            if (bandName is null) throw new InvalidInputException("Band name cannot be null");
+            if (bandName is null) throw new InvalidInputException("Name cannot be null");
+
             var labels =await labelService.GetLabelsForBandAsync(bandName);
             if (labels is null) return NotFound();
             return Ok(labels);

@@ -1,5 +1,7 @@
 ﻿using EncyclopaediaBisemutum.Application.DTOs.User;
 using EncyclopaediaBisemutum.Application.Interfaces;
+using Exceptions;
+using FluentValidation;
 using HeavyArchives.Application.DTOs.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -9,9 +11,10 @@ using System.Threading.Tasks;
 
 namespace EncyclopaediaBisemutum.API.Controllers
 {
+    //https://learn.microsoft.com/en-us/aspnet/core/security/authorization/simple?view=aspnetcore-10.0
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles="Admin")]
     public class AdminController : ControllerBase
     {
         private readonly IAdminService adminService;
@@ -38,6 +41,8 @@ namespace EncyclopaediaBisemutum.API.Controllers
         [HttpGet("{username}")]
         public async Task<IActionResult> GetUserByUsername([FromRoute] string username)
         {
+            if (username is null) throw new InvalidInputException("Username cannot be null");
+
             UserWithDetailsDTO? user = await adminService.GetUserByUsernameAsync(username);
             return Ok(user);
         }
@@ -46,7 +51,14 @@ namespace EncyclopaediaBisemutum.API.Controllers
         public async Task<IActionResult> CreateAdminUser(LoginDTO login)
         {
            UserWithDetailsDTO? user= await adminService.AddAdminUser(login);
-            return Created();
+            return CreatedAtAction(nameof(GetUserById), new {id=user.Id}, user);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            await adminService.DeleteUserAsync(id);
+            return NoContent();
         }
 
         

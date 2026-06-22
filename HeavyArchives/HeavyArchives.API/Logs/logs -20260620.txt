@@ -1,0 +1,250 @@
+2026-06-20 14:53:19.202 +02:00 [INF] [192.168.0.12] -> GetAlbums | /api/Album
+2026-06-20 14:53:19.429 +02:00 [INF] HTTP GET /api/Album responded 200 in 869.6066 ms
+2026-06-20 15:08:53.682 +02:00 [INF] HTTP POST /login responded 200 in 1151.9234 ms
+2026-06-20 15:09:06.570 +02:00 [INF] HTTP GET /api/Admin responded 200 in 94.7010 ms
+2026-06-20 15:10:11.112 +02:00 [INF] HTTP GET /api/Admin responded 200 in 676.9047 ms
+2026-06-20 15:11:07.810 +02:00 [INF] HTTP GET /api/Admin responded 200 in 25.7326 ms
+2026-06-20 15:12:34.679 +02:00 [INF] HTTP POST /register responded 201 in 340.2316 ms
+2026-06-20 15:12:42.228 +02:00 [INF] HTTP GET /api/Admin responded 200 in 38.8430 ms
+2026-06-20 15:57:12.860 +02:00 [INF] HTTP GET /api/Band responded 200 in 520.5243 ms
+2026-06-20 15:57:26.875 +02:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-06-20 15:57:27.252 +02:00 [ERR] HTTP PUT /api/Band/AddGenre responded 500 in 755.9692 ms
+Exceptions.EntityNotExistant: Band wasn't found
+   at HeavyArchives.Application.Services.BandService.AddGenreAsync(Int32 bandId, Int32 genreId) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.Application\Services\BandService.cs:line 29
+   at HeavyArchives.API.Controllers.BandController.AddBandGenre(Int32 bandId, Int32 genreId) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Controllers\BandController.cs:line 102
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2026-06-20 15:57:27.633 +02:00 [ERR] Unexpected error occured: Band wasn't found
+Exceptions.EntityNotExistant: Band wasn't found
+   at HeavyArchives.Application.Services.BandService.AddGenreAsync(Int32 bandId, Int32 genreId) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.Application\Services\BandService.cs:line 29
+   at HeavyArchives.API.Controllers.BandController.AddBandGenre(Int32 bandId, Int32 genreId) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Controllers\BandController.cs:line 102
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at EncyclopaediaBisemutum.API.Middleware.RateLimitingMiddleware.InvokeAsync(HttpContext httpContext, HeavyArchivesContext dbCotnext) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Middleware\RateLimitingMiddleware.cs:line 42
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at HeavyArchives.API.Middleware.ExceptionHandlingMiddleware.InvokeAsync(HttpContext context) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Middleware\ExceptionHandlingMiddleware.cs:line 23
+2026-06-20 15:57:32.367 +02:00 [ERR] HTTP PUT /api/Band/AddGenre responded 500 in 646.8147 ms
+Exceptions.RelationExistsException: That genre is already attibuted to the band
+   at HeavyArchives.Application.Services.BandService.AddGenreAsync(Int32 bandId, Int32 genreId) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.Application\Services\BandService.cs:line 33
+   at HeavyArchives.API.Controllers.BandController.AddBandGenre(Int32 bandId, Int32 genreId) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Controllers\BandController.cs:line 102
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2026-06-20 15:57:32.754 +02:00 [ERR] Unexpected error occured: That genre is already attibuted to the band
+Exceptions.RelationExistsException: That genre is already attibuted to the band
+   at HeavyArchives.Application.Services.BandService.AddGenreAsync(Int32 bandId, Int32 genreId) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.Application\Services\BandService.cs:line 33
+   at HeavyArchives.API.Controllers.BandController.AddBandGenre(Int32 bandId, Int32 genreId) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Controllers\BandController.cs:line 102
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at EncyclopaediaBisemutum.API.Middleware.RateLimitingMiddleware.InvokeAsync(HttpContext httpContext, HeavyArchivesContext dbCotnext) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Middleware\RateLimitingMiddleware.cs:line 42
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at HeavyArchives.API.Middleware.ExceptionHandlingMiddleware.InvokeAsync(HttpContext context) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Middleware\ExceptionHandlingMiddleware.cs:line 23
+2026-06-20 15:57:37.975 +02:00 [ERR] HTTP PUT /api/Band/AddGenre responded 500 in 158.3071 ms
+Exceptions.EntityNotExistant: Genre wasn't found
+   at HeavyArchives.Application.Services.BandService.AddGenreAsync(Int32 bandId, Int32 genreId) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.Application\Services\BandService.cs:line 31
+   at HeavyArchives.API.Controllers.BandController.AddBandGenre(Int32 bandId, Int32 genreId) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Controllers\BandController.cs:line 102
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2026-06-20 15:57:38.228 +02:00 [ERR] Unexpected error occured: Genre wasn't found
+Exceptions.EntityNotExistant: Genre wasn't found
+   at HeavyArchives.Application.Services.BandService.AddGenreAsync(Int32 bandId, Int32 genreId) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.Application\Services\BandService.cs:line 31
+   at HeavyArchives.API.Controllers.BandController.AddBandGenre(Int32 bandId, Int32 genreId) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Controllers\BandController.cs:line 102
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at EncyclopaediaBisemutum.API.Middleware.RateLimitingMiddleware.InvokeAsync(HttpContext httpContext, HeavyArchivesContext dbCotnext) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Middleware\RateLimitingMiddleware.cs:line 42
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at HeavyArchives.API.Middleware.ExceptionHandlingMiddleware.InvokeAsync(HttpContext context) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Middleware\ExceptionHandlingMiddleware.cs:line 23
+2026-06-20 15:57:40.497 +02:00 [ERR] HTTP PUT /api/Band/AddGenre responded 500 in 173.1205 ms
+Exceptions.EntityNotExistant: Genre wasn't found
+   at HeavyArchives.Application.Services.BandService.AddGenreAsync(Int32 bandId, Int32 genreId) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.Application\Services\BandService.cs:line 31
+   at HeavyArchives.API.Controllers.BandController.AddBandGenre(Int32 bandId, Int32 genreId) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Controllers\BandController.cs:line 102
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2026-06-20 15:57:40.745 +02:00 [ERR] Unexpected error occured: Genre wasn't found
+Exceptions.EntityNotExistant: Genre wasn't found
+   at HeavyArchives.Application.Services.BandService.AddGenreAsync(Int32 bandId, Int32 genreId) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.Application\Services\BandService.cs:line 31
+   at HeavyArchives.API.Controllers.BandController.AddBandGenre(Int32 bandId, Int32 genreId) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Controllers\BandController.cs:line 102
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at EncyclopaediaBisemutum.API.Middleware.RateLimitingMiddleware.InvokeAsync(HttpContext httpContext, HeavyArchivesContext dbCotnext) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Middleware\RateLimitingMiddleware.cs:line 42
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at HeavyArchives.API.Middleware.ExceptionHandlingMiddleware.InvokeAsync(HttpContext context) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Middleware\ExceptionHandlingMiddleware.cs:line 23
+2026-06-20 15:57:43.125 +02:00 [INF] HTTP PUT /api/Band/AddGenre responded 200 in 200.2590 ms
+2026-06-20 15:57:53.411 +02:00 [INF] HTTP PUT /api/Band/RemoveGenre responded 200 in 117.3967 ms
+2026-06-20 15:59:39.123 +02:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-06-20 15:59:39.298 +02:00 [INF] HTTP POST /api/Person responded 200 in 474.4651 ms
+2026-06-20 16:00:34.181 +02:00 [INF] HTTP POST /api/Person responded 200 in 30.6378 ms
+2026-06-20 16:01:16.559 +02:00 [INF] HTTP POST /api/Person responded 200 in 30.2607 ms
+2026-06-20 16:01:50.808 +02:00 [INF] HTTP POST /api/Person responded 200 in 29.8555 ms
+2026-06-20 16:02:42.530 +02:00 [INF] HTTP POST /api/Person responded 400 in 63.5485 ms
+2026-06-20 16:02:50.860 +02:00 [INF] HTTP POST /api/Person responded 200 in 31.7406 ms
+2026-06-20 16:03:25.622 +02:00 [INF] HTTP POST /api/Person responded 200 in 20.1238 ms
+2026-06-20 16:04:41.928 +02:00 [INF] HTTP POST /api/Person responded 400 in 3.2316 ms
+2026-06-20 16:04:50.987 +02:00 [INF] HTTP POST /api/Person responded 200 in 18.8091 ms
+2026-06-20 16:07:38.207 +02:00 [INF] HTTP POST /api/Person responded 200 in 23.3885 ms
+2026-06-20 16:07:42.075 +02:00 [INF] HTTP GET /api/Person responded 200 in 63.0833 ms
+2026-06-20 16:12:12.629 +02:00 [INF] HTTP POST /api/Band responded 201 in 134.7533 ms
+2026-06-20 16:12:42.221 +02:00 [INF] HTTP POST /api/Band responded 201 in 34.6798 ms
+2026-06-20 16:13:15.139 +02:00 [INF] HTTP POST /api/Band responded 201 in 16.0496 ms
+2026-06-20 16:13:33.967 +02:00 [INF] HTTP POST /api/Band responded 201 in 11.9359 ms
+2026-06-20 16:13:37.019 +02:00 [INF] HTTP GET /api/Band responded 200 in 8.1508 ms
+2026-06-20 16:13:50.019 +02:00 [INF] HTTP POST /api/Band responded 201 in 15.8794 ms
+2026-06-20 16:14:15.381 +02:00 [INF] HTTP POST /api/Band responded 201 in 10.9800 ms
+2026-06-20 16:14:18.360 +02:00 [INF] HTTP GET /api/Band responded 200 in 4.2537 ms
+2026-06-20 16:14:55.002 +02:00 [INF] HTTP POST /api/Person responded 200 in 13.3092 ms
+2026-06-20 16:15:12.832 +02:00 [INF] HTTP GET /api/Band responded 200 in 30.7963 ms
+2026-06-20 16:15:33.264 +02:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-06-20 16:15:33.377 +02:00 [INF] HTTP GET /api/Band/byName responded 200 in 245.2563 ms
+2026-06-20 16:15:53.442 +02:00 [INF] HTTP GET /api/Person responded 200 in 13.6543 ms
+2026-06-20 16:16:14.568 +02:00 [INF] HTTP PUT /api/Band/AddMember responded 200 in 177.4901 ms
+2026-06-20 16:16:36.724 +02:00 [INF] HTTP PUT /api/Band/AddMember responded 200 in 120.9118 ms
+2026-06-20 16:17:05.362 +02:00 [INF] HTTP POST /api/Band responded 201 in 32.0231 ms
+2026-06-20 16:17:38.225 +02:00 [ERR] HTTP PUT /api/Band/AddMember responded 500 in 210.1528 ms
+Exceptions.InvalidLogicException: Person cannot be dead and active in a band
+   at HeavyArchives.Application.Services.BandService.AddMemberAsync(Int32 bandId, Int32 personId, String status, String role) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.Application\Services\BandService.cs:line 54
+   at HeavyArchives.API.Controllers.BandController.AddBandMember(Int32 bandId, Int32 personId, String status, String role) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Controllers\BandController.cs:line 88
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2026-06-20 16:17:38.496 +02:00 [ERR] Unexpected error occured: Person cannot be dead and active in a band
+Exceptions.InvalidLogicException: Person cannot be dead and active in a band
+   at HeavyArchives.Application.Services.BandService.AddMemberAsync(Int32 bandId, Int32 personId, String status, String role) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.Application\Services\BandService.cs:line 54
+   at HeavyArchives.API.Controllers.BandController.AddBandMember(Int32 bandId, Int32 personId, String status, String role) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Controllers\BandController.cs:line 88
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at EncyclopaediaBisemutum.API.Middleware.RateLimitingMiddleware.InvokeAsync(HttpContext httpContext, HeavyArchivesContext dbCotnext) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Middleware\RateLimitingMiddleware.cs:line 42
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at HeavyArchives.API.Middleware.ExceptionHandlingMiddleware.InvokeAsync(HttpContext context) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Middleware\ExceptionHandlingMiddleware.cs:line 23
+2026-06-20 16:17:46.575 +02:00 [INF] HTTP PUT /api/Band/AddMember responded 200 in 94.3998 ms
+2026-06-20 16:17:52.786 +02:00 [INF] HTTP PUT /api/Band/AddMember responded 200 in 32.8973 ms
+2026-06-20 16:18:16.390 +02:00 [INF] HTTP PUT /api/Band/AddMember responded 200 in 25.9576 ms
+2026-06-20 16:18:24.325 +02:00 [INF] HTTP PUT /api/Band/AddMember responded 200 in 22.4197 ms
+2026-06-20 16:19:18.440 +02:00 [INF] HTTP PUT /api/Band/AddMember responded 200 in 85.5228 ms
+2026-06-20 16:19:26.848 +02:00 [INF] HTTP PUT /api/Band/RemoveMember responded 200 in 33.9206 ms
+2026-06-20 16:19:31.100 +02:00 [INF] HTTP PUT /api/Band/AddMember responded 200 in 27.6714 ms
+2026-06-20 16:19:49.910 +02:00 [INF] HTTP PUT /api/Band/AddMember responded 200 in 93.4806 ms
+2026-06-20 16:19:56.428 +02:00 [INF] HTTP PUT /api/Band/AddMember responded 200 in 92.8791 ms
+2026-06-20 16:21:02.664 +02:00 [INF] HTTP POST /api/Person responded 200 in 14.7351 ms
+2026-06-20 16:21:38.577 +02:00 [INF] HTTP PUT /api/Band/AddMember responded 200 in 89.8863 ms
+2026-06-20 16:21:47.512 +02:00 [INF] HTTP GET /api/Band responded 200 in 13.0856 ms
+2026-06-20 16:21:55.399 +02:00 [INF] HTTP GET /api/Band/byCountry responded 200 in 33.8170 ms
+2026-06-20 16:22:03.273 +02:00 [INF] HTTP GET /api/Band/byCountry responded 200 in 6.5670 ms
+2026-06-20 16:22:06.480 +02:00 [INF] HTTP GET /api/Band/byCountry responded 200 in 6.0983 ms
+2026-06-20 16:22:14.803 +02:00 [INF] HTTP GET /api/Band/Genre responded 200 in 77.8191 ms
+2026-06-20 16:22:19.879 +02:00 [INF] HTTP GET /api/Band/Active responded 200 in 26.2729 ms
+2026-06-20 16:22:30.757 +02:00 [INF] HTTP GET /api/Band/bands/18 responded 200 in 63.4275 ms
+2026-06-20 16:22:35.997 +02:00 [INF] HTTP GET /api/Band/bands/17 responded 200 in 12.5620 ms
+2026-06-20 16:23:18.432 +02:00 [INF] HTTP POST /api/Person responded 400 in 2.1571 ms
+2026-06-20 16:23:23.776 +02:00 [INF] HTTP POST /api/Person responded 200 in 13.2245 ms
+2026-06-20 16:26:07.940 +02:00 [INF] HTTP POST /api/Person responded 200 in 19.0668 ms
+2026-06-20 16:26:13.168 +02:00 [INF] HTTP GET /api/Person responded 200 in 4.0276 ms
+2026-06-20 16:26:21.433 +02:00 [INF] HTTP POST /api/Theme responded 204 in 112.6535 ms
+2026-06-20 16:26:23.561 +02:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-06-20 16:26:23.636 +02:00 [INF] HTTP GET /api/Theme responded 200 in 120.7835 ms
+2026-06-20 16:26:30.407 +02:00 [INF] HTTP DELETE /api/Theme responded 204 in 78.4487 ms
+2026-06-20 16:26:45.506 +02:00 [INF] HTTP POST /api/Theme responded 204 in 6.3645 ms
+2026-06-20 16:26:50.938 +02:00 [INF] HTTP POST /api/Theme responded 204 in 5.4871 ms
+2026-06-20 16:26:57.621 +02:00 [INF] HTTP POST /api/Theme responded 204 in 4.3932 ms
+2026-06-20 16:27:03.221 +02:00 [INF] HTTP POST /api/Theme responded 204 in 4.1605 ms
+2026-06-20 16:27:06.528 +02:00 [INF] HTTP GET /api/Theme responded 200 in 14.4253 ms
+2026-06-20 16:27:45.798 +02:00 [INF] HTTP POST /api/Theme responded 204 in 9.1027 ms
+2026-06-20 16:28:01.130 +02:00 [INF] HTTP POST /api/Theme responded 204 in 8.2267 ms
+2026-06-20 16:28:39.428 +02:00 [INF] HTTP GET /api/Genre responded 200 in 31.8338 ms
+2026-06-20 16:28:56.377 +02:00 [INF] HTTP POST /api/Genre responded 204 in 56.9530 ms
+2026-06-20 16:29:09.720 +02:00 [INF] HTTP POST /api/Genre responded 204 in 5.6641 ms
+2026-06-20 16:29:22.873 +02:00 [INF] HTTP POST /api/Genre responded 204 in 3.3730 ms
+2026-06-20 16:29:33.151 +02:00 [INF] HTTP POST /api/Genre responded 204 in 5.3155 ms
+2026-06-20 16:29:38.883 +02:00 [INF] HTTP POST /api/Genre responded 204 in 3.9777 ms

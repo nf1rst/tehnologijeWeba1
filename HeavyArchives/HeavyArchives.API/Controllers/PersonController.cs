@@ -14,7 +14,7 @@ namespace HeavyArchives.API.Controllers
     public class PersonController : ControllerBase
     {
         private readonly IPersonService personService;
-        private readonly IValidator<ManipulatePersonDTO> validator; 
+        private readonly IValidator<ManipulatePersonDTO> validator;
         public PersonController(IPersonService personService, IValidator<ManipulatePersonDTO> validator)
         {
             this.personService = personService;
@@ -33,7 +33,8 @@ namespace HeavyArchives.API.Controllers
         [HttpGet("ByBand")]
         public async Task<IActionResult> GetPeopleByBandName(string bandName)
         {
-            if (bandName is null) throw new InvalidInputException("Band name cannot be null");
+            if (bandName is null) throw new InvalidInputException("Name cannot be null");
+
             var people =await personService.GetPeopleByBandAsync(bandName);
             if (people is null) return NotFound();
             return Ok(people);
@@ -56,7 +57,8 @@ namespace HeavyArchives.API.Controllers
         [HttpGet("ByCountry")]
         public async Task<IActionResult> GetPeopleByCountry(string countryName)
         {
-            if (countryName is null) throw new InvalidInputException("Country name cannot be null");
+            if (countryName is null) throw new InvalidInputException("Name cannot be null");
+
             var people =await personService.GetPeopleByCountryAsync(countryName);
             if (people is null) return NotFound();
             return Ok(people);
@@ -76,7 +78,7 @@ namespace HeavyArchives.API.Controllers
             var val = await validator.ValidateAsync(personDTO);
             if (!val.IsValid)
             {
-                string message = string.Join(",", val.Errors.Select(e => e.ErrorMessage));
+                string message = string.Join(",", val.Errors.Select(e=>e.ErrorMessage));
                 throw new InvalidInputException(message);
             }
             var created =await personService.CreatePersonAsync(personDTO);

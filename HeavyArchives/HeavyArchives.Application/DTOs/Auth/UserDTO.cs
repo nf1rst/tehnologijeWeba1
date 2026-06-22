@@ -5,6 +5,7 @@
         public int Id{ get; set; }
         public string Username{ get; set; }
         public DateTime CreatedAt{ get; set; }
-        public string Role{ get; set; } 
+        public string Role{ get; set; }
+        public string FavoriteBand { get; set; }
     }
 }

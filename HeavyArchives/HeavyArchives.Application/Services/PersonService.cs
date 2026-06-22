@@ -40,6 +40,9 @@ namespace HeavyArchives.Application.Services
 
         public async Task<PersonDTO> CreatePersonAsync(ManipulatePersonDTO personDTO)
         {
+            if (personDTO.DateOfDeath!=null && personDTO.DateOfDeath.Value < personDTO.DateOfBirth) throw new InvalidLogicException("Person's date of death cannot be before persons date of birth");
+            //.value jer je dateofDeath? i nece proc unit test 
+            
             Country? country = await uow.Countries.GetCountryWithDetailsByNameAsync(personDTO.CountryOfBirth); // je lima veze ako ovdje dode null?
              //samo zato da ga dole mogu ubacit rucno
             if (country is null && personDTO.CountryOfBirth!=null )// u country dodaj novi country

@@ -1,0 +1,62 @@
+2026-06-19 12:47:50.044 +02:00 [INF] [192.168.0.12] -> GetAlbums | /api/Album
+2026-06-19 12:47:50.285 +02:00 [INF] HTTP GET /api/Album responded 200 in 6873.7548 ms
+2026-06-19 13:03:02.775 +02:00 [INF] HTTP POST /login responded 200 in 5188.0082 ms
+2026-06-19 13:03:18.102 +02:00 [INF] HTTP GET /api/Admin responded 200 in 237.9341 ms
+2026-06-19 13:04:50.793 +02:00 [INF] HTTP POST /api/Admin responded 201 in 332.7953 ms
+2026-06-19 13:06:17.506 +02:00 [INF] HTTP GET /api/Admin responded 200 in 52.2022 ms
+2026-06-19 13:10:11.294 +02:00 [INF] HTTP POST /login responded 200 in 5854.4971 ms
+2026-06-19 13:10:42.433 +02:00 [INF] HTTP POST /login responded 200 in 211.8017 ms
+2026-06-19 13:11:11.196 +02:00 [INF] HTTP POST /login responded 200 in 114.5386 ms
+2026-06-19 13:11:53.231 +02:00 [INF] HTTP POST /login responded 200 in 5325.6129 ms
+2026-06-19 13:12:07.991 +02:00 [INF] HTTP GET /api/Admin/3 responded 200 in 205.0135 ms
+2026-06-19 13:15:30.149 +02:00 [INF] HTTP POST /api/Admin responded 201 in 193388.8332 ms
+2026-06-19 13:15:42.480 +02:00 [INF] HTTP POST /register responded 201 in 122.0580 ms
+2026-06-19 13:18:03.003 +02:00 [INF] HTTP POST /login responded 200 in 5287.3079 ms
+2026-06-19 13:18:18.814 +02:00 [ERR] HTTP POST /api/Admin responded 500 in 330.6061 ms
+Exceptions.UserAlreadyExistsException: Username 'User with username [asdf] already exists' already exists
+   at EncyclopaediaBisemutum.Application.Services.AdminService.AddAdminUser(LoginDTO adminUserDTO) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.Application\Services\AdminService.cs:line 32
+   at EncyclopaediaBisemutum.API.Controllers.AdminController.CreateAdminUser(LoginDTO login) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Controllers\AdminController.cs:line 48
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2026-06-19 13:18:19.065 +02:00 [ERR] Unexpected error occured: Username 'User with username [asdf] already exists' already exists
+Exceptions.UserAlreadyExistsException: Username 'User with username [asdf] already exists' already exists
+   at EncyclopaediaBisemutum.Application.Services.AdminService.AddAdminUser(LoginDTO adminUserDTO) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.Application\Services\AdminService.cs:line 32
+   at EncyclopaediaBisemutum.API.Controllers.AdminController.CreateAdminUser(LoginDTO login) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Controllers\AdminController.cs:line 48
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at HeavyArchives.API.Middleware.ExceptionHandlingMiddleware.InvokeAsync(HttpContext context) in C:\Users\ninaf\Desktop\TehnologijeWeba1\HeavyArchives\HeavyArchives.API\Middleware\ExceptionHandlingMiddleware.cs:line 23
+2026-06-19 13:18:24.470 +02:00 [INF] HTTP POST /api/Admin responded 201 in 275.3249 ms
+2026-06-19 13:20:34.482 +02:00 [INF] HTTP POST /login responded 200 in 5673.3661 ms
+2026-06-19 13:20:49.053 +02:00 [INF] HTTP GET /api/Admin responded 200 in 248.3155 ms
+2026-06-19 13:20:58.855 +02:00 [INF] HTTP DELETE /api/Admin responded 204 in 139.6168 ms
+2026-06-19 13:21:03.412 +02:00 [INF] HTTP DELETE /api/Admin responded 204 in 60.4405 ms
+2026-06-19 13:21:07.086 +02:00 [INF] HTTP GET /api/Admin responded 200 in 13.2246 ms
+2026-06-19 15:51:54.163 +02:00 [INF] HTTP POST /login responded 200 in 4889.1116 ms
+2026-06-19 15:52:10.239 +02:00 [INF] HTTP GET /api/Concert responded 200 in 347.5090 ms
+2026-06-19 15:52:32.095 +02:00 [INF] HTTP POST /login responded 200 in 109.6164 ms
+2026-06-19 15:52:38.358 +02:00 [INF] HTTP GET /api/Concert responded 200 in 38.0260 ms
+2026-06-19 15:52:59.832 +02:00 [INF] HTTP POST /login responded 200 in 117.9694 ms
+2026-06-19 15:53:42.804 +02:00 [INF] HTTP POST /login responded 200 in 47.8867 ms
+2026-06-19 15:53:57.089 +02:00 [INF] HTTP GET /api/Concert responded 200 in 24.0525 ms
+2026-06-19 15:54:15.823 +02:00 [INF] HTTP POST /refresh responded 200 in 99.4996 ms
+2026-06-19 15:54:58.955 +02:00 [INF] HTTP POST /logout responded 204 in 60.0866 ms

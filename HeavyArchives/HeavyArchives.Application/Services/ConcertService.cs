@@ -47,6 +47,13 @@ namespace HeavyArchives.Application.Services
             return mapper.Map<ICollection<ConcertDTO>>(concerts);
         }
 
+        public async Task<ConcertDTO> GetConcertByIdAsyncAsync(int id)
+        {
+            Concert? concert = await uow.Concerts.GetConcertWithDetailsByIdAsync(id);
+            if (concert is null) throw new EntityNotExistant($"Concert with id [{id}] was not found");
+            return mapper.Map<ConcertDTO>(concert);
+        }
+
         public async Task<ICollection<ConcertDTO>> GetConcertsForCityAsync(string cityName)
         {
             var concerts = await uow.Concerts.GetConcertsWithDetailsByCityAsync(cityName);

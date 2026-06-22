@@ -22,6 +22,7 @@ namespace HeavyArchives.Application.Services
             BandMemberStatus status = mapper.Map<BandMemberStatus>(createDTO);
 
             await uow.BandMemberStatuses.InsertAsync(status);
+            await uow.SaveChangesAsync();
             return mapper.Map<BandMemberStatusDTO>(status);
         }
 
@@ -45,6 +46,7 @@ namespace HeavyArchives.Application.Services
             BandMemberStatus? status = await uow.BandMemberStatuses.GetStatusWithDetailsByIDAsync(id);
             if (status is null) throw new EntityNotExistant("Band member status not found");
             mapper.Map(updateDTO, status);
+            await uow.SaveChangesAsync();
             return mapper.Map<BandMemberStatusDTO>(status);
 
         }

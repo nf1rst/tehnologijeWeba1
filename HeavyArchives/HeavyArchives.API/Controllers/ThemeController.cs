@@ -1,4 +1,5 @@
 ﻿using Exceptions;
+using FluentValidation;
 using HeavyArchives.Application.DTOs.Theme;
 using HeavyArchives.Application.Interfaces;
 using HeavyArchives.Application.Services;
@@ -6,6 +7,7 @@ using HeavyArchives.DAL.Repositories;
 using HeavyArchives.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Configuration;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
@@ -37,7 +39,8 @@ namespace HeavyArchives.API.Controllers
         [HttpGet("Name")]
         public async Task<IActionResult> GetThemeByName(string name)
         {
-            if (name is null) throw new InvalidInputException("Theme name cannot be null");
+            if (name is null) throw new InvalidInputException("Name cannot be null");
+
             var theme =await themeService.GetThemeByNameAsync(name);
             if (theme is null) return NotFound();
             return Ok(theme);
@@ -45,7 +48,8 @@ namespace HeavyArchives.API.Controllers
         [HttpGet("forBand")]
         public async Task<IActionResult> GetThemesForBand(string bandName)
         {
-            if (bandName is null) throw new InvalidInputException("Band name cannot be null");
+            if (bandName is null) throw new InvalidInputException("Name cannot be null");
+
             var themes =await themeService.GetThemesForBandAsync(bandName);
             if(themes is null)return NotFound();
             return Ok(themes);
@@ -53,7 +57,8 @@ namespace HeavyArchives.API.Controllers
         [HttpGet("forLabel")]
         public async Task<IActionResult> GetThemesForLabel(string labelName)
         {
-            if (labelName is null) throw new InvalidInputException("Label name cannot be null");
+            if (labelName is null) throw new InvalidInputException("Name cannot be null");
+
             var labels =await themeService.GetThemesForLabelAsync(labelName);
             if (labels is null) return NotFound();
             return Ok(labels);

@@ -85,6 +85,7 @@ namespace HeavyArchives.DAL.Repositories
             LabelThemes = labelTheme;
         }
 
+        //https://www.learnentityframeworkcore.com/saving/save-changes
         public async Task<int> SaveChangesAsync()
         {
             return await context.SaveChangesAsync();

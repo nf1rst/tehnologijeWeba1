@@ -33,7 +33,8 @@ namespace HeavyArchives.Application.Services
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Username),
-                new Claim(ClaimTypes.Role, user.Role.Name!)
+                new Claim(ClaimTypes.Role, user.Role.Name!),
+                new Claim("favoriteBand", user.FavoriteBand)
             };
 
             var tokenDescriptor = new JwtSecurityToken(
@@ -71,6 +72,7 @@ namespace HeavyArchives.Application.Services
 
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = key,
+
 
                 ValidateLifetime = false //isteknuti tokeni
 

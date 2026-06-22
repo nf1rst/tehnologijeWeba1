@@ -18,7 +18,6 @@ namespace HeavyArchives.Application.Services
             this.mapper=mapper;
         }
 
-
         public async Task DeleteAlbumAsync(int id)
         {
             Album? target = await uow.Albums.GetByIdAsync(id);
@@ -33,7 +32,6 @@ namespace HeavyArchives.Application.Services
             Album? target = await uow.Albums.GetAlbumWithDetailsByIdAsync(id); //ako ovdje vrati getByID iz baznog repozitorija, nece imat bendove includane
             if (target is null) throw new EntityNotExistant($"Album with id {id} was not found");
             return mapper.Map<AlbumDTO>(target);
-                
         }
 
         public async Task<ICollection<AlbumDTO>> GetAlbumsByBandAsync(string bandName)

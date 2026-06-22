@@ -1,4 +1,5 @@
 ﻿using Exceptions;
+using FluentValidation;
 using HeavyArchives.Application.DTOs.Band;
 using HeavyArchives.Application.Interfaces;
 using HeavyArchives.Domain.Entities;
@@ -32,7 +33,7 @@ namespace HeavyArchives.API.Controllers
         [HttpGet("byName")] 
         public async Task<IActionResult> GetBandByName(string name)
         {
-            if (name is null) throw new InvalidInputException("Band name cannot be null");
+            if (name is null) throw new InvalidInputException("Name cannot be null");
             var band =await bandService.GetBandByNameAsync(name);
             if(band is null)return NotFound();
             return Ok(band);
@@ -42,7 +43,6 @@ namespace HeavyArchives.API.Controllers
         public async Task<IActionResult> GetById(int id)// treba vratit i members
         {
             var target =await bandService.GetBandByIdAsync(id);
-            if (target is null) return NotFound();
             return Ok(target);
         }
 
@@ -51,14 +51,15 @@ namespace HeavyArchives.API.Controllers
         {
             if (countryName is null) throw new InvalidInputException("Country name cannot be null");
             var target =await bandService.GetBandsByCountryAsync(countryName);
-            if (target is null) return NotFound();
             return Ok(target);
         }
+    
 
         [HttpGet("Genre")]
         public async Task<IActionResult> GetBandByGenre(string genreName)
         {
             if (genreName is null) throw new InvalidInputException("Genre name cannot be null");
+
             var bands =await bandService.GetBandsByGenreAsync(genreName);
             if (bands is null) return NotFound();
             return Ok(bands);
@@ -82,9 +83,9 @@ namespace HeavyArchives.API.Controllers
         [HttpPut("AddMember")]
         public async Task<IActionResult> AddBandMember(int bandId, int personId,string status, string role) // status vise nije enum pa samo string ovdje prima
         {
-            //validator
             if (status is null) throw new InvalidInputException("Status cannot be null");
             if (role is null) throw new InvalidInputException("Role cannot be null");
+
             var result =await bandService.AddMemberAsync(bandId, personId, status, role);
             return Ok(result); 
         }

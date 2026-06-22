@@ -1,5 +1,6 @@
 using EncyclopaediaBisemutum.API.Middleware;
 using HeavyArchives.API.Extensions;
+using HeavyArchives.API.Middleware;
 using HeavyArchives.Application.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -23,11 +24,11 @@ internal class Program
         builder.Services.SetApplicationServices(builder.Configuration);
 
         builder.Services.AddJwtAuthentication(builder.Configuration);
-        ////////////////////////////////////////
 
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
+        
         builder.Services.AddSwaggerGen(options =>
         {
 
@@ -64,8 +65,7 @@ internal class Program
 
         var app = builder.Build();
 
-        app.UseCustomExceptionHandling(); // ako je app.useExceptionHandler(); to je build in pa ce se sve raspast ako ne konfigurairam posebno
-
+        app.UseMiddleware<ExceptionHandlingMiddleware>(); // ako je app.useExceptionHandler(); to je build in pa ce se sve raspast ako ne konfigurairam posebno
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -83,7 +83,7 @@ internal class Program
 
         app.MapControllers();
 
-        // app.UseMiddleware<RateLimitingMiddleware>();
+        app.UseMiddleware<RateLimitingMiddleware>();
 
         //https://youtu.be/x-s-52kj4n8?si=ugdYI3oYFQ6pxtA0
         app.UseSerilogRequestLogging();

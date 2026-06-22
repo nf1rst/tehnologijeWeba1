@@ -44,10 +44,11 @@ namespace EncyclopaediaBisemutum.Application.Services
 
             await uow.Users.InsertAsync(user);
             await uow.SaveChangesAsync();
-            return mapper.Map<UserWithDetailsDTO>(user);
+            var UserWithRoleMapped = await uow.Users.GetUserWithDetailsByUsernameAsync(adminUserDTO.Username);
+            return mapper.Map<UserWithDetailsDTO>(UserWithRoleMapped);
         }
 
-        public async Task DeleteUser(int id)
+        public async Task DeleteUserAsync(int id)
         {
             User? user = await uow.Users.GetByIdAsync(id);
             if (user is null) throw new EntityNotExistant($"User with id [{id}] does not exist");

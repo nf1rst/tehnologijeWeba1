@@ -1,8 +1,10 @@
 ﻿using Exceptions;
+using FluentValidation;
 using HeavyArchives.Application.DTOs.Genres;
 using HeavyArchives.Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace HeavyArchives.API.Controllers
@@ -36,7 +38,7 @@ namespace HeavyArchives.API.Controllers
         [HttpGet("ByName")]
         public async Task<IActionResult> GetGenreByName(string name)
         {
-            if (name is null) throw new InvalidInputException("Genre name cannot be null");
+            if (name is null) throw new InvalidInputException("Name cannot be null");
             var genre =await genreService.GetGenreByNameAsync(name);
             if (genre is null) return NotFound();
             return Ok(genre);
@@ -45,7 +47,8 @@ namespace HeavyArchives.API.Controllers
         [HttpGet("forBand")]
         public async Task<IActionResult> GetGenresForSpecificBand(string bandName)
         {
-            if (bandName is null) throw new InvalidInputException("Band name cannot be null");
+            if (bandName is null) throw new InvalidInputException("Name cannot be null");
+
             var genres =await genreService.GetGenresByBandAsync(bandName);
             if (genres is null) return NotFound();
             return Ok(genres);
