@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Exceptions;
+using FluentValidation;
 using HeavyArchives.Application.DTOs.Contact;
 using HeavyArchives.Application.Interfaces;
 using HeavyArchives.Domain.Entities;
@@ -22,7 +23,6 @@ namespace HeavyArchives.Application.Services
         {
             Band? band =await uow.Bands.GetBandWithDetailsByNameAsync(createDTO.Band);
             if (band is null) throw new EntityNotExistant();
-
 
             Contact contact = new Contact
             {

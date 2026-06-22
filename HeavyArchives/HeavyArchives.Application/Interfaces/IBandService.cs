@@ -26,5 +26,7 @@ namespace HeavyArchives.Application.Interfaces
         Task<BandWithMembersDTO >AddGenreAsync(int bandId, int genreId);
         Task<BandWithMembersDTO > RemoveGenreAsync(int bandId, int genreId);
         Task<ICollection<BandMinimumInfoDTO>> GetBandsForPersonByPersonId(int personId);
+        Task<BandDTO> AddThemeAsync(int bandId, int themeId);
+        Task<BandDTO> RemoveThemeAsync(int bandId, int themeId);
     }
 }

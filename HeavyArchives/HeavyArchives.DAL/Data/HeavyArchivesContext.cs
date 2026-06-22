@@ -7,6 +7,12 @@ namespace HeavyArchives.DAL.Data
 {
     public class HeavyArchivesContext:DbContext
     {
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    base.OnConfiguring(optionsBuilder);
+        //    optionsBuilder.UseSqlServer("Server=NINOSLAV;User Id=sa;Password=SQL;TrustServerCertificate=true;Database=HeavyArchivesDB");
+        //}
         public HeavyArchivesContext(DbContextOptions<HeavyArchivesContext> options):base(options){}
         public DbSet<Band> Bands{ get; set; }
         public DbSet<Person> Persons{ get; set; }

@@ -1,4 +1,5 @@
-﻿using EncyclopaediaBisemutum.Application.DTOs.User;
+﻿using EncyclopaediaBisemutum.Application.DTOs.Auth;
+using EncyclopaediaBisemutum.Application.DTOs.User;
 using EncyclopaediaBisemutum.Application.Interfaces;
 using Exceptions;
 using FluentValidation;
@@ -48,8 +49,8 @@ namespace EncyclopaediaBisemutum.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAdminUser(LoginDTO login)
-        {
+        public async Task<IActionResult> CreateAdminUser(UserRegisterWithDetailsDTO login)
+        {   
            UserWithDetailsDTO? user= await adminService.AddAdminUser(login);
             return CreatedAtAction(nameof(GetUserById), new {id=user.Id}, user);
         }

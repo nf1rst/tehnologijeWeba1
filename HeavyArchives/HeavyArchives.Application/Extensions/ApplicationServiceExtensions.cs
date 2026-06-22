@@ -4,6 +4,7 @@ using EncyclopaediaBisemutum.Application.Interfaces;
 using EncyclopaediaBisemutum.Application.Services;
 using EncyclopaediaBisemutum.Application.Validators;
 using FluentValidation;
+using HeavyArchives.Application.DTOs.Contact;
 using HeavyArchives.Application.DTOs.Person;
 using HeavyArchives.Application.Interfaces;
 using HeavyArchives.Application.Mapping;
@@ -37,14 +38,16 @@ namespace HeavyArchives.Application.Extensions
             services.AddScoped<IBandMemberStatusService, BandMemberStatusService>();
             services.AddScoped<ITourService, TourService>();
             services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<ICityService, CityService>();
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<ITokenService, TokenService>();
 
             services.AddScoped<IValidator<ManipulatePersonDTO>, ManipulatePersonDTOValidator>();
-            services.AddScoped<IValidator<String>, StringNotEmptyValidator>();
+            services.AddScoped<IValidator<string>, StringNotEmptyValidator>();
             services.AddScoped<IValidator<UserRegisterWithDetailsDTO>, RegisterWithDetailsDTOValidator>();
+            services.AddScoped<IValidator<ManipulateContactDTO>, ManipulateContactDTOValidator>();
 
             //https://docs.automapper.io/en/stable/Configuration.html
 

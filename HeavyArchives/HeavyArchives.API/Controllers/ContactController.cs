@@ -14,14 +14,23 @@ namespace HeavyArchives.API.Controllers
     public class ContactController : ControllerBase
     {
         private readonly IContactService contactService;
-        public ContactController(IContactService contactService)
+        private readonly IValidator<ManipulateContactDTO> contactValidator;
+
+        public ContactController(IContactService contactService, IValidator<ManipulateContactDTO> contactValidator)
         {
             this.contactService = contactService;
+            this.contactValidator = contactValidator;
         }
         [HttpPost]
         public async Task<IActionResult> CreateContact(ManipulateContactDTO createDTO)
         {
             var contact =await contactService.CreateContactAsync(createDTO);
+            var res = await contactValidator.ValidateAsync(createDTO);
+            if (!res.IsValid)
+            {
+                string message = string.Join(", ", res.Errors);
+                throw new InvalidInputException(message);
+            }
             return CreatedAtAction(nameof(GetContactForBand), new {id=contact.Id}, contact);
         }
 

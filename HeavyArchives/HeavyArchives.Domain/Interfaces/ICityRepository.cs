@@ -12,6 +12,7 @@ namespace HeavyArchives.Domain.Interfaces
         Task<City?> GetCityWithDetailsByNameAsync(string name);
         Task<City?> GetCityWithDetailsByIdAsync(int id);
         Task<ICollection<City>> GetCitiesWithDetailsByCountryAsync(string countryName);
+        Task<ICollection<City>> GetAllCitiesWithDetails();
 
     }
 }

@@ -109,6 +109,19 @@ namespace HeavyArchives.API.Controllers
             var result =await bandService.RemoveGenreAsync(bandId, genreId);
             return Ok(result);
         }
+
+        [HttpPut("AddTheme")]
+        public async Task<IActionResult> AddBandTheme(int bandId, int themeId)
+        {
+            var result = await bandService.AddThemeAsync(bandId, themeId);
+            return Ok(result);
+        }
+        [HttpPut("RemoveTheme")]
+        public async Task<IActionResult> RemoveBandTheme(int bandId, int themeId)
+        {
+            var result = await bandService.RemoveThemeAsync(bandId, themeId);
+            return Ok(result);
+        }
         [HttpPut("UpdateBand")]
         public async Task<IActionResult> UpdateBand(int id, ManipulateBandDTO updatedDTO)
         {

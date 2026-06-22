@@ -2,6 +2,7 @@
 using FluentValidation;
 using HeavyArchives.Application.DTOs.BandMemberStatus;
 using HeavyArchives.Application.Interfaces;
+using HeavyArchives.DAL.Migrations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ namespace EncyclopaediaBisemutum.API.Controllers
     {
         private readonly IBandMemberStatusService bandMemberStatusService;
 
-        public BandMemberStatusController(IBandMemberStatusService bandMemberStatusService, IValidator<String>validator)
+        public BandMemberStatusController(IBandMemberStatusService bandMemberStatusService)
         {
             this.bandMemberStatusService = bandMemberStatusService;
         }

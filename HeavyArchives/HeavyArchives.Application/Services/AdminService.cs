@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EncyclopaediaBisemutum.Application.DTOs.Auth;
 using EncyclopaediaBisemutum.Application.DTOs.User;
 using EncyclopaediaBisemutum.Application.Interfaces;
 using Exceptions;
@@ -26,7 +27,7 @@ namespace EncyclopaediaBisemutum.Application.Services
             this.uow = uow;
             this.mapper = mapper;
         }
-        public async Task<UserWithDetailsDTO?> AddAdminUser(LoginDTO adminUserDTO)
+        public async Task<UserWithDetailsDTO?> AddAdminUser(UserRegisterWithDetailsDTO adminUserDTO)
         {
             User? user = await uow.Users.GetUserWithDetailsByUsernameAsync(adminUserDTO.Username);
             if (user is not null) throw new UserAlreadyExistsException($"User with username [{adminUserDTO.Username}] already exists");
@@ -40,6 +41,7 @@ namespace EncyclopaediaBisemutum.Application.Services
                 PasswordSalt=salt,
                 RoleID=1, //admin
                 CreatedAt= DateTime.UtcNow,
+                FavoriteBand=adminUserDTO.FavoriteBand
             };
 
             await uow.Users.InsertAsync(user);

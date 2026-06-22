@@ -19,6 +19,14 @@ namespace HeavyArchives.DAL.Repositories
             this.context = context;
         }
 
+        public async Task<ICollection<City>> GetAllCitiesWithDetails()
+        {
+            return await context.Cities
+                .Include(c => c.Concerts)
+                .Include(c => c.Country)
+                .ToListAsync();
+        }
+
         public async Task<ICollection<City>> GetCitiesWithDetailsByCountryAsync(string countryName)
         {
             return await context.Cities
@@ -35,7 +43,7 @@ namespace HeavyArchives.DAL.Repositories
             return await context.Cities
                 .Include(c => c.Country)
                 .Include(c => c.Concerts)
-                .FirstOrDefaultAsync(c => c.Country.Id == id);
+                .FirstOrDefaultAsync(c => c.Id== id);
         }
 
         public async Task<City?> GetCityWithDetailsByNameAsync(string name)

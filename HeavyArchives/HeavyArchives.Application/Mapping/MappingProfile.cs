@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EncyclopaediaBisemutum.Application.DTOs.Auth;
+using EncyclopaediaBisemutum.Application.DTOs.City;
 using EncyclopaediaBisemutum.Application.DTOs.User;
 using HeavyArchives.Application.DTOs.Album;
 using HeavyArchives.Application.DTOs.Auth;
@@ -66,7 +67,8 @@ namespace HeavyArchives.Application.Mapping
                     src => src.Country != null ? src.Country.Name : "Unknown"))
                 .ForMember(
                 dest => dest.Genres, opt => opt.MapFrom(
-                src => src.GenreBand.Select(gb => gb.Genre)));
+                src => src.GenreBand.Select(gb => gb.Genre)))
+                .ForMember(dest=>dest.Themes, opt=>opt.MapFrom(src=>src.BandTheme.Select(bt=>bt.Theme)));
 
             CreateMap<Band, BandMinimumInfoDTO>()
                 .ForMember(
@@ -99,7 +101,8 @@ namespace HeavyArchives.Application.Mapping
                         src => src.GenreBand.Select(gb => gb.Genre)))
                     .ForMember(
                         dest => dest.Contact, opt => opt.MapFrom(
-                        src => src.Contact));
+                        src => src.Contact))
+                    .ForMember(dest=>dest.Themes, opt=>opt.MapFrom(src=>src.BandTheme.Select(bt=>bt.Theme)));
 
             CreateMap<BandPerson, BandMinimumInfoDTO>()
                 .ForMember(dest=>dest.Id, opt=>opt.MapFrom(src=>src.BandId))
@@ -221,7 +224,13 @@ namespace HeavyArchives.Application.Mapping
                 .ForMember(dest => dest.Role, opt => opt.MapFrom(
                     src => src.BandPerson.Select(bp => bp.RoleInBand)
                     .FirstOrDefault())); //ako ima vise roles u razlicitim bendovima uzimat ce samo rpvi unos
-        }
 
+
+            CreateMap<City, CityWithDetailsDTO>()
+                .ForMember(dest => dest.CoutnryName, opt => opt.MapFrom(src => src.Country.Name))
+                .ForMember(dest=>dest.Concerts, opt=>opt.MapFrom(src=>src.Concerts));
+
+            CreateMap<City, CityDTO>();
+        }
     }
 }

@@ -9,6 +9,7 @@ using HeavyArchives.Domain.Entities;
 using HeavyArchives.Domain.Entities.M2MTables;
 using HeavyArchives.Domain.Interfaces;
 using System.Net.NetworkInformation;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 
 namespace HeavyArchives.Application.Services
@@ -201,6 +202,36 @@ namespace HeavyArchives.Application.Services
             if (bandPersons is null) throw new EntityNotExistant($"Band person with personID [{personId}] was not found");
 
             return mapper.Map<ICollection<BandMinimumInfoDTO>>(bandPersons);
+        }
+
+        public async Task<BandDTO> AddThemeAsync(int bandId, int themeId)
+        {
+            var band = await uow.Bands.GetBandWithDetailsAsync(bandId);
+            if (band is null) throw new EntityNotExistant($"Band with id {bandId} was not found");
+            var theme = await uow.Themes.GetThemeWithDetailsByIdAsync(themeId);
+            if (theme is null) throw new EntityNotExistant($"Theme with id {themeId} was not found");
+
+            BandTheme? entry = band.BandTheme.FirstOrDefault(bt=>bt.ThemeId==themeId);
+            if (entry is not null) throw new InvalidLogicException("The theme is already associated with the band");
+
+            await uow.BandThemes.AddBandThemeAsync(new BandTheme { Band=band, Theme=theme});
+            await uow.SaveChangesAsync();
+            return mapper.Map<BandDTO>(band);
+        }
+
+        public async Task<BandDTO> RemoveThemeAsync(int bandId, int themeId)
+        {
+            var band = await uow.Bands.GetBandWithDetailsAsync(bandId);
+            if (band is null) throw new EntityNotExistant($"Band with id {bandId} was not found");
+            var theme = await uow.Themes.GetThemeWithDetailsByIdAsync(themeId);
+            if (theme is null) throw new EntityNotExistant($"Theme with id {themeId} was not found");
+
+            BandTheme? entry = band.BandTheme.FirstOrDefault(bt => bt.ThemeId == themeId);
+            if (entry is  null) throw new InvalidLogicException("The theme is not associated with the band");
+
+            await uow.BandThemes.RemoveBandThemeAsync(entry);
+            await uow.SaveChangesAsync();
+            return mapper.Map<BandDTO>(band);
         }
     }
 }
