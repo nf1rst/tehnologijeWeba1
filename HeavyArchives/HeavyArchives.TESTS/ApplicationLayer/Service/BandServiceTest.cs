@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using Castle.Core.Logging;
 using Exceptions;
 using HeavyArchives.Application.Interfaces;
 using HeavyArchives.Application.Services;
 using HeavyArchives.Domain.Entities;
 using HeavyArchives.Domain.Entities.M2MTables;
 using HeavyArchives.Domain.Interfaces;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -23,7 +25,9 @@ namespace HeavyArchives.Tests.ApplicationLayer.Service
             var mockRepo = new Mock<IBandRepository>();
             var mockUow = new Mock<IUnitOfWork>();
             var mockMapper = new Mock<IMapper>();
+            var mockLogger= new Mock<ILogger<BandService>>();
 
+            //https://stackoverflow.com/questions/43424095/how-to-unit-test-with-ilogger-in-asp-net-core
             Person deadPerson = new Person()
             {
                 Id = 1,
@@ -46,7 +50,7 @@ namespace HeavyArchives.Tests.ApplicationLayer.Service
             mockUow.Setup(u => u.Bands.GetBandWithDetailsAsync(1)).ReturnsAsync(band);
             mockUow.Setup(u => u.BandMemberStatuses.GetStatusWithDetailsByNameAsync("Active")).ReturnsAsync(bandMemberStatus);
 
-            BandService bandService = new BandService(mockUow.Object, mockMapper.Object);
+            BandService bandService = new BandService(mockUow.Object, mockMapper.Object, mockLogger.Object);
 
             await Assert.ThrowsAsync<InvalidLogicException>(async () =>
             {

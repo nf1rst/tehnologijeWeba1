@@ -140,5 +140,58 @@ namespace HeavyArchives.Tests.ApplicationLayer.Service
             });
 
         }
+
+        [Fact]
+        public async Task AddConcert_ShouldAddConcertRevenueToTourRevenue()
+        {
+            var mockUow = new Mock<IUnitOfWork>();
+            var mockMapper = new Mock<IMapper>();
+
+            Concert concertB = new Concert() // za dodavanja
+            {
+                Id = 2,
+                Revenue = 50,
+                StartingTime= DateTime.UtcNow,
+            };
+
+            Tour tour = new Tour()
+            {
+                Id = 2,
+                Name="WhereCanIFindJob",
+                Revenue = 50,
+                Concerts=new List<Concert>()
+            };
+
+            ConcertDTO concertDTO = new ConcertDTO()
+            {
+                Id = concertB.Id,
+                Revenue = concertB.Revenue,
+                StartingTime= concertB.StartingTime,
+            };
+
+
+            TourDTO tourDTO = new TourDTO()
+            {
+                Name = tour.Name,
+                Revenue = 100, // 50 + 50
+                Concerts = new List<ConcertDTO> { concertDTO}
+            };
+
+            mockUow.Setup(u => u.Concerts.GetConcertWithDetailsByIdAsync(2)).ReturnsAsync(concertB);
+            mockUow.Setup(e => e.Tours.GetTourWithDetailsByIdAsync(2)).ReturnsAsync(tour);
+            mockUow.Setup(u => u.Concerts.GetConcertsWithDetailsByTourAsync(tour.Name)).ReturnsAsync(new List<Concert> { });
+
+            int expectedRevenue = 100;
+
+            TourService tourService = new TourService(mockUow.Object, mockMapper.Object);
+
+            mockMapper.Setup(m => m.Map<TourDTO>(tour)).Returns(tourDTO);
+
+            await tourService.AddConcertAsync(2, 2);
+
+
+            Assert.True(expectedRevenue==tour.Revenue);
+
+        }
     }
 }

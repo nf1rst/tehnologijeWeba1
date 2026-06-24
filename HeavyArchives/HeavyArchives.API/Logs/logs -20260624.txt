@@ -902,3 +902,5 @@ Exceptions.AuthenticationInvalidException: Incorrect login data
 2026-06-24 12:50:10 [INF] [/] [CorrelationId: ] HTTP GET /api/Concert responded 200 in 24.6639 ms
 2026-06-24 12:51:55 [INF] [/] [CorrelationId: ] [AuthController] New user registered: {"Id":18,"Username":"asdf","CreatedAt":"2026-06-24T10:51:55.2338572Z","Role":"User","FavoriteBand":"Grima","$type":"UserDTO"}
 2026-06-24 12:51:55 [INF] [/] [CorrelationId: ] HTTP POST /register responded 201 in 312.3842 ms
+2026-06-24 13:32:18 [WRN] [/] [CorrelationId: ] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-06-24 13:32:19 [INF] [/] [CorrelationId: ] HTTP GET /api/Band responded 200 in 5020.0390 ms
