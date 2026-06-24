@@ -11,6 +11,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HeavyArchives.DAL.Migrations
 {
     [DbContext(typeof(HeavyArchivesContext))]
+    //https://www.learnentityframeworkcore.com/migrations/model-snapshot
+    //https://www.learnentityframeworkcore.com/migrations/update-database
+    //https://rohitsakhare.medium.com/how-ef-core-migrations-work-under-the-hood-a5e13d27bce3
     partial class HeavyArchivesContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

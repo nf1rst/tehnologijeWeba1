@@ -44,19 +44,23 @@ namespace HeavyArchives.Application.Extensions
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<ITokenService, TokenService>();
 
+            //        services.AddValidatorsFromAssembly(typeof(ApplicationServiceExtensions).Assembly);
             services.AddScoped<IValidator<ManipulatePersonDTO>, ManipulatePersonDTOValidator>();
             services.AddScoped<IValidator<string>, StringNotEmptyValidator>();
             services.AddScoped<IValidator<UserRegisterWithDetailsDTO>, RegisterWithDetailsDTOValidator>();
             services.AddScoped<IValidator<ManipulateContactDTO>, ManipulateContactDTOValidator>();
 
             //https://docs.automapper.io/en/stable/Configuration.html
+            //https://youtu.be/Ijw0Q5EOqmE?si=PjvJfQb-uWRH_ROK
+            //https://www.c-sharpcorner.com/article/how-to-use-automapper-in-net-web-api/
+
 
             // bez AutoMapper.Extensions.Microsoft.DependencyInjection paketa
-            var configExpr = new MapperConfigurationExpression();
-            configExpr.AddMaps(typeof(MappingProfile).Assembly);
-            var mapperConfig = new MapperConfiguration(configExpr, NullLoggerFactory.Instance); 
-            //ne moze se napravit objekt bez da se posalje logger al nije potrebno trenutno 
-            services.AddSingleton(mapperConfig.CreateMapper());
+            //var configExpr = new MapperConfigurationExpression();
+            //configExpr.AddMaps(typeof(MappingProfile).Assembly);
+            //var mapperConfig = new MapperConfiguration(configExpr, NullLoggerFactory.Instance);
+            ////ne moze se napravit objekt bez da se posalje logger al nije potrebno trenutno 
+            //services.AddSingleton(mapperConfig.CreateMapper());
 
             return services;
         }

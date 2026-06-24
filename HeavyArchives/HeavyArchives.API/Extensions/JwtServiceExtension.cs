@@ -15,7 +15,8 @@ namespace HeavyArchives.API.Extensions
                 .Get<JwtSettings>()!;
 
 
-            services.AddAuthentication(options =>
+            //https://duendesoftware.com/learn/step-by-step-jwt-authentication-example
+            services.AddAuthentication(options => //DI
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -40,7 +41,7 @@ namespace HeavyArchives.API.Extensions
                 };
             });
 
-            services.AddAuthorization();
+            services.AddAuthorization(); //DI 
             return services;
         }
     }

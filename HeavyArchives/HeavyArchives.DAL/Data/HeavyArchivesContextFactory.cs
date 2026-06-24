@@ -20,7 +20,6 @@ namespace HeavyArchives.DAL.Data
             optionsBuilder.UseSqlServer("Server=NINOSLAV;User Id=sa;Password=SQL;TrustServerCertificate=true;Database=HeavyArchivesDB");
             //jer ovaj ne vidi ovo sto je zapisano tamo u appsettings
 
-
             return new HeavyArchivesContext(optionsBuilder.Options);
         }
     }

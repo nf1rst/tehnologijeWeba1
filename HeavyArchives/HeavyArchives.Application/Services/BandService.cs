@@ -67,6 +67,7 @@ namespace HeavyArchives.Application.Services
             };
 
             band.BandPerson.Add(forInsert);
+            //await uow.BandPersons.AddBandPersonAsync(new BandPerson() { Band = band, Person = person });
             
             await uow.SaveChangesAsync();
             return mapper.Map<BandWithMembersDTO>(band);
@@ -138,9 +139,10 @@ namespace HeavyArchives.Application.Services
             //if (genre is null) throw new EntityNotExistant("Genre wasn't found");
 
             var entry = band.GenreBand.FirstOrDefault(b => b.GenreId == genreId);
-            if (entry is null) throw new Exceptions.NoRelationException("That genre is not assiciated with the band");// ne postoji taj genre za odredeni bend 
+            if (entry is null) throw new Exceptions.NoRelationException("That genre is not assiciated with the band or not existant");// ne postoji taj genre za odredeni bend 
 
-            await uow.GenreBands.RemoveGenreBand(entry);
+            //await uow.GenreBands.RemoveGenreBand(entry);
+            band.GenreBand.Remove(entry);
             
             await uow.SaveChangesAsync();
             return mapper.Map<BandWithMembersDTO>(band);
@@ -176,7 +178,7 @@ namespace HeavyArchives.Application.Services
             if (band is null) throw new EntityNotExistant("Band does not exist");
 
             mapper.Map(updatedBand, band);
-            band.Country = country;
+            band.Country = country!;
 
             await uow.Bands.UpdateAsync(band);
             await uow.SaveChangesAsync();

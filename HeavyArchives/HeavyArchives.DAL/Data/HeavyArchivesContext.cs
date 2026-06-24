@@ -193,9 +193,6 @@ namespace HeavyArchives.DAL.Data
                 .WithOne(bp => bp.Status)
                 .HasForeignKey(bp => bp.StatusID)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            //modelBuilder.ApplyConfigurationsFromAssembly(typeof(HeavyArchivesContext).Assembly);
-
         }
 
         //https://learn.microsoft.com/en-us/ef/core/logging-events-diagnostics/simple-logging#message-categories

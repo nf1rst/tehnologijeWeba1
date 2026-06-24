@@ -23,10 +23,6 @@ namespace HeavyArchives.Domain.Interfaces
         IBandTourRepository BandTours { get; }
         IGenreBandRepository GenreBands { get; }
         ILabelThemeRepository LabelThemes { get; }
-
-
-        //zasto ne i roles ovdje stavit 
-
         Task<int> SaveChangesAsync();
 
     }
