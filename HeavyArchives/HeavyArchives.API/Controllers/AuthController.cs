@@ -1,8 +1,10 @@
-﻿using EncyclopaediaBisemutum.Application.DTOs.Auth;
+﻿using EncyclopaediaBisemutum.API.Controllers;
+using EncyclopaediaBisemutum.Application.DTOs.Auth;
 using Exceptions;
 using FluentValidation;
 using HeavyArchives.Application.DTOs.Auth;
 using HeavyArchives.Application.Interfaces;
+using HeavyArchives.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +17,12 @@ namespace HeavyArchives.API.Controllers
     {
         private readonly IAuthService authService;
         private readonly IValidator<UserRegisterWithDetailsDTO> validator;
-        public AuthController(IAuthService authService, IValidator<UserRegisterWithDetailsDTO> validator)
+        private readonly ILogger<AuthController> logger;
+        public AuthController(IAuthService authService, IValidator<UserRegisterWithDetailsDTO> validator, ILogger<AuthController> logger)
         {
             this.authService = authService;
             this.validator = validator;
+            this.logger = logger;
         }
 
         [HttpPost("register")]
@@ -31,6 +35,7 @@ namespace HeavyArchives.API.Controllers
                 throw new InvalidInputException(message);
             }
             var user =await authService.RegisterAsync(registerDTO);
+            logger.LogInformation("[{Controller}] New user registered: {@User}", nameof(AuthController), user);
             return CreatedAtAction(nameof(Register), user);
         }
 
@@ -38,6 +43,7 @@ namespace HeavyArchives.API.Controllers
         public async Task<IActionResult> Login(LoginDTO loginDTO)
         {
             var response =await authService.LoginAsync(loginDTO);
+            logger.LogInformation("[{Controller}] Admin user logged in: {@AuthDTO}", nameof(AdminController), response);
             return Ok(response);
         }
         
@@ -45,6 +51,7 @@ namespace HeavyArchives.API.Controllers
         public async Task<IActionResult> RefreshToken(RefreshTokenDTO refreshDTO)
         {
             var response =await authService.RefreshTokenAsync(refreshDTO);
+            logger.LogInformation("[{Controller}] Access token refreshed: {@AuthDTO}", nameof(AuthController), response);
             return Ok(response);
         }
         [HttpPost("logout")]

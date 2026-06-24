@@ -2,6 +2,7 @@
 using FluentValidation;
 using HeavyArchives.Application.DTOs.Contact;
 using HeavyArchives.Application.Interfaces;
+using HeavyArchives.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -15,11 +16,13 @@ namespace HeavyArchives.API.Controllers
     {
         private readonly IContactService contactService;
         private readonly IValidator<ManipulateContactDTO> contactValidator;
+        private readonly ILogger<ContactController> logger;
 
-        public ContactController(IContactService contactService, IValidator<ManipulateContactDTO> contactValidator)
+        public ContactController(IContactService contactService, IValidator<ManipulateContactDTO> contactValidator, ILogger<ContactController> logger)
         {
             this.contactService = contactService;
             this.contactValidator = contactValidator;
+            this.logger = logger;
         }
         [HttpPost]
         public async Task<IActionResult> CreateContact(ManipulateContactDTO createDTO)
@@ -31,6 +34,7 @@ namespace HeavyArchives.API.Controllers
                 string message = string.Join(", ", res.Errors);
                 throw new InvalidInputException(message);
             }
+            logger.LogInformation("[{Controller}] Contact created: {@Contact}", nameof(Contact), contact);
             return CreatedAtAction(nameof(GetContactForBand), new {id=contact.Id}, contact);
         }
 

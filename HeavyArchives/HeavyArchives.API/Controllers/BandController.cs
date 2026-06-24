@@ -1,4 +1,5 @@
-﻿using Exceptions;
+﻿using EncyclopaediaBisemutum.API.Controllers;
+using Exceptions;
 using FluentValidation;
 using HeavyArchives.Application.DTOs.Band;
 using HeavyArchives.Application.Interfaces;
@@ -16,6 +17,7 @@ namespace HeavyArchives.API.Controllers
     public class BandController : ControllerBase
     {
         private readonly IBandService bandService;
+        //logiranje u service
         public BandController(IBandService bandService)
         {
             this.bandService = bandService;

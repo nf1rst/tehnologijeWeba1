@@ -1,9 +1,13 @@
 ﻿using EncyclopaediaBisemutum.Application.DTOs.City;
 using EncyclopaediaBisemutum.Application.Interfaces;
+using HeavyArchives.API.Controllers;
 using HeavyArchives.Application.DTOs.Band;
+using HeavyArchives.Application.Services;
 using HeavyArchives.DAL.Repositories;
+using HeavyArchives.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.Eventing.Reader;
 using System.Threading.Tasks;
 
 namespace EncyclopaediaBisemutum.API.Controllers
@@ -13,10 +17,12 @@ namespace EncyclopaediaBisemutum.API.Controllers
     public class CityController : ControllerBase
     {
         private readonly ICityService cityService;
+        private readonly ILogger<CityController> logger;
 
-        public CityController(ICityService cityService)
+        public CityController(ICityService cityService, ILogger<CityController> logger)
         {
             this.cityService = cityService;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -51,6 +57,7 @@ namespace EncyclopaediaBisemutum.API.Controllers
         public async Task<IActionResult> CreateCity(ManipulateCityDTO createDTO)
         {
             var create = await cityService.CreateCity(createDTO);
+            logger.LogInformation("[{Controller}] City created: {@City}", nameof(CityController), create);
             return Ok(create);
         }
 
@@ -58,6 +65,7 @@ namespace EncyclopaediaBisemutum.API.Controllers
         public async Task<IActionResult> DeleteCity(int id)
         {
             await cityService.DeleteCity(id);
+            logger.LogInformation("[{Controller}] City deleted: {@City}", nameof(CityController), id);
             return NoContent();
         }
 

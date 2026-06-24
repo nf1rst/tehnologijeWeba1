@@ -1,8 +1,10 @@
-﻿using Exceptions;
+﻿using EncyclopaediaBisemutum.API.Controllers;
+using Exceptions;
 using FluentValidation;
 using HeavyArchives.Application.DTOs.Album;
 using HeavyArchives.Application.Interfaces;
 using HeavyArchives.DAL.Migrations;
+using HeavyArchives.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
@@ -14,9 +16,11 @@ namespace HeavyArchives.API.Controllers
     public class AlbumController : ControllerBase
     {
         private readonly IAlbumService albumService;
-        public AlbumController(IAlbumService albumService) // prosljeduje to u konstruktor od BASECOntrollera
+        private readonly ILogger<AlbumController> logger;
+        public AlbumController(IAlbumService albumService, ILogger<AlbumController> logger) // prosljeduje to u konstruktor od BASECOntrollera
         {
             this.albumService = albumService;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -33,6 +37,7 @@ namespace HeavyArchives.API.Controllers
         {
             var album =await albumService.CreateAlbumAsync(albumDTO);
             if (album is null) return BadRequest();
+            logger.LogInformation("[{Controller}] Album created: {@User}", nameof(AlbumController), album);
             return CreatedAtAction(nameof(GetAlbumById), new { Id = album.Id }, album);
         }
 

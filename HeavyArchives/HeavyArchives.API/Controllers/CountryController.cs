@@ -2,6 +2,7 @@
 using FluentValidation;
 using HeavyArchives.Application.DTOs.Country;
 using HeavyArchives.Application.Interfaces;
+using HeavyArchives.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
@@ -15,9 +16,11 @@ namespace HeavyArchives.API.Controllers
     public class CountryController : ControllerBase
     {
         private readonly ICountryService countryservice;
-        public CountryController(ICountryService countryService)
+        private readonly ILogger<CountryController> logger; 
+        public CountryController(ICountryService countryService, ILogger<CountryController> logger)
         {
             this.countryservice = countryService;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -49,6 +52,7 @@ namespace HeavyArchives.API.Controllers
         public async Task<IActionResult> CreateCountry(ManipulateCountryDTO createDTO)
         {
             var country =await countryservice.CreateCountryAsync(createDTO);
+            logger.LogInformation("[{Controller}] Country created: {@Country}", nameof(CountryController), country);
             return CreatedAtAction(nameof(GetCountryById), new {id=country.Id}, country);
         }
 

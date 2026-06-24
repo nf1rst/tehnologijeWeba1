@@ -18,9 +18,11 @@ namespace HeavyArchives.API.Controllers
     public class ThemeController : ControllerBase
     {
         private readonly IThemeService themeService;
-        public ThemeController(IThemeService themeService)
+        private readonly ILogger<ThemeController> logger;
+        public ThemeController(IThemeService themeService, ILogger<ThemeController>logger)
         {
             this.themeService = themeService;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -67,6 +69,7 @@ namespace HeavyArchives.API.Controllers
         public async Task<IActionResult> CreateTheme(ManipulateThemeDTO createDTO)
         {
             var theme =await themeService.CreateThemeAsync(createDTO);
+            logger.LogInformation("[{Controller}] Theme created: {@Theme}", nameof(ThemeController), theme);
             return Created();
         }
         [HttpDelete]

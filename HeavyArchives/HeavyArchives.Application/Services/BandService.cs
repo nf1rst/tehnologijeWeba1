@@ -8,8 +8,11 @@ using HeavyArchives.Application.Interfaces;
 using HeavyArchives.Domain.Entities;
 using HeavyArchives.Domain.Entities.M2MTables;
 using HeavyArchives.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Logging;
 using System.Net.NetworkInformation;
 using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace HeavyArchives.Application.Services
@@ -18,11 +21,13 @@ namespace HeavyArchives.Application.Services
     {
         private readonly IUnitOfWork uow;
         private readonly IMapper mapper;
+        private readonly ILogger<BandService> logger;
 
-        public BandService(IUnitOfWork uow, IMapper mapper)
+        public BandService(IUnitOfWork uow, IMapper mapper, ILogger<BandService>logger)
         {
             this.uow = uow;
             this.mapper=mapper;
+            this.logger = logger;
         }
         public async Task<BandWithMembersDTO> AddGenreAsync(int bandId, int genreId)
         {
@@ -34,10 +39,12 @@ namespace HeavyArchives.Application.Services
             if (band.GenreBand.Any(gb => gb.GenreId == genreId)) throw new Exceptions.RelationExistsException("That genre is already attibuted to the band"); //ako zanr vec postoji da podupla
 
             //in memory 
-            band.GenreBand.Add(new GenreBand() { BandId=bandId, GenreId=genreId});
+            GenreBand gb = new GenreBand() { BandId = bandId, GenreId = genreId };
+            band.GenreBand.Add(gb);
             //await uow.GenreBands.AddGenreBandAsync(new GenreBand() { BandId=bandId, GenreId=genreId });
 
             await uow.SaveChangesAsync();
+            logger.LogInformation("[{Service}] - GenreBand created: {id}, bandId: {bandId}, genreId: {genreID}", nameof(BandService), gb.Id, gb.BandId, gb.GenreId);
             return mapper.Map<BandWithMembersDTO>(band);
         }
 
@@ -70,6 +77,7 @@ namespace HeavyArchives.Application.Services
             //await uow.BandPersons.AddBandPersonAsync(new BandPerson() { Band = band, Person = person });
             
             await uow.SaveChangesAsync();
+            logger.LogInformation("[{Service}] - BandPerson created: {id}, bandId: {bandId}, personId: {personID}", nameof(BandService), forInsert.Id, forInsert.BandId, forInsert.PersonId);
             return mapper.Map<BandWithMembersDTO>(band);
         }
 
@@ -87,6 +95,8 @@ namespace HeavyArchives.Application.Services
 
             await uow.Bands.InsertAsync(band);
             await uow.SaveChangesAsync();
+            logger.LogInformation("[{Service}] - Band created: {id}, name: {name}", nameof(BandService), band.Id, band.Name);
+
             return mapper.Map<BandDTO>(band);
         }
 
@@ -96,6 +106,7 @@ namespace HeavyArchives.Application.Services
             if (band is null) throw new Exceptions.EntityNotExistant("Band wasn't found");
 
             await uow.Bands.DeleteAsync(band);
+            logger.LogInformation("[{Service}] - Band deleted: {id}, name: {name}", nameof(BandService), band.Id, band.Name);
             await uow.SaveChangesAsync();
         }
 
@@ -145,6 +156,7 @@ namespace HeavyArchives.Application.Services
             band.GenreBand.Remove(entry);
             
             await uow.SaveChangesAsync();
+            logger.LogInformation("[{Service}] - GenreBand deleted: {id}, bandId: {bandId}, genreId: {genreID}", nameof(BandService), entry.Id, entry.BandId, entry.GenreId);
             return mapper.Map<BandWithMembersDTO>(band);
         }
 
@@ -162,6 +174,7 @@ namespace HeavyArchives.Application.Services
 
             await uow.BandPersons.RemoveBandPersonAsync(entry);
             await uow.SaveChangesAsync();
+            logger.LogInformation("[{Service}] - BandPerson deleted: {id}, bandId: {bandId}, personId: {personID}", nameof(BandService), entry.Id, entry.BandId, entry.PersonId);
             return mapper.Map<BandWithMembersDTO>(band);
         }
 
@@ -216,8 +229,10 @@ namespace HeavyArchives.Application.Services
             BandTheme? entry = band.BandTheme.FirstOrDefault(bt=>bt.ThemeId==themeId);
             if (entry is not null) throw new InvalidLogicException("The theme is already associated with the band");
 
-            await uow.BandThemes.AddBandThemeAsync(new BandTheme { Band=band, Theme=theme});
+            BandTheme bt = new BandTheme { Band = band, Theme = theme };
+            await uow.BandThemes.AddBandThemeAsync(bt);
             await uow.SaveChangesAsync();
+            logger.LogInformation("[{Service}] - BandTheme created: {id}, bandId: {bandId}, themeId: {themeID}", nameof(BandService), bt.Id, bt.BandId, bt.ThemeId);
             return mapper.Map<BandDTO>(band);
         }
 
@@ -233,6 +248,7 @@ namespace HeavyArchives.Application.Services
 
             await uow.BandThemes.RemoveBandThemeAsync(entry);
             await uow.SaveChangesAsync();
+            logger.LogInformation("[{Service}] - BandTheme deleted: {id}, bandId: {bandId}, themeId: {themeID}", nameof(BandService), entry.Id, entry.BandId, entry.ThemeId);
             return mapper.Map<BandDTO>(band);
         }
     }

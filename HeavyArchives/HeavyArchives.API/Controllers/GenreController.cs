@@ -2,6 +2,7 @@
 using FluentValidation;
 using HeavyArchives.Application.DTOs.Genres;
 using HeavyArchives.Application.Interfaces;
+using HeavyArchives.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -14,9 +15,11 @@ namespace HeavyArchives.API.Controllers
     public class GenreController : ControllerBase
     {
         private readonly IGenreService genreService;
-        public GenreController(IGenreService genreService)
+        private readonly ILogger<GenreController> logger;
+        public GenreController(IGenreService genreService, ILogger<GenreController> logger)
         {
             this.genreService = genreService;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -58,6 +61,7 @@ namespace HeavyArchives.API.Controllers
         public async Task<IActionResult> CreateGenre(ManipulateGenreDTO genreDTO)
         {
             var genre =await genreService.CreateGenreAsync(genreDTO);
+            logger.LogInformation("[{Controller}] Genre created: {@Genre}", nameof(GenreController), genre);
             return Created();
         }
 

@@ -2,6 +2,7 @@
 using FluentValidation;
 using HeavyArchives.Application.DTOs.Tour;
 using HeavyArchives.Application.Interfaces;
+using HeavyArchives.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,9 +17,11 @@ namespace HeavyArchives.API.Controllers
     public class TourController : ControllerBase
     {
         private readonly ITourService tourService;
-        public TourController(ITourService tourService)
+        private readonly ILogger<TourController> logger;
+        public TourController(ITourService tourService, ILogger<TourController> logger)
         { 
             this.tourService= tourService;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -54,6 +57,7 @@ namespace HeavyArchives.API.Controllers
         public async Task<IActionResult> CreateTour(ManipulateTourDTO createDTO)
         {
             var tour =await tourService.CreateTourAsync(createDTO);
+            logger.LogInformation("[{Controller}] Tour created: {@Tour}", nameof(TourController), tour);
             return Ok(tour);
         }
         [HttpPut]

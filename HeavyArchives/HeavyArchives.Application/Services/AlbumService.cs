@@ -69,6 +69,7 @@ namespace HeavyArchives.Application.Services
         public async Task<AlbumDTO> GetAlbumByNameAsync(string name)
         {
             Album? album = await uow.Albums.GetAlbumByNameAsync(name);
+            if (album is null) throw new EntityNotExistant($"Album {name} does not exist ");
             return mapper.Map<AlbumDTO>(album);
         }
 

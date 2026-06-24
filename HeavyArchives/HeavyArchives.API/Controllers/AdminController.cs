@@ -19,10 +19,12 @@ namespace EncyclopaediaBisemutum.API.Controllers
     public class AdminController : ControllerBase
     {
         private readonly IAdminService adminService;
+        private readonly ILogger<AdminController> logger;
 
-        public AdminController(IAdminService adminService)
+        public AdminController(IAdminService adminService, ILogger<AdminController> logger)
         {
             this.adminService = adminService;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -49,9 +51,12 @@ namespace EncyclopaediaBisemutum.API.Controllers
         }
 
         [HttpPost]
+        //https://github.com/serilog/serilog
+        //@ destrukturira/serijalizira {} toString
         public async Task<IActionResult> CreateAdminUser(UserRegisterWithDetailsDTO login)
         {   
            UserWithDetailsDTO? user= await adminService.AddAdminUser(login);
+            logger.LogInformation("[{Controller}] Admin user created: {@User}", nameof(AdminController), user);
             return CreatedAtAction(nameof(GetUserById), new {id=user.Id}, user);
         }
 

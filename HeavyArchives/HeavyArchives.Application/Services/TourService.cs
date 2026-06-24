@@ -109,7 +109,7 @@ namespace HeavyArchives.Application.Services
 
             Person? person =await uow.Persons.GetPersonByFirstAndLastNameAsync(info[0], info[1]);
             if (person is null) throw new EntityNotExistant("That person does not exist");
-            var tours = uow.Tours.GetAllToursWithDetailsByManagerAsync(person.Id);
+            ICollection<Tour> tours =await uow.Tours.GetAllToursWithDetailsByManagerAsync(person.Id);
             return mapper.Map<ICollection<TourDTO>>(tours);
         }
 

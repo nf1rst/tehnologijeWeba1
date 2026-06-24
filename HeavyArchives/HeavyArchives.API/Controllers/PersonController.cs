@@ -15,10 +15,12 @@ namespace HeavyArchives.API.Controllers
     {
         private readonly IPersonService personService;
         private readonly IValidator<ManipulatePersonDTO> validator;
-        public PersonController(IPersonService personService, IValidator<ManipulatePersonDTO> validator)
+        private readonly ILogger<PersonController> logger;
+        public PersonController(IPersonService personService, IValidator<ManipulatePersonDTO> validator, ILogger<PersonController> logger)
         {
             this.personService = personService;
             this.validator = validator;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -84,6 +86,7 @@ namespace HeavyArchives.API.Controllers
             var created =await personService.CreatePersonAsync(personDTO);
 
             if (created is null) return BadRequest("User information given was wrong");
+            logger.LogInformation("[{Controller}] Person created: {@Person}", nameof(PersonController), created);
 
             return Ok(created);
 

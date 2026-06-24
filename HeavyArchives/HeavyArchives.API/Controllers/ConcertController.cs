@@ -16,9 +16,11 @@ namespace HeavyArchives.API.Controllers
     public class ConcertController : ControllerBase
     {
         private readonly IConcertService concertService;
-        public ConcertController(IConcertService concertService)
+        private readonly ILogger<ConcertController> logger;
+        public ConcertController(IConcertService concertService, ILogger<ConcertController> logger)
         {
             this.concertService = concertService;
+            this.logger = logger;
         }
 
 
@@ -72,6 +74,7 @@ namespace HeavyArchives.API.Controllers
         {
 
             var created =await concertService.CreateConcertAsync(createDTO);
+            logger.LogInformation("[{Controller}] Concert created: {@Concert}", nameof(ConcertController), created);
             return CreatedAtAction(nameof(GetConcertById), new { id=created.Id}, created);
         }
         [HttpPut]

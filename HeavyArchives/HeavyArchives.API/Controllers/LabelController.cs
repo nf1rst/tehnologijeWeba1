@@ -17,9 +17,11 @@ namespace HeavyArchives.API.Controllers
     {
 
         private readonly ILabelService labelService;
-        public LabelController(ILabelService labelService)
+        private readonly ILogger<LabelController> logger;
+        public LabelController(ILabelService labelService, ILogger<LabelController>logger)
         {
             this.labelService = labelService;
+            this.logger = logger;
         }
 
       
@@ -77,6 +79,7 @@ namespace HeavyArchives.API.Controllers
         public async Task<IActionResult> CreateLabel(ManipulateLabelDTO labelDTO)
         {
             var created =await labelService.CreateLabelAsync(labelDTO);
+            logger.LogInformation("[{Controller}] Label created: {@Label}", nameof(LabelController), created);
             return Created();
         }
 
