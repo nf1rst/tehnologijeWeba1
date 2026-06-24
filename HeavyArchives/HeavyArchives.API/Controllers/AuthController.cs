@@ -61,6 +61,13 @@ namespace HeavyArchives.API.Controllers
             return NoContent();
         }
 
+        [HttpPut("updatePassword/{accessToken}")]
+        public async Task<IActionResult> ChangePassword(string accessToken, string oldPassword, string newPassword)
+        {
+            var user = await authService.ChangePassowrd(accessToken, oldPassword, newPassword);
+            return Ok(user);
+        }
+
     
     }
 }

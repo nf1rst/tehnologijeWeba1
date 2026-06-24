@@ -67,6 +67,12 @@ namespace EncyclopaediaBisemutum.API.Controllers
             return NoContent();
         }
 
+        [HttpPatch("promote/{username}")]
+        public async Task<IActionResult> PromoteUser(string username)
+        {
+            var user = await adminService.PromoteUser(username);
+            return Ok(user);
+        }
         
     }
 }

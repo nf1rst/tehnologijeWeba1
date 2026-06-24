@@ -10,5 +10,6 @@ namespace HeavyArchives.Application.Interfaces
         Task<AuthResponseDTO> LoginAsync(LoginDTO loginDTO);
         Task<AuthResponseDTO> RefreshTokenAsync(RefreshTokenDTO refreshDTO);
         Task RevokeRefreshTokenAsync(string refreshToken);
+        Task<UserDTO> ChangePassowrd(string accessToken, string oldPassword, string newPassword);
     }
 }

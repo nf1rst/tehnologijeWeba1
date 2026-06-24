@@ -78,5 +78,22 @@ namespace EncyclopaediaBisemutum.Application.Services
             if (user is null) throw new EntityNotExistant($"User with username [{username}] does not exist");
             return mapper.Map<UserWithDetailsDTO>(user);
         }
+
+        public async Task<UserDTO> PromoteUser(string username)
+        {
+            var foundUser = await uow.Users.GetUserWithDetailsByUsernameAsync(username);
+            if (foundUser is null) throw new EntityNotExistant($"User with username {username} does not exist");
+
+            if (foundUser.RoleID== 2)
+            {
+                foundUser.RoleID = 1;
+            }
+            
+            await uow.SaveChangesAsync();
+
+            //role je null za dto?
+            var changes = await uow.Users.GetUserWithDetailsByUsernameAsync(username);
+            return mapper.Map<UserDTO>(changes);
+        }
     }
 }

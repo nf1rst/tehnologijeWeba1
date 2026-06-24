@@ -14,7 +14,9 @@ namespace HeavyArchives.Application.Services
     //https://youtu.be/mgeuh8k3I4g?si=akVjp-au085jTZMP + milan jovanovic
     public class TokenService : ITokenService
     {
+        //https://thecodeman.net/posts/live-loading-appsettings-configuration-file
         private readonly JwtSettings jwtSettings;
+        //private readonly IOptions<JwtSettings> jwtSettings;
         public TokenService(IOptions<JwtSettings> jwtSettings)
         {
             this.jwtSettings = jwtSettings.Value;

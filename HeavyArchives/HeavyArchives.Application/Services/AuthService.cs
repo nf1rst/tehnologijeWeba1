@@ -113,5 +113,26 @@ namespace HeavyArchives.Application.Services
              await uow.SaveChangesAsync();
         }
 
+        public async Task<UserDTO> ChangePassowrd(string accessToken, string oldPassword, string newPassword)
+        {
+            ClaimsPrincipal? principal = tokenService.GetPrincipalFromExpiredToken(accessToken);
+            if (principal is null) throw new InvalidRefreshTokenException("No claims pincipal in access token");
+
+            string? userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId)) throw new InvalidRefreshTokenException("User information in claims invalid");
+
+            User? user = await uow.Users.GetUserWithDetailsByIdAsync(userId);
+            if (user is null) throw new EntityNotExistant("User not found");
+
+            if (!passwordHasher.VerifyPassword(oldPassword, user.PasswordHash, user.PasswordSalt)) throw new InvalidInputException("Password incorrect");
+
+            var (password, salt) = passwordHasher.HashPassword(newPassword);
+            
+            user.PasswordHash = password;
+            user.PasswordSalt = salt;
+
+            await uow.SaveChangesAsync();
+            return mapper.Map<UserDTO>(user);
+        }
     }
 }

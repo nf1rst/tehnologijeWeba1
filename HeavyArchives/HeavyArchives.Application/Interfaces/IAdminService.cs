@@ -10,6 +10,7 @@ namespace EncyclopaediaBisemutum.Application.Interfaces
         Task<UserWithDetailsDTO?> GetUserByIdAsync(int id);
         Task<UserWithDetailsDTO?> GetUserByUsernameAsync(string username);
         Task DeleteUserAsync(int id);
-        Task<UserWithDetailsDTO?> AddAdminUser(UserRegisterWithDetailsDTO adminUserDTO); 
+        Task<UserWithDetailsDTO?> AddAdminUser(UserRegisterWithDetailsDTO adminUserDTO);
+        Task<UserDTO> PromoteUser(string username);
     }
 }
