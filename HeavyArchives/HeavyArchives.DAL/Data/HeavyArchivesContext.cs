@@ -40,6 +40,7 @@ namespace HeavyArchives.DAL.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            //https://amrelsher07.medium.com/delete-behaviors-in-ef-core-and-how-they-fit-into-domain-driven-design-ddd-084a36eb082b
 
             //treba bit clean slate bez prijasnih failed migracija pa su sve zbrisane
             modelBuilder.Entity<Genre>().ToTable("Genres"); // ovo mora bit isto ime kao i ovi gore, inace ce govorit da ne moze pronac

@@ -1,5 +1,6 @@
 ﻿using Exceptions;
 using HeavyArchives.API.Middleware;
+using Microsoft.Data.SqlClient;
 using System.Net;
 using System.Text.Json;
 namespace HeavyArchives.API.Middleware
@@ -30,7 +31,7 @@ namespace HeavyArchives.API.Middleware
 
         private async Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
-            logger.LogError(ex, "Unexpected error occured: {Message}", ex.Message);
+            logger.LogError(ex, "Error occured: {Message}", ex.Message);
 
             var response = context.Response;
             response.ContentType = "application/json";
@@ -45,6 +46,7 @@ namespace HeavyArchives.API.Middleware
                 RelationExistsException => (HttpStatusCode.Conflict, ex.Message),
                 InvalidLogicException => (HttpStatusCode.BadRequest, ex.Message),
                 NoRelationException => (HttpStatusCode.NotFound, ex.Message),
+                SqlException => (HttpStatusCode.BadRequest, "Cannot execute query, FK constraints present"),
                 _ => (HttpStatusCode.InternalServerError, ex.Message)
             };
 
@@ -53,7 +55,7 @@ namespace HeavyArchives.API.Middleware
             var result = JsonSerializer.Serialize(
                 new
                 {
-                    error = message, // ovdje bi se moglo za svaki dat neki custom message - HttpStatusCode.NotFound => "custom messagee",...
+                    error = message, 
                     statusCode = (int)statusCode,
                 });
             await response.WriteAsync(result);

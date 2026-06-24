@@ -70,7 +70,8 @@ internal class Program
 
         var app = builder.Build();
 
-        app.UseMiddleware<ExceptionHandlingMiddleware>(); 
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
+        app.UseMiddleware<RequestLoggingMiddleware>();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
