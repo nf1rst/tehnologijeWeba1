@@ -1,0 +1,6 @@
+.vs/
+bin/
+obj/
+
+HeavyArchives.API/Logs/*
+HeavyArchives.API/EncyclopaediaBisemutum.API.csproj.user
