@@ -1,7 +1,0 @@
-<Solution>
-  <Project Path="HeavyArchives.API/EncyclopaediaBisemutum.API.csproj" />
-  <Project Path="HeavyArchives.Application/EncyclopaediaBisemutum.Application.csproj" />
-  <Project Path="HeavyArchives.DAL/EncyclopaediaBisemutum.DAL.csproj" />
-  <Project Path="HeavyArchives.Domain/EncyclopaediaBisemutum.Domain.csproj" />
-  <Project Path="HeavyArchives.Tests/EncyclopaediaBisemutum.Tests.csproj" Id="74353bf2-2db8-4917-a309-550907a2d34e" />
-</Solution>
